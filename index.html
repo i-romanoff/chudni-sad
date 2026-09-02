@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Чудный сад — саженцы гортензий и спирей | chudni-sad.ru</title>
+  <meta name="description" content="Питомник «Чудный сад»: саженцы метельчатых гортензий, японских спирей, хвойных, плодовых и многолетних растений в контейнерах. Живые фото наших растений, цены, заказ через корзину в Telegram или MAX.">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prata&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#catalog">Перейти к каталогу</a>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a class="brand" href="#top" aria-label="Чудный сад — на главную">
+        <img class="brand__logo" src="assets/img/logo.png" alt="Логотип питомника «Чудный сад»: ирис" width="56" height="56">
+        <span class="brand__name">Чудный&nbsp;сад</span>
+      </a>
+      <nav class="header__nav" aria-label="Основная навигация">
+        <a href="#catalog">Каталог</a>
+        <a href="#care">Как купить</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+      <button class="cart-btn" id="cart-open" type="button" aria-label="Открыть корзину">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.6"/><circle cx="18" cy="21" r="1.6"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L21.5 7H6"/></svg>
+        <span class="cart-btn__count" id="cart-count" hidden>0</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="promise" role="note">
+    <div class="container promise__inner">
+      <p class="promise__text">Все растения <strong>подходят под наш климат и зимостойки</strong>: то, что <strong>не приживается у нас</strong>, — не продаём</p>
+    </div>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__text">
+          <p class="eyebrow">Питомник саженцев · с закрытой корневой системой</p>
+          <h1 class="hero__title">Растения, которые мы вырастили&nbsp;сами</h1>
+          <p class="hero__sub">Метельчатые гортензии и японские спиреи из нашего питомника. На фотографиях — наши собственные кусты и саженцы: вы видите именно то растение, которое приедет к вам.</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#catalog">Каталог</a>
+            <a class="btn btn--ghost" href="#contacts">Контакты</a>
+          </div>
+          <p class="hero__note">Добавляйте растения в корзину и формируйте заказ — или просто позвоните.</p>
+        </div>
+        <figure class="hero__photo">
+          <div class="hero__slider" id="hero-slider"></div>
+          <figcaption class="tag tag--hero" aria-hidden="true">
+            <span class="tag__latin" id="hero-tag-latin">Hydrangea paniculata</span>
+            <span class="tag__hand" id="hero-tag-hand">«Граффити» · одногодка</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="catalog" id="catalog">
+      <div class="container">
+        <div class="catalog__head">
+          <p class="eyebrow">Сезон 2026</p>
+          <h2 class="section-title">Каталог растений</h2>
+          <p class="catalog__note">Цены — за саженец в контейнере. Кладите нужное в корзину, а потом отправьте заказ в MAX.</p>
+        </div>
+        <div class="tabs" id="tabs" role="tablist" aria-label="Категории растений"><!-- вкладки собираются в app.js --></div>
+        <div class="cards" id="cards"><!-- карточки собираются из data/catalog.js --></div>
+      </div>
+    </section>
+
+    <section class="care" id="care">
+      <div class="container">
+        <p class="eyebrow eyebrow--light">Саженцы с закрытой корневой системой</p>
+        <h2 class="section-title section-title--light">Как купить</h2>
+        <ol class="steps">
+          <li class="steps__item">
+            <h3>Выбираете растения</h3>
+            <p>Смотрите каталог. На всех фото — наши саженцы и маточные кусты, а не картинки из интернета. Добавляете понравившееся в корзину.</p>
+          </li>
+          <li class="steps__item">
+            <h3>Формируете заказ</h3>
+            <p>Нажимаете «Сформировать заказ», пишете имя и телефон. Заказ уйдёт нам в Telegram или MAX.</p>
+          </li>
+          <li class="steps__item">
+            <h3>Забираете саженцы</h3>
+            <p>Самовывоз из питомника. Саженцы с закрытой корневой системой — приживаются спокойно.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="contacts" id="contacts">
+      <div class="container contacts__inner">
+        <div>
+          <p class="eyebrow">Питомник «Чудный сад»</p>
+          <h2 class="section-title">Свяжитесь с нами</h2>
+          <p class="contacts__text">Ответим на вопросы о растениях, поможем с выбором и посадкой. Готовый заказ из корзины отправьте нам в MAX — или просто позвоните.</p>
+        </div>
+        <div class="contacts__actions">
+          <a class="btn btn--primary btn--big" id="contacts-phone" href="#">Позвонить</a>
+          <a class="social-btn social-btn--max" id="contacts-max" href="#" target="_blank" rel="noopener noreferrer">
+            <span class="social-btn__icon social-btn__icon--img" aria-hidden="true"><svg class="max-logo" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3405 23.9342C9.97568 23.9342 8.87728 23.5899 6.97252 22.2125C5.76041 23.762 1.94518 24.9672 1.77774 22.9012C1.77774 21.3535 1.42788 20.0492 1.04269 18.6132C0.570922 16.8544 0.0461426 14.898 0.0461426 12.0546C0.0461426 5.27426 5.6424 0.175079 12.2777 0.175079C18.913 0.175079 24.1153 5.52322 24.1153 12.1205C24.1153 18.7178 18.7474 23.9342 12.3405 23.9342ZM12.4368 6.03673C9.20791 5.86848 6.68817 8.0948 6.13253 11.5794C5.6724 14.465 6.48821 17.9812 7.18602 18.1582C7.51488 18.2416 8.35763 17.564 8.87711 17.0475C9.73154 17.5981 10.712 18.0245 11.8019 18.0813C15.1168 18.254 18.0544 15.6761 18.228 12.382C18.4016 9.08792 15.7517 6.20946 12.4368 6.03673Z" fill="currentColor"></path></svg></span>
+            <span class="social-btn__label">Канал в MAX</span>
+          </a>
+          <p class="contacts__note" id="contacts-phone-label"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© <span id="year"></span> Питомник «Чудный сад»</span>
+      <span class="footer__domain">chudni-sad.ru</span>
+    </div>
+  </footer>
+
+  <div class="mobile-bar" aria-label="Быстрые действия">
+    <a class="mobile-bar__item mobile-bar__item--call" id="bar-phone" href="#">Позвонить</a>
+    <a class="mobile-bar__item" href="#catalog">Каталог</a>
+    <a class="mobile-bar__item mobile-bar__item--max" id="bar-max" href="#" target="_blank" rel="noopener noreferrer"><span class="bar-max-icon" aria-hidden="true"><svg class="max-logo" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3405 23.9342C9.97568 23.9342 8.87728 23.5899 6.97252 22.2125C5.76041 23.762 1.94518 24.9672 1.77774 22.9012C1.77774 21.3535 1.42788 20.0492 1.04269 18.6132C0.570922 16.8544 0.0461426 14.898 0.0461426 12.0546C0.0461426 5.27426 5.6424 0.175079 12.2777 0.175079C18.913 0.175079 24.1153 5.52322 24.1153 12.1205C24.1153 18.7178 18.7474 23.9342 12.3405 23.9342ZM12.4368 6.03673C9.20791 5.86848 6.68817 8.0948 6.13253 11.5794C5.6724 14.465 6.48821 17.9812 7.18602 18.1582C7.51488 18.2416 8.35763 17.564 8.87711 17.0475C9.73154 17.5981 10.712 18.0245 11.8019 18.0813C15.1168 18.254 18.0544 15.6761 18.228 12.382C18.4016 9.08792 15.7517 6.20946 12.4368 6.03673Z" fill="currentColor"></path></svg></span>Написать</a>
+  </div>
+
+  <button class="to-top" id="to-top" type="button" aria-label="Вернуться в начало страницы">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <!-- Карточка товара -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__window">
+      <button class="modal__close" type="button" data-close aria-label="Закрыть">×</button>
+      <div class="modal__scroll">
+      <div class="modal__gallery">
+        <div class="modal__slider" id="modal-slider">
+          <div class="modal__track" id="modal-track"></div>
+          <div class="modal__dots" id="modal-dots"></div>
+        </div>
+        <div class="modal__thumbs" id="modal-thumbs"></div>
+      </div>
+      <div class="modal__info">
+        <p class="modal__latin" id="modal-latin"></p>
+        <h3 class="modal__title" id="modal-title"></h3>
+        <p class="modal__price" id="modal-price"></p>
+        <p class="modal__desc" id="modal-desc"></p>
+        <dl class="modal__traits" id="modal-traits"></dl>
+        <div class="modal__cta-row">
+          <button class="btn btn--primary btn--big" id="modal-add" type="button">В корзину</button>
+        </div>
+        <p class="modal__hint">Остались вопросы — позвоните, поможем с выбором.</p>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Корзина: список → форма заказа → готово -->
+  <div class="modal" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="cart__window">
+      <button class="modal__close" type="button" data-close aria-label="Закрыть корзину">×</button>
+      <div class="modal__scroll cart__scroll">
+
+      <div id="cart-step-list">
+        <h3 class="cart__title" id="cart-title">Ваша корзина</h3>
+        <div id="cart-items"></div>
+        <p class="cart__total" id="cart-total"></p>
+        <button class="btn btn--primary btn--big cart__submit" id="cart-checkout" type="button">Сформировать заказ</button>
+        <p class="cart__hint">Корзина хранится на этом устройстве — можно собрать заказ и вернуться позже.</p>
+      </div>
+
+      <div id="cart-step-form" hidden>
+        <h3 class="cart__title">Ваш заказ</h3>
+        <p class="cart__hint">Оставьте имя и телефон — мы свяжемся с вами и подтвердим наличие.</p>
+        <label class="field">
+          <span class="field__label">Имя</span>
+          <input class="field__input" id="order-name" type="text" autocomplete="name" placeholder="Например, Анна">
+        </label>
+        <label class="field">
+          <span class="field__label">Телефон</span>
+          <input class="field__input" id="order-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__">
+        </label>
+        <p class="field__error" id="order-error" role="alert"></p>
+        <button class="btn btn--primary btn--big cart__submit" id="order-send" type="button">Отправить заказ</button>
+        <button class="btn btn--ghost cart__back" id="order-back" type="button">Вернуться к корзине</button>
+      </div>
+
+      <div id="cart-step-done">
+        <h3 class="cart__title">Заказ готов к отправке</h3>
+        <p class="cart__hint">Нажмите «Скопировать текст заказа» — и отправьте его Карлуку в MAX. Можно просто продиктовать заказ по телефону.</p>
+        <pre class="cart__preview" id="order-preview"></pre>
+        <div class="cart__send-row">
+          <button class="btn btn--primary btn--big" id="order-copy" type="button">Скопировать текст заказа</button>
+          <a class="btn btn--big cart__max is-disabled" id="order-max" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true">Отправить в MAX</a>        </div>
+        <p class="cart__hint cart__hint--ok" id="copy-ok" hidden>Текст скопирован — вставьте его в чат в MAX.</p>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="data/catalog.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
