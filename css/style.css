@@ -220,6 +220,7 @@ html.theme-dark .theme-btn .icon-sun { display: block; }
   font-size: 15px; font-weight: 700;
   border: 2px solid var(--paper-card);
 }
+.cart-btn__count[hidden] { display: none; }
 
 /* ---------- Обещание питомника (первый экран) ---------- */
 /* По Ковальски: типографика и контраст вместо рамок и коробок.
@@ -383,6 +384,188 @@ html.theme-dark .theme-btn .icon-sun { display: block; }
   transition: background-color .15s ease, color .15s ease;
 }
 .view-switch button.is-active { background: var(--forest); color: var(--paper-card); }
+
+/* Иконка фильтра по категориям (на телефоне заменяет вкладки) */
+.filter-btn {
+  display: none; flex: none;
+  position: relative;
+  width: 50px; height: 46px;
+  align-items: center; justify-content: center;
+  border: 2px solid var(--forest);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--forest);
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.filter-btn:hover { background: rgba(30, 50, 38, .08); }
+.filter-btn__count {
+  position: absolute; top: -8px; right: -8px;
+  min-width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--graffiti-pink);
+  color: #fff;
+  font-size: 13px; font-weight: 700;
+  border: 2px solid var(--paper-card);
+}
+.filter-btn__count[hidden] { display: none; }
+
+/* ---------- Шторка фильтра: стекло в стиле iOS ---------- */
+.filter-sheet { position: fixed; inset: 0; z-index: 120; }
+.filter-sheet[hidden] { display: none; }
+.filter-sheet__backdrop {
+  position: absolute; inset: 0;
+  background: rgba(19, 33, 26, .45);
+  opacity: 0;
+  transition: opacity .28s ease;
+}
+.filter-sheet.show .filter-sheet__backdrop { opacity: 1; }
+.filter-sheet__panel {
+  position: absolute; left: 10px; right: 10px; bottom: 10px;
+  border-radius: 24px;
+  padding: 10px 18px 18px;
+  background: rgba(249, 250, 241, .78);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  backdrop-filter: blur(24px) saturate(1.8);
+  box-shadow: 0 20px 60px rgba(19, 33, 26, .35), inset 0 0 0 1px rgba(255, 255, 255, .5);
+  transform: translateY(104%);
+  transition: transform .34s cubic-bezier(.32, .72, 0, 1);
+}
+.filter-sheet.show .filter-sheet__panel { transform: translateY(0); }
+.filter-sheet__grab {
+  width: 44px; height: 5px;
+  border-radius: 999px;
+  background: rgba(30, 50, 38, .25);
+  margin: 6px auto 12px;
+}
+.filter-sheet__title {
+  font-size: 20px; font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 10px;
+  text-align: center;
+}
+.filter-sheet__list { display: flex; flex-direction: column; margin-bottom: 14px; }
+.filter-row {
+  display: flex; align-items: center; gap: 12px;
+  min-height: 54px;
+  padding: 6px 4px;
+  border: none; background: none;
+  font-family: var(--font-body);
+  font-size: 18px; font-weight: 500;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  border-radius: 14px;
+  transition: background-color .15s ease;
+}
+.filter-row:active { background: rgba(30, 50, 38, .07); }
+.filter-row + .filter-row { border-top: 1px solid rgba(30, 50, 38, .1); }
+.filter-row__name { flex: 1; }
+.filter-row__count { font-size: 15px; color: var(--moss); }
+/* Чекбокс в стиле iOS: круглый, лаймовая заливка, галочка */
+.filter-row__check {
+  width: 27px; height: 27px; flex: none;
+  border-radius: 50%;
+  border: 2px solid rgba(30, 50, 38, .35);
+  display: flex; align-items: center; justify-content: center;
+  color: transparent;
+  transition: background-color .2s ease, border-color .2s ease, transform .2s cubic-bezier(.23, 1, .32, 1);
+}
+.filter-row.is-on .filter-row__check {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: #1c2a18;
+  transform: scale(1.05);
+}
+.filter-sheet__done { width: 100%; }
+html.theme-dark .filter-sheet__panel {
+  background: rgba(38, 41, 45, .78);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .5), inset 0 0 0 1px rgba(214, 218, 221, .14);
+}
+html.theme-dark .filter-sheet__grab { background: rgba(214, 218, 221, .3); }
+html.theme-dark .filter-row + .filter-row { border-top-color: rgba(214, 218, 221, .14); }
+html.theme-dark .filter-row:active { background: rgba(214, 218, 221, .08); }
+html.theme-dark .filter-row__check { border-color: rgba(214, 218, 221, .4); }
+
+/* ---------- Хиты сезона ---------- */
+.featured { padding: 8px 0 4px; }
+.featured__head { margin-bottom: 18px; }
+.featured__row {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 4px 4px 14px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.featured__row::-webkit-scrollbar { display: none; }
+.featured-card {
+  flex: none;
+  width: 208px;
+  scroll-snap-align: start;
+  background: var(--paper-card);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(19, 33, 26, .1);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  animation: card-in .4s cubic-bezier(.23, 1, .32, 1) backwards;
+}
+.featured-card__photo {
+  display: block; width: 100%;
+  border: none; background: none; padding: 0;
+  cursor: pointer;
+}
+.featured-card__photo img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+.featured-card__body { padding: 10px 12px 12px; display: flex; flex-direction: column; flex: 1; }
+.featured-card__name {
+  font-weight: 700; font-size: 15.5px; line-height: 1.3;
+  color: var(--forest);
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.featured-card__row {
+  margin-top: auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.featured-card__price {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 17px; color: var(--ink);
+  white-space: nowrap;
+}
+.featured-card__add {
+  width: 40px; height: 40px; flex: none;
+  display: flex; align-items: center; justify-content: center;
+  border: none; border-radius: 50%;
+  background: var(--graffiti-pink);
+  color: #fff;
+  cursor: pointer;
+  transition: transform .15s ease, background-color .2s ease;
+}
+.featured-card__add:active { transform: scale(.92); }
+.featured-card__add.is-added { background: #3f7d51; }
+@media (max-width: 700px) {
+  .featured-card { width: 164px; }
+  .featured-card__name { font-size: 14.5px; }
+}
+
+/* ---------- «Поделиться» в модалке товара ---------- */
+.modal__cta-row { gap: 10px; }
+.modal__share { min-width: 0; flex: none; padding: 14px 18px; display: inline-flex; align-items: center; gap: 8px; }
+.modal__share svg { flex: none; }
+
+/* Скрыть свою кнопку «наверх», если браузер (Яндекс) показывает свою */
+html.hide-totop .to-top { display: none !important; }
 
 .cards {
   display: grid;
@@ -679,6 +862,10 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
 @keyframes vt-reveal {
   from { clip-path: circle(0 at var(--tx, 90%) var(--ty, 40px)); }
   to   { clip-path: circle(var(--tr, 140vmax) at var(--tx, 90%) var(--ty, 40px)); }
+}
+/* На телефоне раскрытие чуть медленнее — смена темы читается спокойнее */
+@media (max-width: 700px) {
+  ::view-transition-new(root) { animation-duration: .78s; }
 }
 
 /* ---------- Как купить ---------- */
@@ -1131,6 +1318,10 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
    ============================================================ */
 @media (max-width: 700px) {
   .view-switch { display: flex; }
+  /* Вкладки категорий на телефоне заменяет иконка фильтра */
+  .catalog__bar .tabs { display: none; }
+  .catalog__bar { justify-content: flex-end; gap: 10px; }
+  .filter-btn { display: flex; }
   .cards--compact { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .cards--compact .card { border-radius: 12px; }
   .cards--compact .card__photo-wrap { aspect-ratio: 3 / 4; }

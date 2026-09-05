@@ -150,10 +150,18 @@
     badge.textContent = n > 99 ? "99+" : String(n);
   }
 
-  /* ================= Вкладки категорий ================= */
-
-  var activeCategory = "Все";
+  /* ================= Категории: вкладки (ПК) и фильтр-шторка (телефон) =================
+     activeCats: [] = «Все»; одна категория — как вкладка; несколько —
+     мультивыбор чекбоксами в стеклянной шторке фильтра. */
+  var activeCats = [];
   var tabsRoot = document.getElementById("tabs");
+
+  function applyCategoryFilter() {
+    renderTabs();
+    renderCards();
+    renderFilterPanel();
+    updateFilterBadge();
+  }
 
   function renderTabs() {
     tabsRoot.innerHTML = "";
@@ -164,9 +172,10 @@
     list.forEach(function (name) {
       var btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "tab" + (name === activeCategory ? " is-active" : "");
+      var on = name === "Все" ? activeCats.length !== 1 : (activeCats.length === 1 && activeCats[0] === name);
+      btn.className = "tab" + (on ? " is-active" : "");
       btn.setAttribute("role", "tab");
-      btn.setAttribute("aria-selected", name === activeCategory ? "true" : "false");
+      btn.setAttribute("aria-selected", on ? "true" : "false");
       var label = document.createElement("span");
       label.textContent = name;
       btn.appendChild(label);
@@ -175,9 +184,8 @@
       count.textContent = name === "Все" ? products.length : present[name];
       btn.appendChild(count);
       btn.addEventListener("click", function () {
-        activeCategory = name;
-        renderTabs();
-        renderCards();
+        activeCats = name === "Все" ? [] : [name];
+        applyCategoryFilter();
       });
       tabsRoot.appendChild(btn);
     });
@@ -220,10 +228,78 @@
   }
   applyViewMode();
 
+  /* ================= Фильтр по категориям: стеклянная шторка (телефон) ================= */
+  var filterSheet = document.getElementById("filter-sheet");
+  var filterList = document.getElementById("filter-list");
+  var filterBtn = document.getElementById("filter-btn");
+  var filterCount = document.getElementById("filter-count");
+  var CHECK_SVG = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.5 10 18 19.5 7"/></svg>';
+
+  function renderFilterPanel() {
+    if (!filterList) return;
+    var counts = {};
+    products.forEach(function (p) { counts[p.category] = (counts[p.category] || 0) + 1; });
+    var rows = [{ name: "Все растения", count: products.length, on: activeCats.length === 0 }];
+    categories.forEach(function (c) {
+      if (counts[c]) rows.push({ name: c, count: counts[c], on: activeCats.indexOf(c) !== -1 });
+    });
+    filterList.innerHTML = "";
+    rows.forEach(function (r) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "filter-row" + (r.on ? " is-on" : "");
+      btn.innerHTML = '<span class="filter-row__name"></span><span class="filter-row__count"></span>' +
+        '<span class="filter-row__check">' + CHECK_SVG + '</span>';
+      btn.querySelector(".filter-row__name").textContent = r.name;
+      btn.querySelector(".filter-row__count").textContent = r.count;
+      btn.addEventListener("click", function () {
+        if (r.name === "Все растения") {
+          activeCats = [];
+        } else {
+          var i = activeCats.indexOf(r.name);
+          if (i === -1) activeCats.push(r.name); else activeCats.splice(i, 1);
+        }
+        renderCards();
+        renderTabs();
+        renderFilterPanel();
+        updateFilterBadge();
+      });
+      filterList.appendChild(btn);
+    });
+  }
+
+  function updateFilterBadge() {
+    if (!filterCount) return;
+    filterCount.hidden = activeCats.length === 0;
+    filterCount.textContent = activeCats.length;
+  }
+
+  function openFilter() {
+    renderFilterPanel();
+    filterSheet.hidden = false;
+    /* два кадра — чтобы стартовал transition, а не «мгновенно показалось» */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { filterSheet.classList.add("show"); });
+    });
+  }
+
+  function closeFilter() {
+    filterSheet.classList.remove("show");
+    setTimeout(function () { filterSheet.hidden = true; }, 380);
+  }
+
+  if (filterBtn) filterBtn.addEventListener("click", openFilter);
+  if (filterSheet) {
+    filterSheet.addEventListener("click", function (e) {
+      if (e.target.closest("[data-filter-close]")) closeFilter();
+    });
+    document.getElementById("filter-done").addEventListener("click", closeFilter);
+  }
+
   function renderCards() {
     cardsRoot.innerHTML = "";
     var visible = products.filter(function (p) {
-      return activeCategory === "Все" || p.category === activeCategory;
+      return activeCats.length === 0 || activeCats.indexOf(p.category) !== -1;
     });
 
     visible.forEach(function (product, index) {
@@ -469,6 +545,8 @@
   var lastFocused = null;
   var currentSlide = 0;
   var slideCount = 0;
+  var shareProduct = null;
+  var shareTxt = document.querySelector(".modal__share-txt");
 
   function renderSlider(product) {
     modalTrack.innerHTML = "";
@@ -577,6 +655,7 @@
 
   function openModal(product) {
     lastFocused = document.activeElement;
+    shareProduct = product;
 
     modalLatin.textContent = product.latin;
     modalTitle.textContent = product.name;
@@ -639,6 +718,24 @@
     if (event.key === "Escape") {
       if (!modal.hidden) closeModal(modal);
       if (!cartModal.hidden) closeModal(cartModal);
+    }
+  });
+
+  /* ================= Поделиться карточкой товара =================
+     Телефон: системная шторка (MAX, WhatsApp, SMS…).
+     ПК/старые браузеры: ссылка копируется в буфер. */
+  document.getElementById("modal-share").addEventListener("click", function () {
+    if (!shareProduct) return;
+    var price = fmtPrice(shareProduct);
+    var url = location.origin + location.pathname;
+    var text = shareProduct.name + " — " + price + ". Питомник «Чудный сад»";
+    if (navigator.share) {
+      navigator.share({ title: "Чудный сад", text: text, url: url }).catch(function () {});
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text + " · " + url).then(function () {
+        shareTxt.textContent = "Скопировано ✓";
+        setTimeout(function () { shareTxt.textContent = "Поделиться"; }, 1600);
+      });
     }
   });
 
@@ -1154,8 +1251,99 @@ maxBtn.textContent = "Отправить в MAX";
 
   document.getElementById("year").textContent = new Date().getFullYear();
 
+  /* ================= Хиты сезона: горизонтальная лента ================= */
+  function renderFeatured() {
+    var row = document.getElementById("featured-row");
+    var sec = document.getElementById("featured");
+    if (!row || !sec) return;
+    var seen = {};
+    var hits = products.filter(function (p) {
+      if (!p.featured || seen[p.id]) return false;
+      seen[p.id] = 1;
+      return true;
+    });
+    if (!hits.length) { sec.style.display = "none"; return; }
+    hits.forEach(function (p, i) {
+      var card = document.createElement("article");
+      card.className = "featured-card";
+      card.style.animationDelay = (Math.min(i, 8) * 60) + "ms";
+
+      var photo = document.createElement("button");
+      photo.type = "button";
+      photo.className = "featured-card__photo";
+      photo.setAttribute("aria-label", "Подробнее о: " + p.name);
+      var img = document.createElement("img");
+      img.src = "assets/img/" + p.photos[0].file;
+      img.alt = p.photos[0].alt;
+      img.loading = "lazy";
+      img.decoding = "async";
+      photo.appendChild(img);
+      photo.addEventListener("click", function () { openModal(p); });
+
+      var body = document.createElement("div");
+      body.className = "featured-card__body";
+      var name = document.createElement("p");
+      name.className = "featured-card__name";
+      name.textContent = p.name;
+
+      var rowEl = document.createElement("div");
+      rowEl.className = "featured-card__row";
+      var price = document.createElement("span");
+      price.className = "featured-card__price";
+      price.textContent = fmtPrice(p);
+
+      var add = document.createElement("button");
+      add.type = "button";
+      add.className = "featured-card__add";
+      if (stockInfo(p).disabled) {
+        add.remove();
+      } else {
+        add.innerHTML = CART_ICON_SVG;
+        add.setAttribute("aria-label", "В корзину: " + p.name);
+        add.addEventListener("click", function () {
+          addToCart(p);
+          add.innerHTML = "✓";
+          add.classList.add("is-added");
+          setTimeout(function () {
+            add.innerHTML = CART_ICON_SVG;
+            add.classList.remove("is-added");
+          }, 900);
+        });
+      }
+
+      rowEl.appendChild(price);
+      rowEl.appendChild(add);
+      body.appendChild(name);
+      body.appendChild(rowEl);
+      card.appendChild(photo);
+      card.appendChild(body);
+      row.appendChild(card);
+    });
+  }
+
+  /* ================= PWA: работа сайта как приложения =================
+     Chrome на Android сам предложит «Добавить на главный экран»
+     (manifest + service worker + HTTPS). На iPhone — «На экран “Домой”»
+     в меню Safari. Регистрация не мешает работе без интернета. */
+  if ("serviceWorker" in navigator &&
+      (location.protocol === "https:" || location.hostname === "localhost")) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+  }
+
+  /* В Яндекс.Браузере на телефоне есть своя кнопка «наверх» — свою прячем */
+  if (/YaBrowser|Yowser/i.test(navigator.userAgent) &&
+      window.matchMedia("(max-width: 700px)").matches) {
+    document.documentElement.classList.add("hide-totop");
+  }
+
   renderTabs();
   renderCards();
+  applyViewMode();
+  renderFeatured();
   refreshAllAddButtons();
   updateCartBadge();
+  renderFilterPanel();
+  updateFilterBadge();
 })();
