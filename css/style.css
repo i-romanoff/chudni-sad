@@ -561,7 +561,18 @@ html.theme-dark .filter-row__check { border-color: rgba(214, 218, 221, .4); }
 
 /* ---------- «Поделиться» в модалке товара ---------- */
 .modal__cta-row { gap: 10px; }
-.modal__share { min-width: 0; flex: none; padding: 14px 18px; display: inline-flex; align-items: center; gap: 8px; }
+.modal__cta-row .modal__share {
+  min-width: 0; flex: none;
+  padding: 14px 18px;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+/* На телефоне «Поделиться» — компактная иконка: две полноразмерные
+   кнопки с текстом не помещаются в 360–412px и распирают модалку */
+@media (max-width: 700px) {
+  .modal__cta-row .btn--primary { min-width: 0; }
+  .modal__cta-row .modal__share { width: 54px; padding: 14px 0; justify-content: center; }
+  .modal__cta-row .modal__share .modal__share-txt { display: none; }
+}
 .modal__share svg { flex: none; }
 
 /* Скрыть свою кнопку «наверх», если браузер (Яндекс) показывает свою */
@@ -1092,8 +1103,10 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
 .modal__traits dt { color: var(--moss); font-weight: 700; }
 .modal__traits dd { color: var(--ink); }
 .modal__cta-row { display: flex; justify-content: center; }
-.modal__cta-row .btn { position: relative; min-width: 240px; }
-.modal__cta-row .btn { flex: 1; }
+.modal__cta-row .btn { position: relative; min-width: 0; flex: 1; }
+/* Минимальную ширину держит только главная кнопка: вторая («Поделиться»)
+   компактная, иначе ряд распирает сетку модалки на мобильном */
+.modal__cta-row .btn--primary { min-width: 240px; }
 .modal__hint { margin-top: 12px; font-size: 16px; color: var(--moss); text-align: center; }
 
 /* ---------- Корзина ---------- */
