@@ -333,6 +333,8 @@ html.theme-dark .theme-btn .icon-sun { display: block; }
   line-height: 1.1;
 }
 .tag--hero { right: 18px; bottom: 22px; z-index: 2; pointer-events: none; }
+/* Во время пинч-зума бирка мешает разглядывать фото — прячем */
+.hero__slider.is-zooming .tag--hero { opacity: 0; transition: opacity .25s ease; }
 
 /* ---------- Каталог ---------- */
 .catalog { padding: 26px 0 80px; }
@@ -412,7 +414,54 @@ html.theme-dark .theme-btn .icon-sun { display: block; }
 }
 .filter-btn__count[hidden] { display: none; }
 
-/* ---------- Шторка фильтра: стекло в стиле iOS ---------- */
+/* ---------- Полноэкранный просмотр фото (лайтбокс) ---------- */
+.lightbox {
+  position: fixed; inset: 0; z-index: 150;
+  background: rgba(12, 15, 12, .96);
+}
+.lightbox[hidden] { display: none; }
+.lightbox__backdrop { position: absolute; inset: 0; }
+.lightbox__close {
+  position: absolute; top: 14px; right: 14px; z-index: 3;
+  width: 46px; height: 46px;
+  border-radius: 50%; border: none;
+  background: rgba(255, 255, 255, .14);
+  color: #fff;
+  font-size: 26px; line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .4);
+}
+.lightbox__stage {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  touch-action: none;   /* жесты (пинч/пан) обрабатываем сами */
+}
+.lightbox__track {
+  display: flex; height: 100%;
+  transition: transform .25s cubic-bezier(.23, 1, .32, 1);
+}
+.lightbox__track img {
+  flex: none;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform .2s ease-out;   /* программный зум плавный; при жесте выключаем */
+}
+.lightbox__dots {
+  position: absolute; bottom: 20px; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 8px;
+  pointer-events: none;
+}
+.lightbox__dot {
+  width: 9px; height: 9px;
+  border-radius: 50%; border: none; padding: 0;
+  background: rgba(255, 255, 255, .38);
+  cursor: pointer;
+}
+.lightbox__dot.is-active { background: var(--lime); }
+
+/* ---------- Фильтр по категориям: стекло в стиле iOS ---------- */
 .filter-sheet { position: fixed; inset: 0; z-index: 120; }
 .filter-sheet[hidden] { display: none; }
 .filter-sheet__backdrop {

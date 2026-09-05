@@ -251,6 +251,16 @@
     </div>
   </div>
 
+  <!-- Полноэкранный просмотр фото (как в маркетплейсах): пинч-зум + листание -->
+  <div class="lightbox" id="lightbox" hidden>
+    <div class="lightbox__backdrop" data-lb-close></div>
+    <button class="lightbox__close" type="button" data-lb-close aria-label="Закрыть просмотр">×</button>
+    <div class="lightbox__stage" id="lb-stage">
+      <div class="lightbox__track" id="lb-track"></div>
+    </div>
+    <div class="lightbox__dots" id="lb-dots"></div>
+  </div>
+
   <!-- Фильтр по категориям (телефон): стеклянная шторка в стиле iOS -->
   <div class="filter-sheet" id="filter-sheet" hidden>
     <div class="filter-sheet__backdrop" data-filter-close></div>

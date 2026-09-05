@@ -546,6 +546,7 @@
   var currentSlide = 0;
   var slideCount = 0;
   var shareProduct = null;
+  var modalProduct = null;
   var shareTxt = document.querySelector(".modal__share-txt");
 
   function renderSlider(product) {
@@ -653,9 +654,201 @@
     });
   })();
 
+  /* ================= Лайтбокс: фото на весь экран, как в маркетплейсах =================
+     Открытие — тап по большому фото в карточке товара. Пинч — зум 1–4×,
+     палец — перетаскивание, свайп (при 1×) — листание, тап/×/Esc — закрыть.
+     На ПК: колесо — зум, двойной клик — 2×, перетаскивание мышью. */
+  var lb = document.getElementById("lightbox");
+  var lbTrack = document.getElementById("lb-track");
+  var lbStage = document.getElementById("lb-stage");
+  var lbDots = document.getElementById("lb-dots");
+  var lbImgs = [], lbIdx = 0, lbScale = 1, lbPanX = 0, lbPanY = 0;
+
+  function lbActive() { return lbImgs[lbIdx]; }
+
+  function lbApply() {
+    var img = lbActive();
+    if (img) img.style.transform = "translate(" + lbPanX + "px," + lbPanY + "px) scale(" + lbScale + ")";
+  }
+
+  function lbClampPan() {
+    if (lbScale <= 1) { lbPanX = 0; lbPanY = 0; return; }
+    var mx = (lbScale - 1) * lbStage.clientWidth / 2;
+    var my = (lbScale - 1) * lbStage.clientHeight / 2;
+    lbPanX = Math.max(-mx, Math.min(mx, lbPanX));
+    lbPanY = Math.max(-my, Math.min(my, lbPanY));
+  }
+
+  function lbZoomTo(s, keepPan) {
+    lbScale = Math.max(1, Math.min(4, s));
+    if (!keepPan) { lbPanX = 0; lbPanY = 0; }
+    lbClampPan();
+    lbApply();
+  }
+
+  function lbShow(i) {
+    lbIdx = Math.max(0, Math.min(lbImgs.length - 1, i));
+    lbTrack.style.transform = "translateX(-" + (lbIdx * 100) + "%)";
+    lbZoomTo(1);
+    lbDots.querySelectorAll(".lightbox__dot").forEach(function (d, di) {
+      d.classList.toggle("is-active", di === lbIdx);
+    });
+  }
+
+  function lbOpen(photos, index) {
+    lbTrack.innerHTML = "";
+    lbDots.innerHTML = "";
+    lbImgs = [];
+    photos.forEach(function (ph, i) {
+      var img = document.createElement("img");
+      img.src = "assets/img/" + ph.file;
+      img.alt = ph.alt;
+      img.draggable = false;
+      lbTrack.appendChild(img);
+      lbImgs.push(img);
+      var dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "lightbox__dot" + (i === index ? " is-active" : "");
+      dot.setAttribute("aria-label", "Фото " + (i + 1) + " из " + photos.length);
+      lbDots.appendChild(dot);
+    });
+    lb.hidden = false;
+    document.body.style.overflow = "hidden";
+    lbShow(index || 0);
+    lb.querySelector(".lightbox__close").focus();
+  }
+
+  function lbClose() {
+    lb.hidden = true;
+    document.body.style.overflow = "hidden";   /* модалка товара осталась открыта */
+    lbZoomTo(1);
+  }
+
+  /* Гашение синтетического клика после жеста (пинч/свайп не должны
+     закрывать просмотр «случайным» кликом, который шлёт браузер) */
+  var lbClickSuppress = false;
+  function lbSuppressClick() {
+    lbClickSuppress = true;
+    setTimeout(function () { lbClickSuppress = false; }, 350);
+  }
+
+  lb.addEventListener("click", function (e) {
+    if (lbClickSuppress) return;
+    /* × и фон закрывают; тап по самой фотографии при 1x — тоже
+       (как в маркетплейсах). При зуме тап нужен для пана — не закрываем. */
+    if (e.target.closest("[data-lb-close]") || (e.target.tagName === "IMG" && lbScale === 1)) lbClose();
+  });
+
+  /* ---- жесты: пинч / пан / свайп (тач) ----
+     Список активных пальцев берём из e.touches — браузер сам его ведёт,
+     ручной учёт по identifier ломается на multi-touch в CDP/реальных
+     устройствах (второй палец приходит отдельным touchstart). */
+  (function () {
+    var pinch0 = null;      /* {d0, scale} */
+    var pan0 = null;        /* {x, y} точка старта пана */
+    var swipe0 = null;      /* {x} старт свайпа при 1x */
+
+    function dist(a, b) { return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY); }
+
+    lbStage.addEventListener("touchstart", function (e) {
+      if (e.touches.length >= 2) {
+        pinch0 = { d0: dist(e.touches[0], e.touches[1]) || 1, scale: lbScale };
+        swipe0 = pan0 = null;
+        lbActive().style.transition = "none";
+      } else if (lbScale > 1) {
+        pan0 = { x: e.touches[0].clientX - lbPanX, y: e.touches[0].clientY - lbPanY };
+        lbActive().style.transition = "none";
+      } else {
+        swipe0 = { x: e.touches[0].clientX };
+      }
+    }, { passive: true });
+
+    lbStage.addEventListener("touchmove", function (e) {
+      if (e.touches.length >= 2 && pinch0) {
+        e.preventDefault();
+        var d = dist(e.touches[0], e.touches[1]);
+        lbScale = Math.max(1, Math.min(4, pinch0.scale * d / pinch0.d0));
+        if (lbScale === 1) { lbPanX = 0; lbPanY = 0; }
+        lbApply();
+      } else if (e.touches.length === 1 && pan0 && lbScale > 1) {
+        e.preventDefault();
+        lbPanX = e.touches[0].clientX - pan0.x;
+        lbPanY = e.touches[0].clientY - pan0.y;
+        lbClampPan();
+        lbApply();
+      } else if (e.touches.length === 1 && swipe0 && lbScale === 1 && lbImgs.length > 1) {
+        var dx = e.touches[0].clientX - swipe0.x;
+        lbTrack.style.transition = "none";
+        lbTrack.style.transform = "translateX(calc(-" + (lbIdx * 100) + "% + " + dx + "px))";
+      }
+    }, { passive: false });
+
+    function finish(e) {
+      if (swipe0 && lbScale === 1 && lbImgs.length > 1) {
+        lbTrack.style.transition = "";
+        var dx = (e.changedTouches[0].clientX - swipe0.x);
+        if (dx < -50) lbShow(lbIdx + 1);
+        else if (dx > 50) lbShow(lbIdx - 1);
+        else lbShow(lbIdx);
+        lbSuppressClick();
+      }
+      if (pinch0) {
+        lbActive().style.transition = "";
+        lbClampPan();
+        if (lbScale <= 1.04) lbZoomTo(1);
+        else lbApply();
+        lbSuppressClick();
+      }
+      pan0 = pinch0 = swipe0 = null;
+    }
+    lbStage.addEventListener("touchend", finish);
+    lbStage.addEventListener("touchcancel", finish);
+
+    /* ПК: колесо — зум, двойной клик — 2x, перетаскивание мышью */
+    lbStage.addEventListener("wheel", function (e) {
+      e.preventDefault();
+      lbActive().style.transition = "";
+      lbZoomTo(lbScale * (e.deltaY < 0 ? 1.15 : 0.87), true);
+    }, { passive: false });
+    lbStage.addEventListener("dblclick", function () {
+      if (lbScale > 1) lbZoomTo(1);
+      else lbZoomTo(2.5);
+    });
+    var mouse = null;
+    lbStage.addEventListener("mousedown", function (e) {
+      if (lbScale > 1) { mouse = { x: e.clientX - lbPanX, y: e.clientY - lbPanY }; lbActive().style.transition = "none"; e.preventDefault(); }
+    });
+    window.addEventListener("mousemove", function (e) {
+      if (!mouse) return;
+      lbPanX = e.clientX - mouse.x;
+      lbPanY = e.clientY - mouse.y;
+      lbClampPan();
+      lbApply();
+    });
+    window.addEventListener("mouseup", function () {
+      if (mouse) { lbActive().style.transition = ""; mouse = null; }
+    });
+  })();
+
+  /* Тап по большому фото в карточке товара — открыть просмотр с текущего кадра.
+     Свайп-перелистывание слайдера просмотр не открывает. */
+  (function () {
+    var sliderDragged = false;
+    modalSlider.addEventListener("touchmove", function () { sliderDragged = true; }, { passive: true });
+    modalSlider.addEventListener("touchend", function () {
+      setTimeout(function () { sliderDragged = false; }, 120);
+    });
+    modalSlider.addEventListener("click", function (e) {
+      if (sliderDragged || !modalProduct) return;
+      if (e.target.closest(".modal__dot")) return;   /* точка = листание, не просмотр */
+      lbOpen(modalProduct.photos, currentSlide);
+    });
+  })();
+
   function openModal(product) {
     lastFocused = document.activeElement;
     shareProduct = product;
+    modalProduct = product;
 
     modalLatin.textContent = product.latin;
     modalTitle.textContent = product.name;
@@ -716,8 +909,10 @@
   });
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
+      /* Esc закрывает ВЕРХНИЙ слой: лайтбокс → модалка товара → корзина */
+      if (!lb.hidden) { lbClose(); return; }
       if (!modal.hidden) closeModal(modal);
-      if (!cartModal.hidden) closeModal(cartModal);
+      else if (!cartModal.hidden) closeModal(cartModal);
     }
   });
 
@@ -1093,13 +1288,38 @@ maxBtn.textContent = "Отправить в MAX";
       hswiping = false;
     }
 
+    /* Пинч-зум главного фото: два пальца — увеличение до 3x для
+       детального просмотра, отпускание — плавный возврат кадра.
+       Вертикальный скролл страницы не мешает (touch-action: pan-y). */
+    var hp = null;   /* {d0} стартовое расстояние между пальцами */
+
     heroSlider.addEventListener("touchstart", function (e) {
-      heroTapped = heroProduct;            /* кадр зафиксирован на старте касания */
-      hx = e.touches[0].clientX;
-      hswiping = false;
+      if (e.touches.length >= 2) {
+        var a = e.touches[0], b = e.touches[1];
+        hp = { d0: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) || 1 };
+        hx = null;   /* пинч отменяет свайп */
+        if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
+        heroImgs[heroIdx].style.transition = "none";
+        heroSlider.classList.add("is-zooming");   /* бирку на фото — убрать */
+      } else {
+        heroTapped = heroProduct;            /* кадр зафиксирован на старте касания */
+        hx = e.touches[0].clientX;
+        hswiping = false;
+      }
     }, { passive: true });
 
     heroSlider.addEventListener("touchmove", function (e) {
+      if (hp && e.touches.length >= 2) {
+        var a = e.touches[0], b = e.touches[1];
+        var d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+        var s = Math.max(1, Math.min(3, d / hp.d0));
+        var rect = heroSlider.getBoundingClientRect();
+        var cx = (a.clientX + b.clientX) / 2 - rect.left - rect.width / 2;
+        var cy = (a.clientY + b.clientY) / 2 - rect.top - rect.height / 2;
+        heroImgs[heroIdx].style.transform =
+          "translate(" + (cx * 0.6) + "px," + (cy * 0.6) + "px) scale(" + s + ")";
+        return;
+      }
       if (hx === null || pool.length < 2) return;
       var dx = e.touches[0].clientX - hx;
       var dy = e.touches[0].clientY - heroSlider.getBoundingClientRect().top;
@@ -1113,6 +1333,20 @@ maxBtn.textContent = "Отправить в MAX";
     }, { passive: true });
 
     heroSlider.addEventListener("touchend", function (e) {
+      if (hp) {
+        /* конец пинча: плавно возвращаем кадр на место */
+        var cur = heroImgs[heroIdx];
+        cur.style.transition = "transform .35s cubic-bezier(.23, 1, .32, 1)";
+        cur.style.transform = "";
+        setTimeout(function () { cur.style.transition = ""; }, 400);
+        heroSlider.classList.remove("is-zooming");
+        startHeroTimer();
+        hp = null;
+        hx = null;
+        heroSuppress = true;   /* зум не должен открыть карточку случайным тапом */
+        setTimeout(function () { heroSuppress = false; }, 250);
+        return;
+      }
       if (hx === null) return;
       heroGestureEnd(e.changedTouches[0].clientX - hx);
     });
