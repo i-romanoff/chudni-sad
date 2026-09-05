@@ -907,6 +907,17 @@
 
   function closeModal(el) {
     el.hidden = true;
+    if (el === modal && openedFromCart) {
+      /* карточка была открыта из корзины — возвращаем в корзину
+         и перерисовываем её (изменения из карточки уже в localStorage) */
+      openedFromCart = false;
+      modal.classList.remove("open-over-cart");
+      renderCart();
+      cartModal.hidden = false;
+      document.body.style.overflow = "hidden";
+      cartModal.querySelector(".modal__close").focus();
+      return;
+    }
     document.body.style.overflow = "";
     if (lastFocused) lastFocused.focus();
   }
@@ -965,6 +976,23 @@
     cartModal.querySelector(".modal__close").focus();
   }
 
+  function closeCart() {
+    cartModal.hidden = true;
+    document.body.style.overflow = "";
+    if (lastFocused) lastFocused.focus();
+  }
+
+  /* Карточка товара поверх корзины: флажок заставляет closeModal
+     вернуть пользователя в корзину и перерисовать её содержимое —
+     изменения из карточки (добавил/убрал) попадут в список. */
+  var openedFromCart = false;
+
+  function openCartProduct(product) {
+    openedFromCart = true;
+    modal.classList.add("open-over-cart");   /* карточка поверх корзины */
+    openModal(product);
+  }
+
   function showCartStep(step) {
     [stepList, stepForm, stepDone].forEach(function (s) { s.hidden = true; });
     step.hidden = false;
@@ -994,7 +1022,8 @@
       var row = document.createElement("div");
       row.className = "cart-item";
 
-      /* Фото и название кликабельны: открывают карточку товара */
+      /* Фото и название кликабельны: карточка товара открывается ПОВЕРХ
+         корзины, после закрытия пользователь вернётся в корзину. */
       var product = products.find(function (p) { return p.uid === item.uid; });
       var photoBtn = document.createElement("button");
       photoBtn.type = "button";
@@ -1007,8 +1036,7 @@
       photoBtn.appendChild(photo);
       if (product) {
         photoBtn.addEventListener("click", function () {
-          closeModal(cartModal);
-          openModal(product);
+          openCartProduct(product);
         });
       }
 
@@ -1021,8 +1049,7 @@
       if (product) {
         info.classList.add("cart-item__info--link");
         info.addEventListener("click", function () {
-          closeModal(cartModal);
-          openModal(product);
+          openCartProduct(product);
         });
       }
 

@@ -1044,6 +1044,8 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
   overflow-y: auto; overflow-x: hidden;   /* окно никогда не вылезает за край */
   padding: 2vh 10px;                       /* адаптивные поля со всех сторон */
 }
+/* Карточка товара, открытая из корзины, лежит ПОВЕРХ корзины */
+#modal.open-over-cart { z-index: 110; }
 .modal[hidden] { display: none; }
 .modal__backdrop {
   position: fixed; inset: 0;
