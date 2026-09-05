@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#e7f0d9">
   <title>Чудный сад — саженцы гортензий и спирей | chudni-sad.ru</title>
+  <script>
+    /* Тема до первой отрисовки: сохранённый выбор, иначе системная */
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem("chudniSadTheme"); } catch (e) {}
+      if (t !== "dark" && t !== "light") {
+        t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      if (t === "dark") document.documentElement.classList.add("theme-dark");
+    })();
+  </script>
   <meta name="description" content="Питомник «Чудный сад»: саженцы метельчатых гортензий, японских спирей, хвойных, плодовых и многолетних растений в контейнерах. Живые фото наших растений, цены, заказ через корзину в Telegram или MAX.">
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,10 +37,16 @@
         <a href="#care">Как купить</a>
         <a href="#contacts">Контакты</a>
       </nav>
-      <button class="cart-btn" id="cart-open" type="button" aria-label="Открыть корзину">
-        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.6"/><circle cx="18" cy="21" r="1.6"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L21.5 7H6"/></svg>
-        <span class="cart-btn__count" id="cart-count" hidden>0</span>
-      </button>
+      <div class="header__tools">
+        <button class="theme-btn" id="theme-toggle" type="button" aria-label="Включить тёмную тему">
+          <svg class="icon-moon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.3 4.3l1.6 1.6M18.1 18.1l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.3 19.7l1.6-1.6M18.1 5.9l1.6-1.6"/></svg>
+        </button>
+        <button class="cart-btn" id="cart-open" type="button" aria-label="Открыть корзину">
+          <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.6"/><circle cx="18" cy="21" r="1.6"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L21.5 7H6"/></svg>
+          <span class="cart-btn__count" id="cart-count" hidden>0</span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -68,7 +86,17 @@
           <h2 class="section-title">Каталог растений</h2>
           <p class="catalog__note">Цены — за саженец в контейнере. Кладите нужное в корзину, а потом отправьте заказ в MAX.</p>
         </div>
-        <div class="tabs" id="tabs" role="tablist" aria-label="Категории растений"><!-- вкладки собираются в app.js --></div>
+        <div class="catalog__bar">
+          <div class="tabs" id="tabs" role="tablist" aria-label="Категории растений"><!-- вкладки собираются в app.js --></div>
+          <div class="view-switch" id="view-switch" role="group" aria-label="Вид каталога">
+            <button type="button" data-view="comfort" aria-label="Крупные карточки" aria-pressed="false" title="Крупные карточки">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="2"/></svg>
+            </button>
+            <button type="button" data-view="compact" aria-label="Две колонки" aria-pressed="false" title="Две колонки, как в маркетплейсах">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>
+            </button>
+          </div>
+        </div>
         <div class="cards" id="cards"><!-- карточки собираются из data/catalog.js --></div>
       </div>
     </section>

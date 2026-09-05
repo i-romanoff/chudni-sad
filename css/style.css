@@ -177,6 +177,25 @@ img { display: block; max-width: 100%; }
 }
 .header__nav a:hover { color: var(--graffiti-pink); }
 
+/* Кнопки в шапке: тема + корзина */
+.header__tools { display: flex; align-items: center; gap: 10px; }
+
+.theme-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: 2.5px solid var(--forest);
+  background: transparent;
+  color: var(--forest);
+  cursor: pointer;
+  transition: background-color .18s ease, color .18s ease, transform .18s ease;
+}
+.theme-btn:hover { background: var(--forest); color: var(--paper); }
+.theme-btn:active { transform: scale(.95); }
+.theme-btn .icon-sun { display: none; }
+html.theme-dark .theme-btn .icon-moon { display: none; }
+html.theme-dark .theme-btn .icon-sun { display: block; }
+
 /* Кнопка корзины в шапке */
 .cart-btn {
   position: relative;
@@ -342,6 +361,29 @@ img { display: block; max-width: 100%; }
 .tab.is-active { background: var(--forest); color: #fff; }
 .tab__count { opacity: .75; font-weight: 500; margin-left: 5px; }
 
+/* Панель каталога: вкладки + переключатель вида (виден на телефоне) */
+.catalog__bar {
+  display: flex; align-items: flex-start; gap: 12px;
+  margin-bottom: 30px;
+}
+.catalog__bar .tabs { flex: 1; margin-bottom: 0; }
+.view-switch {
+  display: none; flex: none;
+  gap: 4px; padding: 4px;
+  border: 2px solid var(--forest);
+  border-radius: 12px;
+}
+.view-switch button {
+  width: 42px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  border: none; border-radius: 8px;
+  background: transparent;
+  color: var(--forest);
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.view-switch button.is-active { background: var(--forest); color: var(--paper-card); }
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -481,16 +523,20 @@ img { display: block; max-width: 100%; }
 .card__add { min-height: 50px; padding: 10px 18px; font-size: 17px; position: relative; }
 .card__add.is-added { background: #2e6b3f; }
 
-/* Бейдж «сколько штук в корзине» на кнопке карточки */
-.card__add .add-badge {
+/* Бейдж «сколько штук в корзине» на кнопке карточки.
+   В обычном виде количество уже в надписи, бейдж спрятан;
+   в компактной карточке (2 колонки) текста нет — показывает бейдж. */
+.card__add svg { display: none; }
+.card__add .add-badge { display: none; }
+.card__add .add-badge.is-on {
   position: absolute; top: -8px; right: -8px;
-  min-width: 24px; height: 24px;
+  min-width: 22px; height: 22px;
   display: flex; align-items: center; justify-content: center;
   padding: 0 6px;
   border-radius: 999px;
   background: var(--forest);
-  color: #fff;
-  font-size: 14px; font-weight: 700;
+  color: var(--paper-card);
+  font-size: 13px; font-weight: 700;
   border: 2px solid var(--paper-card);
 }
 
@@ -570,6 +616,70 @@ html { scrollbar-width: thin; scrollbar-color: rgba(30, 50, 38, .45) transparent
   100% { transform: scale(1); }
 }
 .cart-btn.is-popping { animation: cart-pop .45s ease; }
+
+/* ============================================================
+   ТЁМНАЯ ТЕМА — графит (в тон админке «Чудный сад»)
+   Фон #1e2124, панели #26292d, текст #d6dadd; фирменные
+   лайм и розовый остаются акцентами. Включается кнопкой
+   солнце/луна в шапке, выбор запоминается на устройстве.
+   ============================================================ */
+html.theme-dark {
+  --paper: #1e2124;
+  --paper-card: #26292d;
+  --ink: #d6dadd;
+  --moss: #a2abb1;
+  --forest: #cfe0b0;        /* заголовки и контурные акценты — светлая хвоя */
+  --forest-deep: #17191c;
+  --tag-white: #f4f5f0;
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, .5);
+  color-scheme: dark;
+}
+
+/* Точечные исправления: где --forest работает фоном, светлой хвое
+   не место — активные элементы красим фирменным лаймом */
+html.theme-dark .tab.is-active { background: var(--lime); border-color: var(--lime); color: #1c2a18; }
+html.theme-dark .tab:hover { background: rgba(214, 218, 221, .08); }
+html.theme-dark .cart-btn:hover,
+html.theme-dark .theme-btn:hover { background: var(--lime); border-color: var(--lime); color: #1c2a18; }
+html.theme-dark .btn--ghost { color: var(--forest); border-color: var(--forest); }
+html.theme-dark .btn--ghost:hover { background: var(--forest); color: #1c2a18; }
+html.theme-dark .cart-item__qty button:hover { background: var(--lime); border-color: var(--lime); color: #1c2a18; }
+html.theme-dark .to-top { background: #2c3034; color: #d6dadd; }
+html.theme-dark .to-top:hover { background: var(--graffiti-pink); color: #fff; }
+html.theme-dark .skip-link { background: #2c3034; }
+
+/* Хардкоды светлой темы, требующие тёмных значений */
+html.theme-dark .header { background: rgba(30, 33, 36, .97); border-bottom-color: rgba(214, 218, 221, .14); }
+html.theme-dark .eyebrow { color: #e08a9d; }
+html.theme-dark .card__stock { color: #1e2124; }
+html.theme-dark .card__promo--soon { color: #1e2124; border-color: #8a939a; }
+html.theme-dark .tag__latin { color: #5a6350; }
+html.theme-dark .tag__hand { color: #1f2916; }
+html.theme-dark .modal__traits,
+html.theme-dark .modal__traits > div,
+html.theme-dark .cart-item { border-color: rgba(214, 218, 221, .16); }
+html.theme-dark .field__input { background: #1e2124; border-color: rgba(214, 218, 221, .3); }
+html.theme-dark .cart__preview { border-color: rgba(214, 218, 221, .2); }
+html.theme-dark .cart__hint--ok { color: #8fc07a; }
+html.theme-dark .field__error { color: #e5889b; }
+html.theme-dark .social-btn { border-color: rgba(214, 218, 221, .22); }
+html.theme-dark .social-btn:hover { border-color: var(--moss); }
+html.theme-dark .card__photo-wrap img {
+  background: linear-gradient(110deg, #26292d 30%, #2c3034 50%, #26292d 70%);
+}
+html.theme-dark { scrollbar-color: rgba(214, 218, 221, .35) transparent; }
+html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221, .35); }
+
+/* Радиальное раскрытие темы из точки нажатия (как в Telegram).
+   Работает в браузерах с View Transitions (Chrome/Edge/Safari 18+);
+   старые браузеры и prefers-reduced-motion переключают тему мгновенно. */
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) { animation: vt-reveal .45s cubic-bezier(.23, 1, .32, 1) forwards; }
+@keyframes vt-reveal {
+  from { clip-path: circle(0 at var(--tx, 90%) var(--ty, 40px)); }
+  to   { clip-path: circle(var(--tr, 140vmax) at var(--tx, 90%) var(--ty, 40px)); }
+}
 
 /* ---------- Как купить ---------- */
 .care {
@@ -955,13 +1065,14 @@ html { scrollbar-width: thin; scrollbar-color: rgba(30, 50, 38, .45) transparent
 }
 
 @media (max-width: 700px) {
-  /* Круглая стрелка «наверх»: выше нижней панели, панели не мешает */
+  /* Круглая стрелка «наверх»: выше нижней панели, панели не мешает.
+     Полупрозрачная и компактная — почти не спорит с контентом под ней. */
   .to-top {
     display: flex;
-    right: 12px; bottom: 80px;
-    width: 46px; height: 46px;
+    right: 10px; bottom: 88px;
+    width: 42px; height: 42px;
     z-index: 55;
-    opacity: .92;
+    opacity: .85;
   }
   body { padding-bottom: 76px; }         /* место под нижнюю панель */
   .card__row {
@@ -1011,4 +1122,52 @@ html { scrollbar-width: thin; scrollbar-color: rgba(30, 50, 38, .45) transparent
   .hero__actions .btn { flex: 1; }
   .contacts__actions .social-btn { justify-content: flex-start; }
   .footer { padding-bottom: 96px; }
+}
+
+/* ============================================================
+   КОМПАКТНЫЙ ВИД КАТАЛОГА (телефон): 2 колонки, как в
+   маркетплейсах. Включается иконкой-квадратами над каталогом,
+   выбор запоминается. Крупный вид остаётся доступным.
+   ============================================================ */
+@media (max-width: 700px) {
+  .view-switch { display: flex; }
+  .cards--compact { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .cards--compact .card { border-radius: 12px; }
+  .cards--compact .card__photo-wrap { aspect-ratio: 3 / 4; }
+  .cards--compact .card__badges { top: 8px; left: 8px; gap: 4px; }
+  .cards--compact .card__promo { font-size: 11.5px; padding: 4px 9px; }
+  .cards--compact .card__stock { font-size: 12px; padding: 4px 9px; top: 8px; right: 8px; }
+  .cards--compact .card__tag { display: none; }
+  .cards--compact .card__dot { width: 5px; height: 5px; }
+  .cards--compact .card__dots { bottom: 6px; gap: 4px; }
+  .cards--compact .card__body { padding: 10px 12px 12px; }
+  .cards--compact .card__name {
+    font-size: 15.5px;
+    line-height: 1.28;
+    margin-bottom: 8px;
+    min-height: 2.56em;   /* две строки: цены в ряду на одной высоте */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cards--compact .card__short { display: none; }
+  .cards--compact .card__row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: auto;
+  }
+  .cards--compact .card__price { font-size: 17.5px; }
+  .cards--compact .card__price small { display: none; }
+  .cards--compact .card__add {
+    width: 44px; height: 44px; min-height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    flex: none;
+  }
+  .cards--compact .card__add .card__add-txt { display: none; }
+  .cards--compact .card__add svg { display: block; margin: auto; }
+  .cards--compact .card__add .add-badge.is-on { display: flex; }
 }

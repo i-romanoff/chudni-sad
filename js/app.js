@@ -20,6 +20,48 @@
 
   var fmtRub = function (kop) { return Math.round(kop / 100).toLocaleString("ru-RU") + " ₽"; };
 
+  /* ================= Тема: светлая / тёмная (графит) =================
+     Стартовый класс ставит инлайн-скрипт в <head> (без вспышки).
+     Здесь — переключение: в браузерах с View Transitions тема
+     раскрывается кругом из точки нажатия (как в Telegram),
+     в остальных и при prefers-reduced-motion — мгновенно. */
+  var THEME_KEY = "chudniSadTheme";
+  var themeBtn = document.getElementById("theme-toggle");
+
+  function isDark() { return document.documentElement.classList.contains("theme-dark"); }
+
+  function applyThemeMeta() {
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", isDark() ? "#1e2124" : "#e7f0d9");
+    if (themeBtn) themeBtn.setAttribute("aria-label", isDark() ? "Включить светлую тему" : "Включить тёмную тему");
+  }
+
+  function setTheme(dark, x, y) {
+    var root = document.documentElement;
+    var apply = function () {
+      root.classList.toggle("theme-dark", dark);
+      try { localStorage.setItem(THEME_KEY, dark ? "dark" : "light"); } catch (e) {}
+      applyThemeMeta();
+    };
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!document.startViewTransition || reduce) { apply(); return; }
+    var r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y)) + 40;
+    root.style.setProperty("--tx", x + "px");
+    root.style.setProperty("--ty", y + "px");
+    root.style.setProperty("--tr", r + "px");
+    document.startViewTransition(apply);
+  }
+
+  if (themeBtn) {
+    themeBtn.addEventListener("click", function (e) {
+      var rect = themeBtn.getBoundingClientRect();
+      var x = e.clientX || rect.left + rect.width / 2;
+      var y = e.clientY || rect.top + rect.height / 2;
+      setTheme(!isDark(), x, y);
+    });
+  }
+  applyThemeMeta();
+
   var fmtPrice = function (product) {
     if (product.priceMin === product.priceMax) return fmtRub(product.priceMin);
     return fmtRub(product.priceMin) + " – " + fmtRub(product.priceMax);
@@ -49,6 +91,9 @@
     var liters = (product.volume % 1 === 0) ? product.volume : product.volume.toFixed(1).replace(".", ",");
     return "контейнер " + liters + " л";
   };
+
+  /* Иконка корзины для круглой кнопки в компактной карточке */
+  var CART_ICON_SVG = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9.5" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M3 3.5h2l2.5 11h9.7a1.6 1.6 0 0 0 1.56-1.22L20.6 7H6.2"/></svg>';
 
   /* ================= Корзина (localStorage) ================= */
 
@@ -89,6 +134,7 @@
         name: product.name,
         price: product.priceMin,
         priceLabel: fmtPrice(product),
+        range: product.priceMin !== product.priceMax,  /* серая строка-диапазон не нужна при одной цене */
         photo: product.photos[0].file,
         qty: 1,
         addedAt: Date.now()
@@ -140,6 +186,39 @@
   /* ================= Карточки каталога ================= */
 
   var cardsRoot = document.getElementById("cards");
+
+  /* ================= Вид каталога: крупные карточки / 2 колонки =================
+     Компактный вид (по умолчанию на телефоне) — как в маркетплейсах:
+     узкие карточки, цена + круглая кнопка. Выбор запоминается. */
+  var VIEW_KEY = "chudniSadCards";
+  var viewMode = "compact";
+  try {
+    var savedView = localStorage.getItem(VIEW_KEY);
+    if (savedView === "comfort" || savedView === "compact") viewMode = savedView;
+  } catch (e) {}
+  var viewSwitch = document.getElementById("view-switch");
+
+  function applyViewMode() {
+    cardsRoot.classList.toggle("cards--compact", viewMode === "compact");
+    if (viewSwitch) {
+      viewSwitch.querySelectorAll("button[data-view]").forEach(function (b) {
+        var on = b.getAttribute("data-view") === viewMode;
+        b.classList.toggle("is-active", on);
+        b.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+    }
+  }
+
+  if (viewSwitch) {
+    viewSwitch.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-view]");
+      if (!b || b.getAttribute("data-view") === viewMode) return;
+      viewMode = b.getAttribute("data-view");
+      try { localStorage.setItem(VIEW_KEY, viewMode); } catch (err) {}
+      applyViewMode();
+    });
+  }
+  applyViewMode();
 
   function renderCards() {
     cardsRoot.innerHTML = "";
@@ -341,13 +420,17 @@
       add.className = "btn btn--primary card__add";
       add.type = "button";
       add.setAttribute("data-uid", product.uid);
+      /* В компактной карточке (2 колонки) текст прячется — остаётся
+         иконка корзины с бейджем количества; в обычном виде наоборот. */
+      add.innerHTML = CART_ICON_SVG + '<span class="card__add-txt"></span><span class="add-badge" aria-hidden="true"></span>';
       if (stock.disabled) {
         add.disabled = true;
-        add.textContent = "Продано";
+        add.querySelector(".card__add-txt").textContent = "Продано";
         add.style.opacity = ".55";
         add.style.cursor = "default";
       } else {
-        add.textContent = "В корзину";
+        add.querySelector(".card__add-txt").textContent = "В корзину";
+        add.setAttribute("aria-label", "В корзину: " + product.name);
         add.addEventListener("click", function (event) {
           addToCart(product);
           flyToCart(event, product);
@@ -572,6 +655,8 @@
   var orderPreview = document.getElementById("order-preview");
 
   function openCart() {
+    /* Летящая в корзину картинка не должна летать поверх открытого окна */
+    document.querySelectorAll(".fly-img").forEach(function (f) { f.remove(); });
     showCartStep(stepList);
     renderCart();
     cartModal.hidden = false;
@@ -617,6 +702,8 @@
       info.innerHTML = '<p class="cart-item__name"></p><p class="cart-item__price"></p>';
       info.querySelector(".cart-item__name").textContent = item.name;
       info.querySelector(".cart-item__price").textContent = item.priceLabel;
+      /* При одной цене серый диапазон под названием дублирует сумму справа */
+      info.querySelector(".cart-item__price").style.display = item.range ? "" : "none";
 
       var controls = document.createElement("div");
       controls.className = "cart-item__controls";
@@ -961,10 +1048,21 @@ maxBtn.textContent = "Отправить в MAX";
     });
   }
 
-  /* ================= Кнопка «В начало» (десктоп) ================= */
+  /* ================= Кнопка «В начало» =================
+     ПК: постоянная после прокрутки экрана. Телефон: видна во время
+     прокрутки и гаснет через 1,5 сек покоя — не висит над контентом. */
+  var toTopFadeTimer = null;
   function updateToTop() {
     var b = document.getElementById("to-top");
-    if (b) b.classList.toggle("is-active", window.scrollY > window.innerHeight);
+    if (!b) return;
+    var show = window.scrollY > window.innerHeight;
+    b.classList.toggle("is-active", show);
+    if (window.matchMedia("(max-width: 700px)").matches && show) {
+      if (toTopFadeTimer) clearTimeout(toTopFadeTimer);
+      toTopFadeTimer = setTimeout(function () {
+        if (window.scrollY > window.innerHeight) b.classList.remove("is-active");
+      }, 1500);
+    }
   }
   window.addEventListener("scroll", updateToTop, { passive: true });
   updateToTop();
@@ -1013,10 +1111,16 @@ maxBtn.textContent = "Отправить в MAX";
   function refreshAddButton(button, product) {
     var entry = cart[product.uid];
     var n = entry ? entry.qty : 0;
-    /* Убираем старый бейдж: теперь количество пишем прямо в надписи */
+    /* У карточек текст живёт в .card__add-txt, у кнопки модалки — прямо
+       в кнопке; бейдж с числом виден только в компактной карточке. */
+    var txt = button.querySelector(".card__add-txt");
     var badge = button.querySelector(".add-badge");
-    if (badge) badge.remove();
-    button.textContent = n > 0 ? "В корзине " + n : "В корзину";
+    if (txt) txt.textContent = n > 0 ? "В корзине " + n : "В корзину";
+    else button.textContent = n > 0 ? "В корзине " + n : "В корзину";
+    if (badge) {
+      badge.textContent = n;
+      badge.classList.toggle("is-on", n > 0);
+    }
     /* Зелёный = позиция уже в корзине (видно на карточке и в модалке) */
     button.classList.toggle("btn--in-cart", n > 0);
   }
