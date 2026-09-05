@@ -20,6 +20,7 @@
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="assets/img/icon-192.png">
+  <link rel="canonical" href="https://i-romanoff.github.io/chudni-sad/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prata&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
@@ -97,6 +98,9 @@
           <p class="eyebrow">Сезон 2026</p>
           <h2 class="section-title">Каталог растений</h2>
           <p class="catalog__note">Цены — за саженец в контейнере. Кладите нужное в корзину, а потом отправьте заказ в MAX.</p>
+        </div>
+        <div class="cat-search-wrap">
+          <input id="cat-search" class="cat-search" type="search" placeholder="Поиск по каталогу: сорт, вид…" autocomplete="off">
         </div>
         <div class="catalog__bar">
           <div class="tabs" id="tabs" role="tablist" aria-label="Категории растений"><!-- вкладки собираются в app.js --></div>
@@ -201,6 +205,7 @@
           </button>
         </div>
         <p class="modal__hint">Остались вопросы — позвоните, поможем с выбором.</p>
+        <div class="modal__similar" id="modal-similar"></div>
       </div>
       </div>
     </div>

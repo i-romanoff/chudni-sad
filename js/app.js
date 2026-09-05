@@ -228,6 +228,22 @@
   }
   applyViewMode();
 
+  /* Поиск по каталогу: название + латинское слово, работает вместе с фильтром категорий */
+  var catSearch = document.getElementById("cat-search");
+  var catTimer = null;
+  if (catSearch) {
+    catSearch.addEventListener("input", function () {
+      clearTimeout(catTimer);
+      catTimer = setTimeout(function () {
+        renderCards();
+        if (!document.querySelectorAll("#cards .card").length && activeCats.length) {
+          activeCats = [];           /* в выбранной категории не нашлось — показать все */
+          applyCategoryFilter();
+        }
+      }, 180);
+    });
+  }
+
   /* ================= Фильтр по категориям: стеклянная шторка (телефон) ================= */
   var filterSheet = document.getElementById("filter-sheet");
   var filterList = document.getElementById("filter-list");
@@ -298,8 +314,14 @@
 
   function renderCards() {
     cardsRoot.innerHTML = "";
+    /* Поиск по названию/латыни работает вместе с фильтром категорий */
+    var q = (document.getElementById("cat-search") || {}).value || "";
+    q = q.trim().toLowerCase().replace("ё", "е");
     var visible = products.filter(function (p) {
-      return activeCats.length === 0 || activeCats.indexOf(p.category) !== -1;
+      if (activeCats.length && activeCats.indexOf(p.category) === -1) return false;
+      if (!q) return true;
+      var hay = ((p.name || "") + " " + (p.latin || "")).toLowerCase().replace("ё", "е");
+      return hay.indexOf(q) !== -1;
     });
 
     visible.forEach(function (product, index) {
@@ -854,6 +876,37 @@
     });
   })();
 
+  /* Похожие сорта: та же категория, до 4 мини-карточек; клик — карточка того сорта */
+  function renderSimilar(product) {
+    var sim = document.getElementById("modal-similar");
+    if (!sim) return;
+    var seen = {}, picked = [];
+    products.forEach(function (x) {
+      var base = x.uid.split("#")[0];
+      if (x.category !== product.category || base === product.uid.split("#")[0] || seen[base]) return;
+      seen[base] = 1;
+      if (picked.length < 4) picked.push(x);
+    });
+    if (!picked.length) { sim.innerHTML = ""; return; }
+    sim.innerHTML = "<h4>Похожие сорта</h4>";
+    var grid = document.createElement("div");
+    grid.className = "similar-grid";
+    picked.forEach(function (sp) {
+      var card = document.createElement("button");
+      card.type = "button";
+      card.className = "similar-card";
+      card.innerHTML = '<img alt="" loading="lazy"><span class="sc-body">' +
+        '<span class="sc-name"></span><span class="sc-price"></span></span>';
+      card.querySelector("img").src = "assets/img/" + sp.photos[0].file;
+      card.querySelector("img").alt = sp.photos[0].alt;
+      card.querySelector(".sc-name").textContent = sp.name;
+      card.querySelector(".sc-price").textContent = fmtPrice(sp);
+      card.addEventListener("click", function () { openModal(sp); });
+      grid.appendChild(card);
+    });
+    sim.appendChild(grid);
+  }
+
   function openModal(product) {
     lastFocused = document.activeElement;
     shareProduct = product;
@@ -899,6 +952,8 @@
       modalAdd.classList.add("is-added");
       setTimeout(function () { modalAdd.classList.remove("is-added"); }, 900);
     };
+
+    renderSimilar(product);
 
     modal.hidden = false;
     document.body.style.overflow = "hidden";
@@ -1636,4 +1691,22 @@ maxBtn.textContent = "Отправить в MAX";
   updateCartBadge();
   renderFilterPanel();
   updateFilterBadge();
+
+  /* SEO: JSON-LD ItemList ассортимента (для поисковых систем) */
+  try {
+    var seenIds = {}, ldItems = [];
+    products.forEach(function (p) {
+      if (seenIds[p.id]) return;
+      seenIds[p.id] = 1;
+      ldItems.push({ "@type": "Product", "position": ldItems.length + 1,
+        "name": p.name, "description": p.short || p.name,
+        "image": new URL("assets/img/" + p.photos[0].file, location.href).href,
+        "category": p.category });
+    });
+    var ld = document.createElement("script");
+    ld.type = "application/ld+json";
+    ld.textContent = JSON.stringify({ "@context": "https://schema.org", "@type": "ItemList",
+      "itemListElement": ldItems });
+    document.head.appendChild(ld);
+  } catch (e) {}
 })();
