@@ -524,6 +524,15 @@
       body.appendChild(row);
       card.appendChild(body);
 
+      /* В широком виде (1 колонка) карточка открывается целиком: клик по
+         любому месту, кроме кнопки «В корзину». В компактном (2 колонки)
+         остаётся только фото — там тело маленькое и кнопка занимает четверть. */
+      card.addEventListener("click", function (event) {
+        if (viewMode !== "comfort") return;
+        if (event.target.closest("button")) return;
+        openModal(product);
+      });
+
       cardsRoot.appendChild(card);
     });
   }
@@ -985,10 +994,23 @@
       var row = document.createElement("div");
       row.className = "cart-item";
 
+      /* Фото и название кликабельны: открывают карточку товара */
+      var product = products.find(function (p) { return p.uid === item.uid; });
+      var photoBtn = document.createElement("button");
+      photoBtn.type = "button";
+      photoBtn.className = "cart-item__photo-btn";
+      photoBtn.setAttribute("aria-label", "Открыть карточку: " + item.name);
       var photo = document.createElement("img");
       photo.className = "cart-item__photo";
       photo.src = "assets/img/" + item.photo;
       photo.alt = "";
+      photoBtn.appendChild(photo);
+      if (product) {
+        photoBtn.addEventListener("click", function () {
+          closeModal(cartModal);
+          openModal(product);
+        });
+      }
 
       var info = document.createElement("div");
       info.innerHTML = '<p class="cart-item__name"></p><p class="cart-item__price"></p>';
@@ -996,6 +1018,13 @@
       info.querySelector(".cart-item__price").textContent = item.priceLabel;
       /* При одной цене серый диапазон под названием дублирует сумму справа */
       info.querySelector(".cart-item__price").style.display = item.range ? "" : "none";
+      if (product) {
+        info.classList.add("cart-item__info--link");
+        info.addEventListener("click", function () {
+          closeModal(cartModal);
+          openModal(product);
+        });
+      }
 
       var controls = document.createElement("div");
       controls.className = "cart-item__controls";
@@ -1046,7 +1075,7 @@
       controls.appendChild(qty);
       controls.appendChild(remove);
 
-      row.appendChild(photo);
+      row.appendChild(photoBtn);
       row.appendChild(info);
       row.appendChild(controls);
       cartItems.appendChild(row);
