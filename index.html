@@ -164,6 +164,8 @@
   <footer class="footer">
     <div class="container footer__inner">
       <span>© <span id="year"></span> Питомник «Чудный сад»</span>
+      <a href="offer.html" class="footer__doc" target="_blank" rel="noopener noreferrer">Публичная оферта</a>
+      <a href="privacy.html" class="footer__doc" target="_blank" rel="noopener noreferrer">Политика обработки персональных данных</a>
       <span class="footer__domain">chudni-sad.ru</span>
     </div>
   </footer>
@@ -238,6 +240,15 @@
           <input class="field__input" id="order-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__">
         </label>
         <p class="field__error" id="order-error" role="alert"></p>
+        <label class="agree-row">
+          <input type="checkbox" id="agree-offer">
+          <span>Я согласен с условиями <a href="offer.html" target="_blank" rel="noopener noreferrer">публичной оферты</a></span>
+        </label>
+        <label class="agree-row">
+          <input type="checkbox" id="agree-pdn">
+          <span>Я согласен на <a href="privacy.html" target="_blank" rel="noopener noreferrer">обработку персональных данных</a></span>
+        </label>
+        <p class="field__error" id="agree-error" role="alert"></p>
         <button class="btn btn--primary btn--big cart__submit" id="order-send" type="button">Отправить заказ</button>
         <button class="btn btn--ghost cart__back" id="order-back" type="button">Вернуться к корзине</button>
       </div>

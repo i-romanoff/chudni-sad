@@ -1235,7 +1235,18 @@
       orderPhone.focus();
       return;
     }
-
+    /* Согласия обязательны (оферта + обработка ПДн) */
+    var agreeErr = document.getElementById("agree-error");
+    var a1 = document.getElementById("agree-offer").checked;
+    var a2 = document.getElementById("agree-pdn").checked;
+    if (!a1 || !a2) {
+      agreeErr.textContent = !a1 && !a2
+        ? "Подтвердите, пожалуйста, оба согласия — оферту и обработку данных."
+        : (!a1 ? "Подтвердите согласие с публичной офертой."
+               : "Подтвердите согласие на обработку персональных данных.");
+      return;
+    }
+    agreeErr.textContent = "";
     orderError.textContent = "";
     var text = buildOrderText();
     orderPreview.textContent = text;
