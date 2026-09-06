@@ -164,8 +164,10 @@
   <footer class="footer">
     <div class="container footer__inner">
       <span>© <span id="year"></span> Питомник «Чудный сад»</span>
-      <a href="offer.html" class="footer__doc" target="_blank" rel="noopener noreferrer">Публичная оферта</a>
-      <a href="privacy.html" class="footer__doc" target="_blank" rel="noopener noreferrer">Политика обработки персональных данных</a>
+      <a href="about.html" class="footer__doc" target="_blank" rel="noopener noreferrer">О питомнике</a>
+      <a href="price.html" class="footer__doc" target="_blank" rel="noopener noreferrer">Прайс-лист</a>
+      <a href="offer.html" class="footer__doc" target="_blank" rel="noopener noreferrer">Оферта</a>
+      <a href="privacy.html" class="footer__doc" target="_blank" rel="noopener noreferrer">Политика ПДн</a>
       <span class="footer__domain">chudni-sad.ru</span>
     </div>
   </footer>
@@ -201,6 +203,7 @@
         <dl class="modal__traits" id="modal-traits"></dl>
         <div class="modal__cta-row">
           <button class="btn btn--primary btn--big" id="modal-add" type="button">В корзину</button>
+          <button class="btn btn--big" id="modal-buynow" type="button" title="Добавить в корзину и сразу оформить">Купить сейчас</button>
           <button class="btn btn--ghost btn--big modal__share" id="modal-share" type="button">
             <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3.5"/><path d="M7.5 8 12 3.5 16.5 8"/><path d="M5 12v6.5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V12"/></svg>
             <span class="modal__share-txt">Поделиться</span>
@@ -282,8 +285,16 @@
     <div class="filter-sheet__backdrop" data-filter-close></div>
     <div class="filter-sheet__panel" role="dialog" aria-modal="true" aria-label="Категории растений">
       <div class="filter-sheet__grab" aria-hidden="true"></div>
-      <h3 class="filter-sheet__title">Категории растений</h3>
-      <div class="filter-sheet__list" id="filter-list"><!-- строки собираются в app.js --></div>
+      <h3 class="filter-sheet__title">Категории и фильтры</h3>
+      <div class="filter-sheet__list" id="filter-list"><!-- категории собираются в app.js --></div>
+      <div class="facet-group" id="facet-group">
+        <div class="facet-title">Высота взрослого растения</div>
+        <div class="facet-opts" id="facet-height"></div>
+        <div class="facet-title">Цветение</div>
+        <div class="facet-opts" id="facet-bloom"></div>
+        <div class="facet-title">Свет</div>
+        <div class="facet-opts" id="facet-light"></div>
+      </div>
       <button class="btn btn--primary filter-sheet__done" id="filter-done" type="button">Готово</button>
     </div>
   </div>

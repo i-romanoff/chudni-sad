@@ -397,6 +397,27 @@ html.theme-dark .cat-search { background: #26292d; }
 .similar-card .sc-name { font-size: 13.5px; font-weight: 700; line-height: 1.25; color: var(--forest);
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .similar-card .sc-price { font-size: 14.5px; font-weight: 700; color: var(--ink); margin-top: 4px; }
+
+/* Избранное */
+.fav-btn {
+  position: absolute; bottom: 10px; left: 10px; z-index: 2;
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border: none; border-radius: 50%;
+  background: rgba(255, 255, 255, .85);
+  color: var(--graffiti-pink);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(19, 33, 26, .3);
+  transition: transform .15s ease;
+}
+.fav-btn:active { transform: scale(.9); }
+.fav-btn.is-on { color: var(--graffiti-pink); }
+html.theme-dark .fav-btn { background: rgba(38, 41, 45, .85); color: #e08a9d; }
+.fav-only { display: inline-flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 12px; border: 2px solid var(--forest);
+  background: transparent; color: var(--forest); cursor: pointer; }
+.fav-only.is-on { background: var(--graffiti-pink); border-color: var(--graffiti-pink); color: #fff; }
+.catalog__bar { align-items: center; }
 .catalog__bar {
   display: flex; align-items: flex-start; gap: 12px;
   margin-bottom: 30px;
@@ -561,6 +582,20 @@ html.theme-dark .cat-search { background: #26292d; }
   transform: scale(1.05);
 }
 .filter-sheet__done { width: 100%; }
+
+/* ---------- Фасетные фильтры (высота/цветение/свет) ---------- */
+.facet-group { border-top: 1px solid rgba(30, 50, 38, .12); padding-top: 10px; }
+.facet-title { font-size: 14px; font-weight: 700; color: var(--moss);
+  text-transform: uppercase; letter-spacing: .06em; margin: 10px 0 6px; }
+.facet-opts { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+.facet-chip {
+  border: 1.5px solid rgba(30, 50, 38, .3); background: transparent;
+  color: var(--ink); border-radius: 999px; padding: 5px 12px;
+  font-family: var(--font-body); font-size: 13.5px; cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.facet-chip.is-on { background: var(--lime); border-color: var(--lime); color: #1c2a18; font-weight: 700; }
+html.theme-dark .facet-group { border-top-color: rgba(214, 218, 221, .14); }
 html.theme-dark .filter-sheet__panel {
   background: rgba(38, 41, 45, .78);
   box-shadow: 0 20px 60px rgba(0, 0, 0, .5), inset 0 0 0 1px rgba(214, 218, 221, .14);

@@ -153,7 +153,33 @@
   /* ================= Категории: вкладки (ПК) и фильтр-шторка (телефон) =================
      activeCats: [] = «Все»; одна категория — как вкладка; несколько —
      мультивыбор чекбоксами в стеклянной шторке фильтра. */
+  /* Избранное: сердечки на карточках, localStorage */
+  var FAV_KEY = "chudniSadFav";
+  var favs = {};
+  try { favs = JSON.parse(localStorage.getItem(FAV_KEY) || "{}"); } catch (e) { favs = {}; }
+  function isFav(uid) { return !!favs[uid]; }
+  function toggleFav(uid, on) {
+    if (on) favs[uid] = 1; else delete favs[uid];
+    try { localStorage.setItem(FAV_KEY, JSON.stringify(favs)); } catch (e) {}
+  }
+  var favOnly = false;
+
+  var favOnlyBtn = document.createElement("button");
+  favOnlyBtn.type = "button";
+  favOnlyBtn.className = "fav-only";
+  favOnlyBtn.setAttribute("aria-label", "Показать только избранное");
+  favOnlyBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20.5C7 16.5 3 13 3 8.8 3 6 5.2 4 7.8 4c1.7 0 3.2.9 4.2 2.3C13 4.9 14.5 4 16.2 4 18.8 4 21 6 21 8.8c0 4.2-4 7.7-9 11.7z"/></svg>';
+  favOnlyBtn.title = "Только избранное";
+  var viewSwitchEl = document.getElementById("view-switch");
+  if (viewSwitchEl) viewSwitchEl.parentNode.insertBefore(favOnlyBtn, viewSwitchEl);
+  favOnlyBtn.addEventListener("click", function () {
+    favOnly = !favOnly;
+    favOnlyBtn.classList.toggle("is-on", favOnly);
+    renderCards();
+  });
+
   var activeCats = [];
+  var activeFacets = { height: null, bloom: [], light: "" };
   var tabsRoot = document.getElementById("tabs");
 
   function applyCategoryFilter() {
@@ -292,10 +318,67 @@
 
   function openFilter() {
     renderFilterPanel();
+    renderFacets();
     filterSheet.hidden = false;
     /* два кадра — чтобы стартовал transition, а не «мгновенно показалось» */
     requestAnimationFrame(function () {
       requestAnimationFrame(function () { filterSheet.classList.add("show"); });
+    });
+  }
+
+  /* Фасеты: высота/цветение/свет — строятся из данных каталога */
+  var FACET_HEIGHTS = [
+    { label: "до 0,5 м", min: 0, max: 0.5 },
+    { label: "0,5–1 м", min: 0.5, max: 1 },
+    { label: "1–2 м", min: 1, max: 2 },
+    { label: "2–3 м", min: 2, max: 3 },
+    { label: "выше 3 м", min: 3, max: 99 },
+  ];
+  var FACET_MONTHS = [["июн", "июнь"], ["июл", "июль"], ["авг", "август"], ["сен", "сентябрь"]];
+  var FACET_LIGHTS = ["солнце", "солнце/полутень", "тень/полутень"];
+
+  function renderFacets() {
+    var hBox = document.getElementById("facet-height");
+    var bBox = document.getElementById("facet-bloom");
+    var lBox = document.getElementById("facet-light");
+    if (!hBox) return;
+    hBox.innerHTML = FACET_HEIGHTS.map(function (r, i) {
+      var on = activeFacets.height && activeFacets.height[0] === r.min && activeFacets.height[1] === r.max;
+      return '<button type="button" class="facet-chip' + (on ? " is-on" : "") + '" data-i="' + i + '">' + r.label + "</button>";
+    }).join("");
+    hBox.querySelectorAll(".facet-chip").forEach(function (chip) {
+      chip.onclick = function () {
+        var r = FACET_HEIGHTS[+chip.dataset.i];
+        var on = activeFacets.height && activeFacets.height[0] === r.min && activeFacets.height[1] === r.max;
+        activeFacets.height = on ? null : [r.min, r.max];
+        renderFacets();
+        renderCards();
+      };
+    });
+    bBox.innerHTML = FACET_MONTHS.map(function (m) {
+      var on = activeFacets.bloom.indexOf(m[0]) !== -1;
+      return '<button type="button" class="facet-chip' + (on ? " is-on" : "") + '" data-m="' + m[0] + '">' + m[1] + "</button>";
+    }).join("");
+    bBox.querySelectorAll(".facet-chip").forEach(function (chip) {
+      chip.onclick = function () {
+        var m = chip.getAttribute("data-m");
+        var at = activeFacets.bloom.indexOf(m);
+        if (at === -1) activeFacets.bloom.push(m); else activeFacets.bloom.splice(at, 1);
+        renderFacets();
+        renderCards();
+      };
+    });
+    lBox.innerHTML = FACET_LIGHTS.map(function (l) {
+      var on = activeFacets.light === l;
+      return '<button type="button" class="facet-chip' + (on ? " is-on" : "") + '" data-l="' + l + '">' + l + "</button>";
+    }).join("");
+    lBox.querySelectorAll(".facet-chip").forEach(function (chip) {
+      chip.onclick = function () {
+        var l = chip.getAttribute("data-l");
+        activeFacets.light = activeFacets.light === l ? "" : l;
+        renderFacets();
+        renderCards();
+      };
     });
   }
 
@@ -319,6 +402,13 @@
     q = q.trim().toLowerCase().replace("ё", "е");
     var visible = products.filter(function (p) {
       if (activeCats.length && activeCats.indexOf(p.category) === -1) return false;
+      if (favOnly && !isFav(p.uid)) return false;
+      /* фасеты: высота, цветение, свет (активные выбираются в шторке) */
+      if (activeFacets.height && !(p.facets && p.facets.heightM != null &&
+          p.facets.heightM >= activeFacets.height[0] && p.facets.heightM <= activeFacets.height[1])) return false;
+      if (activeFacets.bloom.length && !(p.facets && activeFacets.bloom.some(function (m) {
+            return (p.facets.bloom || []).indexOf(m) !== -1; }))) return false;
+      if (activeFacets.light && !(p.facets && p.facets.light === activeFacets.light)) return false;
       if (!q) return true;
       var hay = ((p.name || "") + " " + (p.latin || "")).toLowerCase().replace("ё", "е");
       return hay.indexOf(q) !== -1;
@@ -471,6 +561,20 @@
       stockEl.className = stock.cls;
       stockEl.textContent = stock.text;
 
+      var fav = document.createElement("button");
+      fav.type = "button";
+      fav.className = "fav-btn" + (isFav(product.uid) ? " is-on" : "");
+      fav.setAttribute("aria-label", "В избранное: " + product.name);
+      fav.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="' +
+        (isFav(product.uid) ? "currentColor" : "none") + '" stroke="currentColor" stroke-width="2"><path d="M12 20.5C7 16.5 3 13 3 8.8 3 6 5.2 4 7.8 4c1.7 0 3.2.9 4.2 2.3C13 4.9 14.5 4 16.2 4 18.8 4 21 6 21 8.8c0 4.2-4 7.7-9 11.7z"/></svg>';
+      fav.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var on = !isFav(product.uid);
+        toggleFav(product.uid, on);
+        fav.classList.toggle("is-on", on);
+        fav.querySelector("svg").setAttribute("fill", on ? "currentColor" : "none");
+      });
+
       var tag = document.createElement("span");
       tag.className = "tag card__tag";
       tag.setAttribute("aria-hidden", "true");
@@ -483,6 +587,7 @@
       photoWrap.appendChild(slider);
       photoWrap.appendChild(badges);
       photoWrap.appendChild(stockEl);
+      photoWrap.appendChild(fav);
       photoWrap.appendChild(tag);
       photoBtn.appendChild(photoWrap);
       photoBtn.addEventListener("click", function () {
@@ -952,6 +1057,18 @@
       modalAdd.classList.add("is-added");
       setTimeout(function () { modalAdd.classList.remove("is-added"); }, 900);
     };
+    /* Купить сейчас: добавить в корзину и сразу открыть форму заказа */
+    var modalBuyNow = document.getElementById("modal-buynow");
+    if (modalBuyNow) {
+      modalBuyNow.onclick = function () {
+        if (stock.disabled) return;
+        addToCart(product);
+        closeModal(modal);
+        openCart();
+        setTimeout(function () { document.getElementById("cart-checkout").click(); }, 150);
+      };
+      modalBuyNow.style.display = stock.disabled ? "none" : "";
+    }
 
     renderSimilar(product);
 

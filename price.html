@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Прайс-лист — Питомник «Чудный сад»</title>
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: "Roboto", Arial, sans-serif; color: #1a1f16; margin: 24px; }
+    h1 { font-size: 22px; margin: 0 0 2px; }
+    .sub { color: #5b6a5b; font-size: 13px; margin-bottom: 16px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #c9d2c4; padding: 6px 10px; font-size: 14px; text-align: left; }
+    th { background: #eef3e4; }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .out { color: #a12f47; }
+    tr.cat td { background: #f2f6ea; font-weight: 700; }
+    .noprint { margin-bottom: 14px; }
+    button { padding: 8px 16px; border-radius: 8px; border: 1px solid #888; cursor: pointer; }
+    @media print { .noprint { display: none; } body { margin: 8px; } }
+  </style>
+</head>
+<body>
+  <div class="noprint"><button onclick="window.print()">🖨 Печать / PDF</button></div>
+  <h1>Прайс-лист — питомник «Чудный сад»</h1>
+  <p class="sub">chudni-sad.ru · цены актуальны на <span id="gen-date"></span> · тел. +7 924 707-14-00</p>
+  <table>
+    <thead><tr><th>Категория</th><th>Растение</th><th>Цена</th><th>Наличие</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <script src="data/catalog.js"></script>
+  <script>
+    var seen = {};
+    var list = [];
+    (window.CATALOG.products || []).forEach(function (p) {
+      if (seen[p.id]) return;
+      seen[p.id] = 1;
+      list.push(p);
+    });
+    list.sort(function (a, b) {
+      return (a.category || "").localeCompare(b.category || "", "ru") ||
+             (a.name || "").localeCompare(b.name || "", "ru");
+    });
+    var lastCat = null;
+    var html = "";
+    var fmt = function (kop) { return Math.round(kop / 100).toLocaleString("ru-RU") + " ₽"; };
+    list.forEach(function (p) {
+      if (p.category !== lastCat) {
+        lastCat = p.category || "Прочее";
+        html += '<tr class="cat"><td colspan="4">' + lastCat + "</td></tr>";
+      }
+      var stock = p.stockCount === 0 ? '<span class="out">Продано</span>'
+        : (p.stockCount ? "В наличии: " + p.stockCount + " шт." : "В наличии");
+      html += "<tr><td></td><td>" + p.name + "</td><td class='num'>" + fmt(p.priceMin) +
+        "</td><td>" + stock + "</td></tr>";
+    });
+    document.getElementById("rows").innerHTML = html;
+    document.getElementById("gen-date").textContent = new Date().toLocaleDateString("ru-RU");
+  </script>
+</body>
+</html>
