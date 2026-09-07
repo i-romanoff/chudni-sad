@@ -1543,3 +1543,84 @@ html.theme-dark .agree-row a { color: #e08a9d; }
   .cards--compact .card__add svg { display: block; margin: auto; }
   .cards--compact .card__add .add-badge.is-on { display: flex; }
 }
+
+/* ============================================================
+   v33.1 — обратная связь владельца: компактные кнопки, мобильные
+   модалки без «съезжания», сердечко в размер, FAB-меню
+   ============================================================ */
+
+/* кнопки: аккуратнее и в модалках, и на карточках */
+.btn { min-height: 46px; font-size: 15.5px; padding: 9px 18px; }
+.modal__cta-row .btn {
+  min-height: 44px; font-size: 15px; padding: 8px 14px;
+  border-radius: 12px; font-weight: 700;
+}
+.modal__cta-row .btn--primary { min-width: 0; }
+
+/* сердечко-«только избранное» — в размер кнопки фильтра (50×46) */
+.fav-only { width: 50px; height: 46px; border-radius: 12px; font-size: 20px; }
+
+/* мобильные модалки: контент никогда не вылезает за край */
+@media (max-width: 900px) {
+  .modal__window, .cart__window { max-width: calc(100vw - 20px); min-width: 0; }
+  .modal__scroll, .modal__gallery, .modal__slider, .modal__info,
+  .modal__traits, .modal__traits > div, .modal__traits dt, .modal__traits dd,
+  .cart__scroll, .cart-item, .cart-item__info, .cart-item__name {
+    min-width: 0; max-width: 100%; overflow-wrap: break-word;
+  }
+  .modal__info { padding: 18px 14px 20px; }
+  .modal__traits > div {
+    grid-template-columns: 105px minmax(0, 1fr); gap: 10px;
+    font-size: 14.5px; padding: 8px 0;
+  }
+  .cart__window { padding: 16px 12px 14px; }
+  .cart-item { grid-template-columns: 52px minmax(0, 1fr) auto; gap: 10px; }
+  .cart-item__photo-btn, .cart-item__photo { width: 52px; height: 52px; }
+  .cart-item__name { font-size: 14px; }
+  .cart-item__qty { gap: 6px; }
+  .cart-item__qty button { width: 30px; height: 30px; font-size: 16px; }
+  .cart-item__sum { font-size: 15px; }
+  .cart-item__remove { font-size: 12.5px; }
+}
+
+/* нижняя панель «Позвонить/Каталог/Написать» → компактный FAB с меню */
+.mobile-bar { display: none !important; }
+.action-fab {
+  display: none;
+  position: fixed; right: 12px; bottom: 16px; z-index: 70;
+  width: 52px; height: 52px; border-radius: 50%;
+  border: none; background: var(--forest); color: #fff;
+  box-shadow: 0 10px 26px rgba(19, 33, 26, .45);
+  cursor: pointer; align-items: center; justify-content: center;
+  transition: transform .25s cubic-bezier(.23, 1, .32, 1);
+}
+.action-fab:active { transform: scale(.94); }
+.action-fab .fab-bars { display: flex; flex-direction: column; gap: 4.5px; }
+.action-fab .fab-bars i {
+  display: block; width: 20px; height: 2.6px; border-radius: 2px;
+  background: #fff;
+  transition: transform .25s cubic-bezier(.23, 1, .32, 1), opacity .2s;
+}
+.action-fab.is-open .fab-bars i:nth-child(1) { transform: translateY(7.1px) rotate(45deg); }
+.action-fab.is-open .fab-bars i:nth-child(2) { opacity: 0; }
+.action-fab.is-open .fab-bars i:nth-child(3) { transform: translateY(-7.1px) rotate(-45deg); }
+.action-fab__menu {
+  position: fixed; right: 12px; bottom: 78px; z-index: 70;
+  display: flex; flex-direction: column; gap: 8px;
+  background: var(--paper-card); border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(19, 33, 26, .35);
+  padding: 10px; min-width: 216px;
+}
+.action-fab__menu a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-radius: 12px;
+  background: var(--paper); color: var(--forest);
+  font-weight: 700; font-size: 15px; text-decoration: none;
+}
+.action-fab__menu a:active { background: var(--lime); }
+html.theme-dark .action-fab__menu { background: #26292d; }
+html.theme-dark .action-fab__menu a { background: #1e2124; color: #d6dadd; }
+@media (max-width: 700px) {
+  .action-fab { display: flex; }
+  .to-top { bottom: 82px; }
+}
