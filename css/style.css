@@ -1624,3 +1624,25 @@ html.theme-dark .action-fab__menu a { background: #1e2124; color: #d6dadd; }
   .action-fab { display: flex; }
   .to-top { bottom: 82px; }
 }
+
+/* ============================================================
+   v33.2 — FAB слева (контраст, иконки), десктоп: фасеты + сетка
+   ============================================================ */
+.action-fab { left: 12px; right: auto; border: 2px solid var(--lime); }
+.action-fab .fab-bars i { background: var(--lime); }
+.action-fab__menu { left: 12px; right: auto; border: 1.5px solid var(--lime); }
+.action-fab__menu a svg { width: 20px; height: 20px; flex: none; }
+.action-fab__menu[hidden] { display: none !important; }
+html.theme-dark .action-fab { background: #2c3034; }
+@media (min-width: 701px) {
+  .action-fab, .action-fab__menu { display: none !important; }
+}
+
+/* десктоп: кнопка фильтра и переключатель вида доступны */
+.filter-btn { display: inline-flex; position: relative; }
+.view-switch { display: inline-flex; }
+@media (min-width: 901px) {
+  .cards--compact { grid-template-columns: repeat(4, 1fr); }
+  .cards--compact .card { font-size: 15px; }
+  .filter-sheet__panel { max-width: 460px; margin: 0 auto; border-radius: 20px 20px 0 0; }
+}
