@@ -581,9 +581,12 @@ html.theme-dark .fav-btn { background: rgba(38, 41, 45, .85); color: #e08a9d; }
   color: #1c2a18;
   transform: scale(1.05);
 }
-.filter-sheet__done { width: 100%; }
+.filter-sheet__foot { display: flex; gap: 8px; margin-top: 4px; }
+.filter-sheet__foot .filter-sheet__reset { flex: 0 0 auto; }
+.filter-sheet__foot .filter-sheet__done { flex: 1; width: auto; }
+.facet-empty { font-size: 13px; color: var(--moss); opacity: .75; }
 
-/* ---------- Фасетные фильтры (высота/цветение/свет) ---------- */
+/* ---------- Фасетные фильтры (высота/цветение/свет/USDA) ---------- */
 .facet-group { border-top: 1px solid rgba(30, 50, 38, .12); padding-top: 10px; }
 .facet-title { font-size: 14px; font-weight: 700; color: var(--moss);
   text-transform: uppercase; letter-spacing: .06em; margin: 10px 0 6px; }

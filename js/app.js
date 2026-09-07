@@ -179,7 +179,7 @@
   });
 
   var activeCats = [];
-  var activeFacets = { height: null, bloom: [], light: "" };
+  var activeFacets = { height: null, bloom: [], light: "", zone: null };
   var tabsRoot = document.getElementById("tabs");
 
   function applyCategoryFilter() {
@@ -326,7 +326,7 @@
     });
   }
 
-  /* Фасеты: высота/цветение/свет — строятся из данных каталога */
+  /* Фасеты: высота/цветение/свет/USDA — строятся из данных каталога */
   var FACET_HEIGHTS = [
     { label: "до 0,5 м", min: 0, max: 0.5 },
     { label: "0,5–1 м", min: 0.5, max: 1 },
@@ -336,11 +336,18 @@
   ];
   var FACET_MONTHS = [["июн", "июнь"], ["июл", "июль"], ["авг", "август"], ["сен", "сентябрь"]];
   var FACET_LIGHTS = ["солнце", "солнце/полутень", "тень/полутень"];
+  /* зоны USDA, реально присутствующие в каталоге */
+  var zoneSet = {};
+  products.forEach(function (p) {
+    if (p.facets && p.facets.zone != null) zoneSet[p.facets.zone] = true;
+  });
+  var FACET_ZONES = Object.keys(zoneSet).map(Number).sort(function (a, b) { return a - b; });
 
   function renderFacets() {
     var hBox = document.getElementById("facet-height");
     var bBox = document.getElementById("facet-bloom");
     var lBox = document.getElementById("facet-light");
+    var zBox = document.getElementById("facet-zone");
     if (!hBox) return;
     hBox.innerHTML = FACET_HEIGHTS.map(function (r, i) {
       var on = activeFacets.height && activeFacets.height[0] === r.min && activeFacets.height[1] === r.max;
@@ -380,11 +387,40 @@
         renderCards();
       };
     });
+    /* Зона USDA: чипы только для зон, которые есть в каталоге */
+    if (zBox) {
+      zBox.innerHTML = FACET_ZONES.length ? FACET_ZONES.map(function (z) {
+        var on = activeFacets.zone === z;
+        return '<button type="button" class="facet-chip' + (on ? " is-on" : "") + '" data-z="' + z + '">Зона ' + z + "</button>";
+      }).join("") : '<span class="facet-empty">появится по мере заполнения карточек</span>';
+      zBox.querySelectorAll(".facet-chip").forEach(function (chip) {
+        chip.onclick = function () {
+          var z = +chip.getAttribute("data-z");
+          activeFacets.zone = activeFacets.zone === z ? null : z;
+          renderFacets();
+          renderCards();
+        };
+      });
+    }
   }
 
   function closeFilter() {
     filterSheet.classList.remove("show");
     setTimeout(function () { filterSheet.hidden = true; }, 380);
+  }
+
+  /* «Сбросить всё»: категории + все фасеты — одним нажатием */
+  var resetBtn = document.getElementById("filter-reset");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function () {
+      activeCats = [];
+      activeFacets = { height: null, bloom: [], light: "", zone: null };
+      renderCards();
+      renderTabs();
+      renderFilterPanel();
+      renderFacets();
+      updateFilterBadge();
+    });
   }
 
   if (filterBtn) filterBtn.addEventListener("click", openFilter);
@@ -409,6 +445,7 @@
       if (activeFacets.bloom.length && !(p.facets && activeFacets.bloom.some(function (m) {
             return (p.facets.bloom || []).indexOf(m) !== -1; }))) return false;
       if (activeFacets.light && !(p.facets && p.facets.light === activeFacets.light)) return false;
+      if (activeFacets.zone != null && !(p.facets && p.facets.zone === activeFacets.zone)) return false;
       if (!q) return true;
       var hay = ((p.name || "") + " " + (p.latin || "")).toLowerCase().replace("ё", "е");
       return hay.indexOf(q) !== -1;
