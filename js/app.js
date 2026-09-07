@@ -1723,7 +1723,8 @@ maxBtn.textContent = "Отправить в MAX";
     var txt = button.querySelector(".card__add-txt");
     var badge = button.querySelector(".add-badge");
     if (txt) txt.textContent = n > 0 ? "В корзине " + n : "В корзину";
-    else button.textContent = n > 0 ? "В корзине " + n : "В корзину";
+    else if (!button.querySelector("svg")) button.textContent = n > 0 ? "В корзине " + n : "В корзину";
+    /* кнопка с иконкой (круглая): текст не пишем — бейдж ниже покажет количество */
     if (badge) {
       badge.textContent = n;
       badge.classList.toggle("is-on", n > 0);
@@ -1804,21 +1805,25 @@ maxBtn.textContent = "Отправить в MAX";
 
       var add = document.createElement("button");
       add.type = "button";
-      add.className = "featured-card__add";
+      add.className = "card__add featured-card__add";
+      add.dataset.uid = p.uid;
       if (stockInfo(p).disabled) {
         add.remove();
       } else {
-        add.innerHTML = CART_ICON_SVG;
+        add.innerHTML = CART_ICON_SVG + '<span class="add-badge"></span>';
         add.setAttribute("aria-label", "В корзину: " + p.name);
-        add.addEventListener("click", function () {
+        add.addEventListener("click", function (e) {
           addToCart(p);
+          flyToCart(e, p);              /* та же анимация полёта, что в каталоге */
           add.innerHTML = "✓";
           add.classList.add("is-added");
           setTimeout(function () {
-            add.innerHTML = CART_ICON_SVG;
+            add.innerHTML = CART_ICON_SVG + '<span class="add-badge"></span>';
             add.classList.remove("is-added");
+            refreshAddButton(add, p);   /* бейдж синхронен корзине */
           }, 900);
         });
+        refreshAddButton(add, p);       /* стартовое состояние бейджа */
       }
 
       rowEl.appendChild(price);

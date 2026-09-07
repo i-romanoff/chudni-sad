@@ -1646,3 +1646,11 @@ html.theme-dark .action-fab { background: #2c3034; }
   .cards--compact .card { font-size: 15px; }
   .filter-sheet__panel { max-width: 460px; margin: 0 auto; border-radius: 20px 20px 0 0; }
 }
+
+/* v33.3 — «Хиты сезона»: кнопка корзины идентична каталогной */
+.card__add.featured-card__add {
+  min-height: 40px; width: 44px; height: 44px; padding: 0;
+  position: relative; border-radius: 50%;
+}
+.card__add.featured-card__add svg { display: block; }
+.card__add.featured-card__add .add-badge.is-on { top: -6px; right: -6px; }
