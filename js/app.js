@@ -5,8 +5,7 @@
   var shop = window.CATALOG.shop;
   var categories = window.CATALOG.categories;
 
-  /* Предпросмотр большого ассортимента: каждая позиция показывается
-     DEMO_COPIES раз. Перед публикацией на GitHub Pages поставить 1. */
+  /* Боевой режим витрины: одна позиция каталога = одна карточка. */
   var DEMO_COPIES = 1;
 
   var products = [];
@@ -428,8 +427,19 @@
     filterSheet.addEventListener("click", function (e) {
       if (e.target.closest("[data-filter-close]")) closeFilter();
     });
-    document.getElementById("filter-done").addEventListener("click", closeFilter);
+    var filterDone = document.getElementById("filter-done");
+    if (filterDone) filterDone.addEventListener("click", closeFilter);
   }
+
+  /* Перетаскивание слайдера карточки: ОДНА пара слушателей на страницу
+     (раньше вешались на каждую карточку и накапливались при перерисовках) */
+  var activeCardDrag = null;
+  window.addEventListener("mousemove", function (e) {
+    if (activeCardDrag) activeCardDrag.move(e);
+  }, { passive: true });
+  window.addEventListener("mouseup", function (e) {
+    if (activeCardDrag) { activeCardDrag.up(e); activeCardDrag = null; }
+  });
 
   function renderCards() {
     cardsRoot.innerHTML = "";
@@ -450,6 +460,16 @@
       var hay = ((p.name || "") + " " + (p.latin || "")).toLowerCase().replace("ё", "е");
       return hay.indexOf(q) !== -1;
     });
+
+    if (!visible.length) {
+      var empty = document.createElement("p");
+      empty.className = "catalog-empty";
+      empty.textContent = q
+        ? "Ничего не найдено — попробуйте другой запрос или сбросьте фильтры."
+        : "В этой категории пока пусто.";
+      cardsRoot.appendChild(empty);
+      return;
+    }
 
     visible.forEach(function (product, index) {
       var stock = stockInfo(product);
@@ -563,26 +583,25 @@
         pyStart = e.clientY;
         draggedFar = false;
         e.preventDefault();
-      });
-      window.addEventListener("mousemove", function (e) {
-        if (pxStart === null) return;
-        var dx = e.clientX - pxStart;
-        if (Math.abs(dx) > 5) {
-          draggedFar = true;
-          trackFollow(dx);
-        }
-      });
-      window.addEventListener("mouseup", function (e) {
-        if (pxStart === null) return;
-        var dx = e.clientX - pxStart;
-        pxStart = null;
-        if (draggedFar && slideCount > 1) {
-          if (dx < -40 && slideIdx < slideCount - 1) goToSlide(slideIdx + 1);
-          else if (dx > 40 && slideIdx > 0) goToSlide(slideIdx - 1);
-          else goToSlide(slideIdx);
-          suppressClick = true;
-          setTimeout(function () { suppressClick = false; }, 80);
-        }
+        activeCardDrag = {
+          move: function (e) {
+            if (pxStart === null) return;
+            var dx = e.clientX - pxStart;
+            if (Math.abs(dx) > 5) { draggedFar = true; trackFollow(dx); }
+          },
+          up: function (e) {
+            if (pxStart === null) return;
+            var dx = e.clientX - pxStart;
+            pxStart = null;
+            if (draggedFar && slideCount > 1) {
+              if (dx < -40 && slideIdx < slideCount - 1) goToSlide(slideIdx + 1);
+              else if (dx > 40 && slideIdx > 0) goToSlide(slideIdx - 1);
+              else goToSlide(slideIdx);
+              suppressClick = true;
+              setTimeout(function () { suppressClick = false; }, 80);
+            }
+          }
+        };
       });
 
       var badges = document.createElement("div");
@@ -1189,11 +1208,6 @@
     cartModal.querySelector(".modal__close").focus();
   }
 
-  function closeCart() {
-    cartModal.hidden = true;
-    document.body.style.overflow = "";
-    if (lastFocused) lastFocused.focus();
-  }
 
   /* Карточка товара поверх корзины: флажок заставляет closeModal
      вернуть пользователя в корзину и перерисовать её содержимое —
@@ -1232,12 +1246,17 @@
     checkout.style.opacity = "";
 
     entries.forEach(function (item) {
+      var product = products.find(function (p) { return p.uid === item.uid; });
+      if (!product) {
+        /* товар исчез из каталога — строка не отрисовывается */
+        delete cart[item.uid];
+        return;
+      }
       var row = document.createElement("div");
       row.className = "cart-item";
 
       /* Фото и название кликабельны: карточка товара открывается ПОВЕРХ
          корзины, после закрытия пользователь вернётся в корзину. */
-      var product = products.find(function (p) { return p.uid === item.uid; });
       var photoBtn = document.createElement("button");
       photoBtn.type = "button";
       photoBtn.className = "cart-item__photo-btn";

@@ -1659,3 +1659,14 @@ html.theme-dark .action-fab { background: #2c3034; }
 .card__add.is-sold-out svg { display: block; }
 .cards--compact .card__add.is-sold-out .card__add-txt { display: none; }
 .card__add.is-sold-out:not(.cards--compact .card__add) { font-size: 0; }
+
+/* ---------- Пустое состояние каталога (поиск/фильтры без результатов) ---------- */
+.catalog-empty {
+  grid-column: 1 / -1;
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--moss, #6b7d6f);
+  font-size: 15.5px;
+  background: var(--paper-card, #fff);
+  border-radius: 16px;
+}
