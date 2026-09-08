@@ -1771,7 +1771,7 @@ maxBtn.textContent = "Отправить в MAX";
     var hits = products.filter(function (p) {
       if (!p.featured || seen[p.id]) return false;
       seen[p.id] = 1;
-      return true;
+      return !stockInfo(p).disabled;   /* распроданное не крутим в хитах */
     });
     if (!hits.length) { sec.style.display = "none"; return; }
     hits.forEach(function (p, i) {
@@ -1815,13 +1815,7 @@ maxBtn.textContent = "Отправить в MAX";
         add.addEventListener("click", function (e) {
           addToCart(p);
           flyToCart(e, p);              /* та же анимация полёта, что в каталоге */
-          add.innerHTML = "✓";
-          add.classList.add("is-added");
-          setTimeout(function () {
-            add.innerHTML = CART_ICON_SVG + '<span class="add-badge"></span>';
-            add.classList.remove("is-added");
-            refreshAddButton(add, p);   /* бейдж синхронен корзине */
-          }, 900);
+          refreshAddButton(add, p);     /* бейдж с количеством — синхронен корзине */
         });
         refreshAddButton(add, p);       /* стартовое состояние бейджа */
       }
