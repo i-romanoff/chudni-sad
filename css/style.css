@@ -1654,3 +1654,8 @@ html.theme-dark .action-fab { background: #2c3034; }
 }
 .card__add.featured-card__add svg { display: block; }
 .card__add.featured-card__add .add-badge.is-on { top: -6px; right: -6px; }
+
+/* v33.6 — распродано: иконка корзины задизейблена вместо текста */
+.card__add.is-sold-out svg { display: block; }
+.cards--compact .card__add.is-sold-out .card__add-txt { display: none; }
+.card__add.is-sold-out:not(.cards--compact .card__add) { font-size: 0; }

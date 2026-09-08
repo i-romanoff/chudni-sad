@@ -1,7 +1,7 @@
 /* Service worker сайта «Чудный сад».
    Каталог и страница — network-first (покупатель видит свежий
    ассортименты после публикации), остальное — cache-first. */
-var CACHE = "chudni-sad-v33-2";
+var CACHE = "chudni-sad-v33-3";
 
 var CORE = [
   "./",
