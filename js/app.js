@@ -653,6 +653,7 @@
       price.querySelector("span").textContent = fmtPrice(product);
       price.querySelector("small").textContent = volumeLabel(product);
 
+      if (stock.disabled) price.style.display = "none"; else price.style.display = "";
       var actions = document.createElement("div");
       actions.className = "card__actions";
 
@@ -1065,6 +1066,8 @@
     modalPrice.querySelector("span").textContent = priceText;
     modalPrice.querySelector("small").textContent =
       volumeLabel(product) + (product.age ? " · " + product.age : "");
+    /* распродан — цену не показываем */
+    modalPrice.style.display = product.stockCount === 0 ? "none" : "";
 
     modalDesc.textContent = product.description;
 
@@ -1722,6 +1725,7 @@ maxBtn.textContent = "Отправить в MAX";
        в кнопке; бейдж с числом виден только в компактной карточке. */
     var txt = button.querySelector(".card__add-txt");
     var badge = button.querySelector(".add-badge");
+    if (button.disabled) { button.textContent = "Продано"; return; }
     if (txt) txt.textContent = n > 0 ? "В корзине " + n : "В корзину";
     else if (!button.querySelector("svg")) button.textContent = n > 0 ? "В корзине " + n : "В корзину";
     /* кнопка с иконкой (круглая): текст не пишем — бейдж ниже покажет количество */

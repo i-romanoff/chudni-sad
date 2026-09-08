@@ -52,7 +52,8 @@
       }
       var stock = p.stockCount === 0 ? '<span class="out">Продано</span>'
         : (p.stockCount ? "В наличии: " + p.stockCount + " шт." : "В наличии");
-      html += "<tr><td></td><td>" + p.name + "</td><td class='num'>" + fmt(p.priceMin) +
+      html += "<tr><td></td><td>" + p.name + "</td><td class='num'>" +
+        (p.stockCount === 0 ? "—" : fmt(p.priceMin)) +
         "</td><td>" + stock + "</td></tr>";
     });
     document.getElementById("rows").innerHTML = html;
