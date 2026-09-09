@@ -1670,3 +1670,23 @@ html.theme-dark .action-fab { background: #2c3034; }
   background: var(--paper-card, #fff);
   border-radius: 16px;
 }
+
+/* ---------- Варианты товара (Ozon-стиль) ---------- */
+.var-chip { padding:8px 14px; border-radius:10px; border:1.5px solid var(--line, #d8d8d8);
+  background:transparent; color:var(--ink, #1a2230); cursor:pointer; font-size:14px;
+  transition:all .15s ease; }
+.var-chip:hover { border-color:var(--forest, #2c4a36); }
+.var-chip.on { border-color:var(--forest, #2c4a36); background:var(--forest, #2c4a36);
+  color:#fff; font-weight:600; }
+.var-chip.is-out { opacity:.45; cursor:not-allowed; text-decoration:line-through; }
+.var-chip.is-out.on { opacity:.45; }
+
+/* ---------- Варианты товара (Ozon-стиль) ---------- */
+.var-chip { padding:8px 14px; border-radius:10px; border:1.5px solid var(--line, #d8d8d8);
+  background:transparent; color:var(--ink, #1a2230); cursor:pointer; font-size:14px;
+  transition:all .15s ease; }
+.var-chip:hover { border-color:var(--forest, #2c4a36); }
+.var-chip.on { border-color:var(--forest, #2c4a36); background:var(--forest, #2c4a36);
+  color:#fff; font-weight:600; }
+.var-chip.is-out { opacity:.45; cursor:not-allowed; text-decoration:line-through; }
+.var-chip.is-out.on { opacity:.45; }

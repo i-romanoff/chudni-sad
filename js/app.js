@@ -124,16 +124,19 @@
   }
 
   function addToCart(product) {
-    var existing = cart[product.uid];
+    /* ключ = uid + подпись варианта: два варианта одного растения — разные строки */
+    var key = product.uid + "|" + (product.variantLabel || "");
+    var existing = cart[key];
     if (existing) {
       existing.qty += 1;
     } else {
-      cart[product.uid] = {
+      cart[key] = {
+        key: key,
         uid: product.uid,
         name: product.name,
+        variantLabel: product.variantLabel || "",
         price: product.priceMin,
         priceLabel: fmtPrice(product),
-        range: product.priceMin !== product.priceMax,  /* серая строка-диапазон не нужна при одной цене */
         photo: product.photos[0].file,
         qty: 1,
         addedAt: Date.now()
@@ -1080,7 +1083,7 @@
 
     var priceText = fmtPrice(product);
     if (product.priceMin !== product.priceMax) {
-      priceText += " (в зависимости от размера)";
+      priceText += " (цена зависит от варианта)";
     }
     modalPrice.innerHTML = "<span></span> <small></small>";
     modalPrice.querySelector("span").textContent = priceText;
@@ -1104,6 +1107,38 @@
     });
 
     renderSlider(product);
+    function updateModalForVariant(v) {
+      modalPrice.querySelector("span").textContent = fmtRub(v.price);
+      var sold = v.qty === 0;
+      modalPrice.style.display = sold ? "none" : "";
+      modalAdd.disabled = sold;
+      modalAdd.textContent = sold ? "Продано" : "В корзину";
+      var pseudo = Object.assign({}, product, {
+        uid: product.uid,
+        variantLabel: v.label,
+        priceMin: v.price, priceMax: v.price,
+        name: product.name + " (" + v.label + ")"
+      });
+      modalAdd.onclick = function (event) {
+        if (v.qty === 0) return;
+        addToCart(pseudo);
+        flyToCart(event, product);
+        refreshAddButton(modalAdd, pseudo);
+        modalAdd.classList.add("is-added");
+        setTimeout(function () { modalAdd.classList.remove("is-added"); }, 900);
+      };
+      if (modalBuyNow) {
+        modalBuyNow.onclick = function () {
+          if (v.qty === 0) return;
+          addToCart(pseudo);
+          closeModal(modal);
+          openCart();
+          setTimeout(function () { document.getElementById("cart-checkout").click(); }, 150);
+        };
+        modalBuyNow.style.display = sold ? "none" : "";
+      }
+    }
+
 
     var stock = stockInfo(product);
     modalAdd.disabled = !!stock.disabled;
@@ -1129,6 +1164,41 @@
       };
       modalBuyNow.style.display = stock.disabled ? "none" : "";
     }
+
+    /* Варианты (Ozon-стиль): выбор подписи меняет цену и лимит количества */
+    var variants = product.variants || [];
+    var selIdx = -1;
+    var oldVars = document.getElementById("modal-vars");
+    if (oldVars) oldVars.remove();
+    if (variants.length) {
+      var varBox = document.createElement("div");
+      varBox.id = "modal-vars";
+      varBox.style.cssText = "display:flex;flex-wrap:wrap;gap:8px;margin:10px 0";
+      variants.forEach(function (v, i) {
+        var chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "var-chip" + (v.qty === 0 ? " is-out" : "");
+        chip.textContent = v.label + " · " + Math.round(v.price / 100) + " ₽";
+        chip.onclick = function () {
+          if (v.qty === 0) return;
+          selIdx = i;
+          [...varBox.children].forEach(function (c) { c.classList.remove("on"); });
+          chip.classList.add("on");
+          updateModalForVariant(v);
+        };
+        varBox.appendChild(chip);
+      });
+      modalPrice.parentNode.insertBefore(varBox, modalPrice);
+      /* автовыбор первого доступного варианта */
+      for (var vi = 0; vi < variants.length; vi++) {
+        if (variants[vi].qty > 0) { selIdx = vi; break; }
+      }
+      if (selIdx >= 0) {
+        varBox.children[vi].classList.add("on");
+        updateModalForVariant(variants[selIdx]);
+      }
+    }
+
 
     renderSimilar(product);
 
