@@ -1690,3 +1690,7 @@ html.theme-dark .action-fab { background: #2c3034; }
   color:#fff; font-weight:600; }
 .var-chip.is-out { opacity:.45; cursor:not-allowed; text-decoration:line-through; }
 .var-chip.is-out.on { opacity:.45; }
+
+/* ---------- Сортировка каталога ---------- */
+.cat-sort { padding:8px 12px; border-radius:10px; border:1.5px solid var(--line, #d8d8d8);
+  background:#fff; color:var(--ink, #1a2230); font-size:14px; }

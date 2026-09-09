@@ -692,6 +692,13 @@
         add.style.cursor = "default";
         add.title = "Продано";
         add.classList.add("is-sold-out");
+      } else if (product.variants && product.variants.length) {
+        /* У товара варианты цены (объём/высота) — кнопка открывает карточку выбора */
+        add.querySelector(".card__add-txt").textContent = "Выбрать";
+        add.setAttribute("aria-label", "Выбрать вариант: " + product.name);
+        add.addEventListener("click", function () {
+          openModal(product);
+        });
       } else {
         add.querySelector(".card__add-txt").textContent = "В корзину";
         add.setAttribute("aria-label", "В корзину: " + product.name);
@@ -1143,6 +1150,17 @@
     var stock = stockInfo(product);
     modalAdd.disabled = !!stock.disabled;
     modalAdd.textContent = stock.disabled ? "Продано" : "В корзину";
+    /* Продано: предложение сообщить о поступлении через MAX */
+    var oldNotify = document.getElementById("modal-notify");
+    if (oldNotify) oldNotify.remove();
+    if (stock.disabled && shop.max) {
+      var nb = document.createElement("button");
+      nb.id = "modal-notify";
+      nb.className = "btn btn--primary btn--big";
+      nb.textContent = "Сообщить мне о поступлении";
+      nb.onclick = function () { window.open(shop.max, "_blank", "noopener"); };
+      modalAdd.parentNode.insertBefore(nb, modalAdd.nextSibling);
+    }
     refreshAddButton(modalAdd, product);
     modalAdd.onclick = function (event) {
       if (stock.disabled) return;

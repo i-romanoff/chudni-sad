@@ -102,6 +102,11 @@
         </div>
         <div class="cat-search-wrap">
           <input id="cat-search" class="cat-search" type="search" placeholder="Поиск по каталогу: сорт, вид…" autocomplete="off" aria-label="Поиск по каталогу">
+          <select id="cat-sort" class="cat-sort" aria-label="Сортировка каталога">
+            <option value="name">По названию</option>
+            <option value="price-asc">Сначала дешевле</option>
+            <option value="price-desc">Сначала дороже</option>
+          </select>
         </div>
         <div class="catalog__bar">
           <div class="tabs" id="tabs" role="tablist" aria-label="Категории растений"><!-- вкладки собираются в app.js --></div>
