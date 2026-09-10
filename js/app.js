@@ -103,6 +103,17 @@
     cart = JSON.parse(localStorage.getItem(CART_KEY) || "{}");
   } catch (e) { cart = {}; }
 
+  /* Разовые записи с qty ≤ 0 (баг старой версии) и мусор не переживают загрузку */
+  (function sanitizeCart() {
+    var dirty = false;
+    Object.keys(cart).forEach(function (k) {
+      var it = cart[k];
+      if (!it || !it.uid || !(it.qty > 0)) { delete cart[k]; dirty = true; return; }
+      if (!it.key) { it.key = k; dirty = true; }
+    });
+    if (dirty) { try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {} }
+  })();
+
   function saveCart() {
     try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {}
     updateCartBadge();
@@ -126,8 +137,11 @@
   function addToCart(product) {
     /* ключ = uid + подпись варианта: два варианта одного растения — разные строки */
     var key = product.uid + "|" + (product.variantLabel || "");
+    /* maxQty — снимок остатка на момент добавления (0 — учёт остатков выключен) */
+    var maxQty = product.maxQty || product.stockCount || 0;
     var existing = cart[key];
     if (existing) {
+      if (maxQty && existing.qty >= maxQty) return;
       existing.qty += 1;
     } else {
       cart[key] = {
@@ -139,6 +153,7 @@
         priceLabel: fmtPrice(product),
         photo: product.photos[0].file,
         qty: 1,
+        maxQty: maxQty,
         addedAt: Date.now()
       };
     }
@@ -1124,6 +1139,7 @@
         uid: product.uid,
         variantLabel: v.label,
         priceMin: v.price, priceMax: v.price,
+        maxQty: v.qty,
         name: product.name + " (" + v.label + ")"
       });
       modalAdd.onclick = function (event) {
@@ -1212,8 +1228,13 @@
         if (variants[vi].qty > 0) { selIdx = vi; break; }
       }
       if (selIdx >= 0) {
-        varBox.children[vi].classList.add("on");
+        varBox.children[selIdx].classList.add("on");
         updateModalForVariant(variants[selIdx]);
+      } else {
+        /* все варианты распроданы — базовую кнопку «В корзину» глушим */
+        modalAdd.disabled = true;
+        modalAdd.textContent = "Продано";
+        if (modalBuyNow) modalBuyNow.style.display = "none";
       }
     }
 
@@ -1337,7 +1358,7 @@
       var product = products.find(function (p) { return p.uid === item.uid; });
       if (!product) {
         /* товар исчез из каталога — строка не отрисовывается */
-        delete cart[item.uid];
+        delete cart[item.key];
         return;
       }
       var row = document.createElement("div");
@@ -1401,22 +1422,24 @@
       remove.className = "cart-item__remove";
       remove.textContent = "убрать";
       remove.addEventListener("click", function () {
-        delete cart[item.uid];
+        delete cart[item.key];
         saveCart();
         renderCart();
       });
 
       minus.addEventListener("click", function () {
         item.qty -= 1;
-        if (item.qty <= 0) delete cart[item.uid];
+        if (item.qty <= 0) delete cart[item.key]; /* ноль — товар исчезает из корзины */
         saveCart();
         renderCart();
       });
       plus.addEventListener("click", function () {
+        if (item.maxQty && item.qty >= item.maxQty) return; /* не больше остатка */
         item.qty += 1;
         saveCart();
         renderCart();
       });
+      if (item.maxQty) plus.disabled = item.qty >= item.maxQty;
 
       controls.appendChild(sum);
       controls.appendChild(qty);
@@ -1827,8 +1850,11 @@ maxBtn.textContent = "Отправить в MAX";
   }
 
   function refreshAddButton(button, product) {
-    var entry = cart[product.uid];
-    var n = entry ? entry.qty : 0;
+    /* товар может лежать несколькими вариантами — бейдж показывает сумму */
+    var n = cartEntries().reduce(function (sum, it) {
+      return it.uid === product.uid ? sum + it.qty : sum;
+    }, 0);
+    var hasVars = product.variants && product.variants.length;
     /* У карточек текст живёт в .card__add-txt, у кнопки модалки — прямо
        в кнопке; бейдж с числом виден только в компактной карточке. */
     var txt = button.querySelector(".card__add-txt");
@@ -1837,7 +1863,9 @@ maxBtn.textContent = "Отправить в MAX";
       if (!button.querySelector("svg")) button.textContent = "Продано";
       return;
     }
-    if (txt) txt.textContent = n > 0 ? "В корзине " + n : "В корзину";
+    /* у товара с вариантами кнопка карточки — «Выбрать», количество
+       под ней не пишем: состав корзины виден по бейджу */
+    if (txt) txt.textContent = hasVars ? "Выбрать" : (n > 0 ? "В корзине " + n : "В корзину");
     else if (!button.querySelector("svg")) button.textContent = n > 0 ? "В корзине " + n : "В корзину";
     /* кнопка с иконкой (круглая): текст не пишем — бейдж ниже покажет количество */
     if (badge) {
