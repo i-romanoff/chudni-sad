@@ -837,15 +837,16 @@ html.hide-totop .to-top { display: none !important; }
   color: var(--moss);
 }
 .card__actions { display: flex; gap: 10px; }
-/* Кнопка корзины в карточке: только иконка (как на мобиле) —
-   текст «В корзину» в узких карточках не помещался */
+/* Кнопка корзины в карточке: на всю ширину ряда «цена + кнопка»,
+   с иконкой и текстом — вид одинаковый на ПК и мобиле (v38) */
 .card__add {
-  width: 50px; height: 50px; min-height: 0; padding: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0; position: relative; border-radius: 50%;
+  flex: 1 1 auto; min-width: 0; min-height: 46px; padding: 10px 14px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  font-size: 15.5px; font-weight: 600; white-space: nowrap;
+  position: relative; border-radius: 12px;
 }
-.card__add .card__add-txt { display: none; }
-.card__add svg { display: block; margin: auto; }
+.card__add .card__add-txt { display: inline; }
+.card__add svg { width: 19px; height: 19px; flex: none; }
 .card__add.is-added { background: #2e6b3f; }
 
 /* Бейдж «сколько штук в корзине» на кнопке карточки.
@@ -1561,15 +1562,7 @@ html.theme-dark .agree-row a { color: #e08a9d; }
   }
   .cards--compact .card__price { font-size: 17.5px; }
   .cards--compact .card__price small { display: none; }
-  .cards--compact .card__add {
-    width: 44px; height: 44px; min-height: 44px;
-    padding: 0;
-    border-radius: 50%;
-    flex: none;
-  }
-  .cards--compact .card__add .card__add-txt { display: none; }
-  .cards--compact .card__add svg { display: block; margin: auto; }
-  .cards--compact .card__add .add-badge.is-on { display: flex; }
+  .cards--compact .card__add { border-radius: 12px; }
 }
 
 /* ============================================================

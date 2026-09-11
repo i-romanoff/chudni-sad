@@ -1,5 +1,5 @@
 // Каталог «Чудный сад». СГЕНЕРИРОВАНО программой управления — не редактировать руками.
-// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-11 21:35
+// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-11 23:27
 window.CATALOG = {
   "categories": [
     "Гортензии",
@@ -27,11 +27,22 @@ window.CATALOG = {
       "latin": "Cerasus tomentosa 'Damanka'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 70000,
-      "priceMax": 70000,
-      "variants": [],
+      "priceMax": 80000,
+      "variants": [
+        {
+          "label": "60",
+          "price": 70000,
+          "qty": 10
+        },
+        {
+          "label": "80",
+          "price": 80000,
+          "qty": 10
+        }
+      ],
       "volume": null,
       "age": "",
-      "stockCount": 22,
+      "stockCount": 20,
       "badges": [],
       "preorder": false,
       "short": "Нежная вишня с бархатными плодами и сладким вкусом для вашего сада",
@@ -233,13 +244,24 @@ window.CATALOG = {
     {
       "id": "yablonya-sibirskaya-2026090914474",
       "name": "Яблоня \"Сибирская\"",
-      "latin": "Malus domestica 'Сибирская'",
+      "latin": "Malus domestica 'Sibirskaya'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 80000,
-      "priceMax": 80000,
-      "variants": [],
+      "priceMax": 100000,
+      "variants": [
+        {
+          "label": "70",
+          "price": 80000,
+          "qty": 12
+        },
+        {
+          "label": "80",
+          "price": 100000,
+          "qty": 8
+        }
+      ],
       "volume": null,
-      "age": "",
+      "age": "2",
       "stockCount": 20,
       "badges": [],
       "preorder": false,
@@ -731,8 +753,19 @@ window.CATALOG = {
       "latin": "Hydrangea paniculata 'Little Lime'",
       "category": "Гортензии",
       "priceMin": 75000,
-      "priceMax": 75000,
-      "variants": [],
+      "priceMax": 85000,
+      "variants": [
+        {
+          "label": "60",
+          "price": 75000,
+          "qty": 20
+        },
+        {
+          "label": "70",
+          "price": 85000,
+          "qty": 10
+        }
+      ],
       "volume": null,
       "age": "",
       "stockCount": 30,
