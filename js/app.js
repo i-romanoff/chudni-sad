@@ -67,6 +67,10 @@
   };
 
   var stockInfo = function (product) {
+    /* предзаказ: продаём без остатка — доставка весной */
+    if (product.preorder) {
+      return { text: "Предзаказ — доставка весной", cls: "card__stock card__stock--low", disabled: false };
+    }
     if (product.stockCount === 0) {
       return { text: "Продано", cls: "card__stock card__stock--out", disabled: true };
     }
@@ -149,6 +153,7 @@
         uid: product.uid,
         name: product.name,
         variantLabel: product.variantLabel || "",
+        preorder: !!product.preorder,
         price: product.priceMin,
         priceLabel: fmtPrice(product),
         photo: product.photos[0].file,
@@ -1112,7 +1117,7 @@
     modalPrice.querySelector("small").textContent =
       volumeLabel(product) + (product.age ? " · " + product.age : "");
     /* распродан — цену не показываем */
-    modalPrice.style.display = product.stockCount === 0 ? "none" : "";
+    modalPrice.style.display = (product.stockCount === 0 && !product.preorder) ? "none" : "";
 
     modalDesc.textContent = product.description;
 
@@ -1312,9 +1317,77 @@
     document.querySelectorAll(".fly-img").forEach(function (f) { f.remove(); });
     showCartStep(stepList);
     renderCart();
+    renderUnsent();
     cartModal.hidden = false;
     document.body.style.overflow = "hidden";
     cartModal.querySelector(".modal__close").focus();
+  }
+
+  /* ---------- Неотправленный заказ: сеть моргнула — заказ не теряем ---------- */
+  var UNSENT_KEY = "chudniSadUnsent";
+  function saveUnsent(contact) {
+    try {
+      localStorage.setItem(UNSENT_KEY, JSON.stringify({
+        name: contact.name, phone: contact.phone, text: contact.text,
+        when: new Date().toLocaleString("ru-RU")
+      }));
+    } catch (e) {}
+  }
+  function renderUnsent() {
+    var old = document.getElementById("cart-unsent");
+    if (old) old.remove();
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(UNSENT_KEY) || "null"); } catch (e) {}
+    if (!saved || !saved.text) return;
+    var box = document.createElement("div");
+    box.id = "cart-unsent";
+    box.style.cssText = "background:#fff6e8;border:1.5px solid #e0c97f;border-radius:14px;padding:12px 14px;margin-bottom:12px";
+    var title = document.createElement("b");
+    title.textContent = "Не отправленный заказ";
+    var when = document.createElement("span");
+    when.className = "cart__hint";
+    when.textContent = " (от " + (saved.when || "") + ")";
+    var info = document.createElement("p");
+    info.className = "cart__hint";
+    info.style.margin = "6px 0";
+    info.textContent = (saved.text.split("\n")[1] || saved.text).slice(0, 70) + "…";
+    var retry = document.createElement("button");
+    retry.className = "btn btn--primary btn--big";
+    retry.id = "unsent-retry";
+    retry.type = "button";
+    retry.textContent = "Отправить повторно";
+    var drop = document.createElement("button");
+    drop.className = "btn btn--ghost";
+    drop.id = "unsent-drop";
+    drop.type = "button";
+    drop.textContent = "Удалить";
+    box.appendChild(title); box.appendChild(when);
+    box.appendChild(document.createElement("br"));
+    box.appendChild(info); box.appendChild(retry); box.appendChild(drop);
+    stepList.parentNode.insertBefore(box, stepList);
+    drop.onclick = function () {
+      try { localStorage.removeItem(UNSENT_KEY); } catch (e) {}
+      box.remove();
+    };
+    retry.onclick = function () {
+      retry.disabled = true;
+      retry.textContent = "Отправляем…";
+      var done = function (okSend) {
+        retry.disabled = false;
+        retry.textContent = okSend ? "Отправлено ✓" : "Отправить повторно";
+        if (okSend) {
+          try { localStorage.removeItem(UNSENT_KEY); } catch (e) {}
+          info.textContent = "Заказ отправлен — мы позвоним для подтверждения ✓";
+        }
+      };
+      if (!shop.maxOrderEndpoint) { done(false); return; }
+      fetch(shop.maxOrderEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: saved.name, phone: saved.phone, text: saved.text })
+      }).then(function (res) { done(!!res.ok); })
+        .catch(function () { done(false); });
+    };
   }
 
 
@@ -1460,7 +1533,8 @@
       "Телефон: " + orderPhone.value.trim(), "", "Состав заказа:"];
 
     cartEntries().forEach(function (item, i) {
-      lines.push((i + 1) + ". " + item.name + " — " + item.qty + " шт × " +
+      lines.push((i + 1) + ". " + item.name + (item.preorder ? " (предзаказ — доставка весной)" : "") +
+        " — " + item.qty + " шт × " +
         fmtRub(item.price) + " = " + fmtRub(item.price * item.qty));
     });
     lines.push("", "Итого: " + fmtRub(cartTotalSum()));
@@ -1539,9 +1613,24 @@
     var text = buildOrderText();
     orderPreview.textContent = text;
 
-    /* Отправка: если задан maxOrderEndpoint (релей → бот MAX), кнопка
-       «Отправить в MAX» отправляет заказ автоматически. Пока не задан —
-       копируем текст, покупатель вставит его в чат MAX. */
+    document.getElementById("copy-ok").hidden = true;
+    showCartStep(stepDone);
+
+    /* подтверждение заказа: номер + очистка корзины (вызывается после отправки) */
+    function acceptOrder(sent) {
+      var d = new Date();
+      var num = "ЧС-" + ("0" + d.getFullYear() % 100).slice(-2) +
+        ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2) + "-" +
+        ("00" + d.getSeconds() % 1000).slice(-3);
+      document.getElementById("order-num").textContent = num;
+      document.getElementById("order-phone-echo").textContent = orderPhone.value.trim();
+      document.getElementById("order-accepted").hidden = false;
+      document.getElementById("cart-step-done").hidden = true;   // прячем кнопки отправки
+      document.getElementById("copy-ok").hidden = true;
+      cart = {};                                                 // корзина исполнена
+      try { localStorage.setItem(CART_KEY, "{}"); } catch (e) {}
+      updateCartBadge();
+    }
     var maxBtn = document.getElementById("order-max");
     if (shop.maxOrderEndpoint) {
       maxBtn.classList.remove("is-disabled");
@@ -1564,13 +1653,11 @@
           })
         }).then(function (res) {
           if (!res.ok) throw new Error("HTTP " + res.status);
-          document.getElementById("copy-ok").textContent =
-            "Заказ отправлен! Мы свяжемся с вами по телефону.";
-          document.getElementById("copy-ok").hidden = false;
-          maxBtn.textContent = "Отправлено ✓";
+          acceptOrder(true);
         }).catch(function () {
+          saveUnsent({ name: orderName.value.trim(), phone: orderPhone.value.trim(), text: text });
           document.getElementById("copy-ok").textContent =
-            "Не получилось отправить. Скопируйте текст заказа и отправьте в чат MAX.";
+            "Не получилось отправить. Заказ сохранён — откройте корзину позже и нажмите «Отправить повторно».";
           document.getElementById("copy-ok").hidden = false;
           maxBtn.textContent = "Отправить в MAX";
         });
@@ -1578,7 +1665,7 @@
     } else {
       maxBtn.classList.add("is-disabled");
       maxBtn.setAttribute("aria-disabled", "true");
-maxBtn.textContent = "Отправить в MAX";
+      maxBtn.textContent = "Отправить в MAX";
     }
 
     document.getElementById("copy-ok").hidden = true;

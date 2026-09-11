@@ -50,10 +50,14 @@
         lastCat = p.category || "Прочее";
         html += '<tr class="cat"><td colspan="4">' + lastCat + "</td></tr>";
       }
-      var stock = p.stockCount === 0 ? '<span class="out">Продано</span>'
-        : (p.stockCount ? "В наличии: " + p.stockCount + " шт." : "В наличии");
-      html += "<tr><td></td><td>" + p.name + "</td><td class='num'>" +
-        (p.stockCount === 0 ? "—" : fmt(p.priceMin)) +
+      var preorder = !!p.preorder;
+      var priceTxt = (p.priceMin !== p.priceMax)
+        ? fmt(p.priceMin) + "–" + fmt(p.priceMax)
+        : (p.stockCount === 0 && !preorder ? "—" : fmt(p.priceMin));
+      var stock = preorder ? '<span style="color:#2e6b2e">Предзаказ — доставка весной</span>'
+        : (p.stockCount === 0 ? '<span class="out">Продано</span>'
+        : (p.stockCount ? "В наличии: " + p.stockCount + " шт." : "В наличии"));
+      html += "<tr><td></td><td>" + p.name + "</td><td class='num'>" + priceTxt +
         "</td><td>" + stock + "</td></tr>";
     });
     document.getElementById("rows").innerHTML = html;

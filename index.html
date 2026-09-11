@@ -38,7 +38,15 @@
       <nav class="header__nav" aria-label="Основная навигация">
         <a href="#catalog">Каталог</a>
         <a href="#care">Как купить</a>
+        <a href="guarantees.html">Гарантии</a>
+        <a href="articles.html">Посадка и уход</a>
         <a href="#contacts">Контакты</a>
+        <a href="https://max.ru/channel_beautifulGarden" target="_blank" rel="noopener noreferrer" aria-label="Канал в MAX" title="Канал в MAX">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="#8770fe"/><path d="M6 8h12v8h-6.5L8 19v-3H6z" fill="#fff"/></svg>
+        </a>
+        <a href="https://t.me/chydni_sad" target="_blank" rel="noopener noreferrer" aria-label="Канал в Telegram" title="Канал в Telegram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#4aa9e0"><path d="M21.9 3.4 2.5 10.9c-.9.35-.88 1.63.03 1.95l4.9 1.7 1.9 5.8c.27.83 1.34 1.02 1.88.33l2.7-3.5 4.9 3.6c.78.57 1.9.15 2.1-.8l3-14.9c.24-1.1-.85-2-1.98-1.62zM8.7 13.3l9.2-5.8c.4-.25.8.3.45.62l-7.5 6.8c-.26.24-.43.57-.48.93l-.25 1.83c-.03.25-.38.28-.45.04l-1.05-3.45c-.12-.4.05-.83.4-1.06z"/></svg>
+        </a>
       </nav>
 
       <div class="header__tools">
@@ -171,9 +179,19 @@
     <div class="container footer__inner">
       <span>© <span id="year"></span> Питомник «Чудный сад»</span>
       <a href="about.html" class="footer__doc" target="_blank" rel="noopener noreferrer">О питомнике</a>
+      <a href="guarantees.html" class="footer__doc" target="_blank" rel="noopener noreferrer">Гарантии</a>
+      <a href="articles.html" class="footer__doc" target="_blank" rel="noopener noreferrer">Посадка и уход</a>
       <a href="price.html" class="footer__doc" target="_blank" rel="noopener noreferrer">Прайс-лист</a>
       <a href="offer.html" class="footer__doc" target="_blank" rel="noopener noreferrer">Оферта</a>
       <a href="privacy.html" class="footer__doc" target="_blank" rel="noopener noreferrer">Политика ПДн</a>
+      <span style="display:inline-flex; gap:10px; align-items:center">
+        <a href="https://max.ru/channel_beautifulGarden" target="_blank" rel="noopener noreferrer" aria-label="Канал в MAX" title="Канал в MAX">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="#8770fe"/><path d="M6 8h12v8h-6.5L8 19v-3H6z" fill="#fff"/></svg>
+        </a>
+        <a href="https://t.me/chydni_sad" target="_blank" rel="noopener noreferrer" aria-label="Канал в Telegram" title="Канал в Telegram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#4aa9e0"><path d="M21.9 3.4 2.5 10.9c-.9.35-.88 1.63.03 1.95l4.9 1.7 1.9 5.8c.27.83 1.34 1.02 1.88.33l2.7-3.5 4.9 3.6c.78.57 1.9.15 2.1-.8l3-14.9c.24-1.1-.85-2-1.98-1.62zM8.7 13.3l9.2-5.8c.4-.25.8.3.45.62l-7.5 6.8c-.26.24-.43.57-.48.93l-.25 1.83c-.03.25-.38.28-.45.04l-1.05-3.45c-.12-.4.05-.83.4-1.06z"/></svg>
+        </a>
+      </span>
       <span class="footer__domain">chudni-sad.ru</span>
     </div>
   </footer>
@@ -272,6 +290,12 @@
           <button class="btn btn--primary btn--big" id="order-copy" type="button">Скопировать текст заказа</button>
           <a class="btn btn--big cart__max is-disabled" id="order-max" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true">Отправить в MAX</a>        </div>
         <p class="cart__hint cart__hint--ok" id="copy-ok" hidden>Текст скопирован — вставьте его в чат в MAX.</p>
+        <div id="order-accepted" hidden>
+          <h3 class="cart__title">Заказ принят! 🌿</h3>
+          <p class="cart__hint">Номер заказа: <b id="order-num">—</b></p>
+          <p class="cart__hint">Мы позвоним по телефону <b id="order-phone-echo"></b>, всё подтвердим и договоримся о встрече.</p>
+          <button class="btn btn--primary btn--big" id="order-finish" type="button">Отлично, жду звонка</button>
+        </div>
       </div>
 
       </div>
