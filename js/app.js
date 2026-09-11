@@ -1987,8 +1987,10 @@
   var barMax = document.getElementById("bar-max");
   if (barMax) barMax.href = shop.max;
 
-  var phoneLabel = document.getElementById("contacts-phone-label");
-  if (phoneLabel) phoneLabel.textContent = shop.phone + " · " + shop.contactName;
+  var barMax = document.getElementById("bar-max");
+  if (barMax) barMax.href = shop.max;
+
+  /* строку «телефон · имя» убрали по просьбе хозяйки — телефон есть в кнопке «Позвонить» */
 
   document.getElementById("year").textContent = new Date().getFullYear();
 
