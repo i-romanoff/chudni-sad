@@ -1,5 +1,5 @@
 // Каталог «Чудный сад». СГЕНЕРИРОВАНО программой управления — не редактировать руками.
-// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-11 17:31
+// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-11 21:35
 window.CATALOG = {
   "categories": [
     "Гортензии",
@@ -96,7 +96,7 @@ window.CATALOG = {
           "alt": "Вишня войлочная \"Даманка\""
         }
       ],
-      "featured": false
+      "featured": true
     },
     {
       "id": "grusha-nevelichka-dyuymovochka-2026090914474",
@@ -151,7 +151,7 @@ window.CATALOG = {
           "alt": "Груша Невеличка \"Дюймовочка\""
         }
       ],
-      "featured": false
+      "featured": true
     },
     {
       "id": "sliva-pamyati-putova-2026090914474",
@@ -306,7 +306,7 @@ window.CATALOG = {
           "alt": "Яблоня \"Сибирская\""
         }
       ],
-      "featured": false
+      "featured": true
     },
     {
       "id": "yablonya-polukulturnaya-zavetnoe-2026090914474",
@@ -731,22 +731,11 @@ window.CATALOG = {
       "latin": "Hydrangea paniculata 'Little Lime'",
       "category": "Гортензии",
       "priceMin": 75000,
-      "priceMax": 95000,
-      "variants": [
-        {
-          "label": "C2 · высота 40–60 см",
-          "price": 75000,
-          "qty": 6
-        },
-        {
-          "label": "C5 · высота 60–80 см",
-          "price": 95000,
-          "qty": 6
-        }
-      ],
+      "priceMax": 75000,
+      "variants": [],
       "volume": null,
       "age": "",
-      "stockCount": 12,
+      "stockCount": 30,
       "badges": [],
       "preorder": false,
       "short": "Крупные соцветия до 30 см с июля по сентябрь наполнят сад нежным лаймовым цветом.",
@@ -812,7 +801,7 @@ window.CATALOG = {
           "alt": "Гортензия метельчатая Литтл Лайм"
         }
       ],
-      "featured": false
+      "featured": true
     }
   ]
 };

@@ -75,10 +75,10 @@
       return { text: "Продано", cls: "card__stock card__stock--out", disabled: true };
     }
     if (product.stockCount === 1) {
-      return { text: "Остался 1 шт", cls: "card__stock card__stock--low" };
+      return { text: "Остался последний", cls: "card__stock card__stock--low" };
     }
     if (product.stockCount) {
-      return { text: "В наличии · " + product.stockCount + " шт", cls: "card__stock" };
+      return { text: "В наличии", cls: "card__stock" };
     }
     return { text: "В наличии", cls: "card__stock" };
   };
@@ -2005,6 +2005,11 @@
       seen[p.id] = 1;
       return !stockInfo(p).disabled;   /* распроданное не крутим в хитах */
     });
+    /* пока нет отмеченных «хитов» — лента показывает первые товары с фото,
+       чтобы блок не пропадал из виду */
+    if (!hits.length) {
+      hits = products.filter(function (p) { return (p.photos || []).length; }).slice(0, 8);
+    }
     if (!hits.length) { sec.style.display = "none"; return; }
     hits.forEach(function (p, i) {
       var card = document.createElement("article");
