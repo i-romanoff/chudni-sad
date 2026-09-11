@@ -70,7 +70,6 @@ img { display: block; max-width: 100%; }
   .btn--primary:hover { background: var(--graffiti-pink); box-shadow: none; transform: none; }
   .btn--ghost:hover { background: transparent; color: var(--forest); }
   .social-btn:hover { transform: none; box-shadow: none; }
-  .cart-btn:hover { background: var(--paper-card); color: var(--forest); }
   .tab:hover { background: transparent; }
   .to-top:hover { background: var(--forest); }
 }
@@ -196,14 +195,14 @@ img { display: block; max-width: 100%; }
 html.theme-dark .theme-btn .icon-moon { display: none; }
 html.theme-dark .theme-btn .icon-sun { display: block; }
 
-/* Кнопка корзины в шапке */
+/* Кнопка корзины в шапке: прозрачная заливка — как у кнопки темы */
 .cart-btn {
   position: relative;
   display: inline-flex; align-items: center; justify-content: center;
   width: 56px; height: 56px;
   border-radius: 50%;
   border: 2.5px solid var(--forest);
-  background: var(--paper-card);
+  background: transparent;
   color: var(--forest);
   cursor: pointer;
   transition: background-color .18s ease, color .18s ease, transform .18s ease;
@@ -630,6 +629,7 @@ html.theme-dark .filter-row__check { border-color: rgba(214, 218, 221, .4); }
   box-shadow: 0 4px 16px rgba(19, 33, 26, .1);
   overflow: hidden;
   display: flex; flex-direction: column;
+  cursor: pointer;
   animation: card-in .4s cubic-bezier(.23, 1, .32, 1) backwards;
 }
 .featured-card__photo {
@@ -713,10 +713,8 @@ html.hide-totop .to-top { display: none !important; }
   display: flex; flex-direction: column;
 }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
-/* В широком виде вся карточка «нажимается» в карточку товара */
-@media (min-width: 701px) {
-  .card { cursor: pointer; }
-}
+/* Вся карточка «нажимается» в карточку товара — в любой сетке */
+.card { cursor: pointer; }
 
 .card__photo-btn {
   display: block;
@@ -783,13 +781,25 @@ html.hide-totop .to-top { display: none !important; }
 .card__promo--promo { background: var(--lime); color: var(--forest-deep); }
 .card__promo--soon { background: var(--tag-white); color: var(--forest); border: 2px dashed var(--moss); }
 
+/* Бейдж наличия: акцентная зелёная пилюля с точкой-индикатором —
+   «живой» товар видно с первого взгляда (розовая --low и тёмная --out
+   остаются контрастными парами) */
 .card__stock {
   position: absolute; top: 12px; right: 12px;
-  font-size: 14px; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13.5px; font-weight: 700; letter-spacing: .02em;
   padding: 6px 12px; border-radius: 999px;
-  background: var(--tag-white); color: var(--forest);
-  box-shadow: 0 3px 10px rgba(19, 33, 26, .25);
+  background: #2e6b3f; color: #fff;
+  box-shadow: 0 3px 10px rgba(19, 33, 26, .3);
 }
+.card__stock::before {
+  content: "";
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .28);
+  flex: none;
+}
+.card__stock--low::before, .card__stock--out::before { display: none; }
 .card__stock--low { background: var(--graffiti-pink); color: #fff; }
 .card__stock--out { background: rgba(19, 33, 26, .8); color: #fff; }
 
@@ -977,7 +987,6 @@ html.theme-dark .skip-link { background: #2c3034; }
 /* Хардкоды светлой темы, требующие тёмных значений */
 html.theme-dark .header { background: rgba(30, 33, 36, .97); border-bottom-color: rgba(214, 218, 221, .14); }
 html.theme-dark .eyebrow { color: #e08a9d; }
-html.theme-dark .card__stock { color: #1e2124; }
 html.theme-dark .card__promo--soon { color: #1e2124; border-color: #8a939a; }
 html.theme-dark .tag__latin { color: #5a6350; }
 html.theme-dark .tag__hand { color: #1f2916; }
@@ -1702,16 +1711,58 @@ html.theme-dark .action-fab { background: #2c3034; }
 .var-chip.is-out { opacity:.45; cursor:not-allowed; text-decoration:line-through; }
 .var-chip.is-out.on { opacity:.45; }
 
-/* ---------- Варианты товара (Ozon-стиль) ---------- */
-.var-chip { padding:8px 14px; border-radius:10px; border:1.5px solid var(--line, #d8d8d8);
-  background:transparent; color:var(--ink, #1a2230); cursor:pointer; font-size:14px;
-  transition:all .15s ease; }
-.var-chip:hover { border-color:var(--forest, #2c4a36); }
-.var-chip.on { border-color:var(--forest, #2c4a36); background:var(--forest, #2c4a36);
-  color:#fff; font-weight:600; }
-.var-chip.is-out { opacity:.45; cursor:not-allowed; text-decoration:line-through; }
-.var-chip.is-out.on { opacity:.45; }
+/* ============================================================
+   v38 — единая КРУГЛАЯ кнопка корзины: каталог (крупная и
+   компактная сетки) и «Хиты сезона», ПК и телефон — один стиль.
+   Есть варианты у товара — кнопка открывает карточку выбора,
+   нет — товар сразу летит в корзину (логика в app.js).
+   Текст кнопки скрыт, имя для скринридеров — в aria-label.
+   ============================================================ */
+.card__add,
+.card__add.featured-card__add {
+  flex: none; width: 44px; min-width: 44px; height: 44px; min-height: 44px;
+  padding: 0; gap: 0;
+  position: relative; border-radius: 50%;
+}
+.card__add .card__add-txt { display: none; }
+.card__add svg { display: block; width: 21px; height: 21px; }
+.cards--compact .card__add { border-radius: 50%; }
+@media (max-width: 700px) {
+  .card__actions { justify-content: flex-end; }
+  .card__actions .btn { width: auto; }
+  .card__actions .card__add { width: 44px; min-width: 44px; }
+}
 
-/* ---------- Сортировка каталога ---------- */
-.cat-sort { padding:8px 12px; border-radius:10px; border:1.5px solid var(--line, #d8d8d8);
-  background:var(--paper-card, #fff); color:var(--ink, #1a2230); font-size:14px; }
+/* Тач-устройства: hover «залипает» после тапа — кнопки шапки возвращаем
+   к прозрачному покою. Блок в КОНЦЕ файла: перебивает и базовые :hover
+   (заливка var(--forest)), и их тёмную тему (та же специфичность, позже
+   по порядку). Без этого кнопка темы на телефоне остаётся чёрной после
+   переключения светлую→тёмную→светлую. */
+@media (hover: none) {
+  .theme-btn:hover,
+  .cart-btn:hover { background: transparent; color: var(--forest); }
+  html.theme-dark .theme-btn:hover,
+  html.theme-dark .cart-btn:hover {
+    background: transparent; border-color: var(--forest); color: var(--forest);
+  }
+}
+
+/* Подтверждение заказа: основной текст крупнее, подпись — рукописная */
+.cart__hint--main { font-size: 17px; font-weight: 500; color: var(--ink); }
+.cart__hint--sign {
+  font-family: var(--font-hand);
+  font-size: 24px;
+  color: var(--forest);
+  margin-top: 14px;
+}
+
+/* Шапка юридических/информационных страниц: логотип как на главной */
+.doc-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 24px;
+}
+.doc-head .doc-back { margin-bottom: 0; }
+
+/* Компактная сетка: бейдж наличия меньше, точка тоже */
+.cards--compact .card__stock { gap: 4px; }
+.cards--compact .card__stock::before { width: 5px; height: 5px; }

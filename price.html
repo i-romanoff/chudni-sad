@@ -5,32 +5,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Прайс-лист — Питомник «Чудный сад»</title>
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prata&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    /* Тема до первой отрисовки — как на главной */
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem("chudniSadTheme"); } catch (e) {}
+      if (t !== "dark" && t !== "light") {
+        t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      if (t === "dark") document.documentElement.classList.add("theme-dark");
+    })();
+  </script>
   <style>
-    body { font-family: "Roboto", Arial, sans-serif; color: #1a1f16; margin: 24px; }
-    h1 { font-size: 22px; margin: 0 0 2px; }
-    .sub { color: #5b6a5b; font-size: 13px; margin-bottom: 16px; }
+    .price-page { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+    h1 { font-family: var(--font-display); font-size: clamp(26px, 4vw, 38px);
+      color: var(--forest); margin-bottom: 6px; }
+    .sub { color: var(--moss); font-size: 15px; margin-bottom: 18px; }
     table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #c9d2c4; padding: 6px 10px; font-size: 14px; text-align: left; }
-    th { background: #eef3e4; }
-    td.num { text-align: right; font-variant-numeric: tabular-nums; }
-    .out { color: #a12f47; }
-    tr.cat td { background: #f2f6ea; font-weight: 700; }
-    .noprint { margin-bottom: 14px; }
-    button { padding: 8px 16px; border-radius: 8px; border: 1px solid #888; cursor: pointer; }
-    @media print { .noprint { display: none; } body { margin: 8px; } }
+    th, td { border: 1px solid rgba(30, 50, 38, .25); padding: 7px 11px;
+      font-size: 14.5px; text-align: left; }
+    th { background: #eef3e4; color: var(--forest-deep); }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    tr.cat td { background: #f2f6ea; font-weight: 700; color: var(--forest-deep); }
+    .price-page footer { text-align: center; padding: 24px; color: var(--moss); font-size: 14px; }
+    @media print {
+      .noprint, .price-page header .doc-back { display: none; }
+      .price-page { padding: 8px; }
+      body { padding-bottom: 0; }
+    }
   </style>
 </head>
 <body>
-  <div class="noprint"><button onclick="window.print()">🖨 Печать / PDF</button></div>
-  <h1>Прайс-лист — питомник «Чудный сад»</h1>
-  <p class="sub">chudni-sad.ru · цены актуальны на <span id="gen-date"></span> · тел. +7 924 707-14-00</p>
-  <table>
-    <thead><tr><th>Категория</th><th>Растение</th><th>Цена</th><th>Наличие</th></tr></thead>
-    <tbody id="rows"></tbody>
-  </table>
+  <div class="price-page">
+    <header class="doc-head">
+      <a class="brand" href="index.html" aria-label="Чудный сад — на главную">
+        <img class="brand__logo" src="assets/img/logo.png" alt="Логотип питомника «Чудный сад»: ирис" width="56" height="56">
+        <span class="brand__name">Чудный&nbsp;сад</span>
+      </a>
+      <a class="doc-back" href="index.html">← В каталог</a>
+    </header>
+
+    <h1>Прайс-лист</h1>
+    <p class="sub" id="price-sub">Питомник «Чудный сад»</p>
+
+    <table>
+      <thead><tr><th>Растение</th><th style="width:130px">Цена</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+
+    <div class="noprint" style="margin-top:18px">
+      <button onclick="window.print()" style="padding:9px 18px;border-radius:10px;border:2px solid var(--forest);background:transparent;color:var(--forest);font-weight:700;cursor:pointer">🖨 Печать / PDF</button>
+    </div>
+  </div>
+
+  <footer>© <span id="year">2026</span> Питомник «Чудный сад»</footer>
+
   <script src="data/catalog.js"></script>
   <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    /* Подзаголовок: дата, С КОТОРОЙ действуют цены (ставится программой
+       управления при выгрузке каталога), и телефон питомника */
+    (function () {
+      var gen = (window.CATALOG.generatedAt || "").slice(0, 10);
+      var phone = (window.CATALOG.shop || {}).phone || "";
+      var txt = "";
+      if (/^\d{4}-\d{2}-\d{2}$/.test(gen)) {
+        var q = gen.split("-");
+        txt = "Цены действуют с " + q[2] + "." + q[1] + "." + q[0];
+      }
+      if (phone) txt += (txt ? " · " : "") + "тел. " + phone;
+      document.getElementById("price-sub").textContent = txt || "Питомник «Чудный сад»";
+    })();
+
+    /* Таблица: названия и цены, по вариантам (вариант — отдельной строкой) */
     var seen = {};
     var list = [];
     (window.CATALOG.products || []).forEach(function (p) {
@@ -42,26 +94,25 @@
       return (a.category || "").localeCompare(b.category || "", "ru") ||
              (a.name || "").localeCompare(b.name || "", "ru");
     });
+    var fmt = function (kop) { return Math.round(kop / 100).toLocaleString("ru-RU") + " ₽"; };
     var lastCat = null;
     var html = "";
-    var fmt = function (kop) { return Math.round(kop / 100).toLocaleString("ru-RU") + " ₽"; };
     list.forEach(function (p) {
       if (p.category !== lastCat) {
         lastCat = p.category || "Прочее";
-        html += '<tr class="cat"><td colspan="4">' + lastCat + "</td></tr>";
+        html += '<tr class="cat"><td colspan="2">' + lastCat + "</td></tr>";
       }
-      var preorder = !!p.preorder;
-      var priceTxt = (p.priceMin !== p.priceMax)
-        ? fmt(p.priceMin) + "–" + fmt(p.priceMax)
-        : (p.stockCount === 0 && !preorder ? "—" : fmt(p.priceMin));
-      var stock = preorder ? '<span style="color:#2e6b2e">Предзаказ — доставка весной</span>'
-        : (p.stockCount === 0 ? '<span class="out">Продано</span>'
-        : (p.stockCount ? "В наличии: " + p.stockCount + " шт." : "В наличии"));
-      html += "<tr><td></td><td>" + p.name + "</td><td class='num'>" + priceTxt +
-        "</td><td>" + stock + "</td></tr>";
+      var vs = p.variants || [];
+      if (vs.length) {
+        vs.forEach(function (v) {
+          html += "<tr><td>" + p.name + " — " + v.label + "</td><td class='num'>" + fmt(v.price) + "</td></tr>";
+        });
+      } else {
+        var priceTxt = (p.priceMin !== p.priceMax) ? fmt(p.priceMin) + "–" + fmt(p.priceMax) : fmt(p.priceMin);
+        html += "<tr><td>" + p.name + "</td><td class='num'>" + priceTxt + "</td></tr>";
+      }
     });
     document.getElementById("rows").innerHTML = html;
-    document.getElementById("gen-date").textContent = new Date().toLocaleDateString("ru-RU");
   </script>
 </body>
 </html>

@@ -739,11 +739,9 @@
       body.appendChild(row);
       card.appendChild(body);
 
-      /* В широком виде (1 колонка) карточка открывается целиком: клик по
-         любому месту, кроме кнопки «В корзину». В компактном (2 колонки)
-         остаётся только фото — там тело маленькое и кнопка занимает четверть. */
+      /* Карточка открывается кликом по любому месту в ОБОИХ видах сетки —
+         кроме кнопок: фото/корзина/избранное обрабатывают клик сами. */
       card.addEventListener("click", function (event) {
-        if (viewMode !== "comfort") return;
         if (event.target.closest("button")) return;
         openModal(product);
       });
@@ -1402,8 +1400,10 @@
     openModal(product);
   }
 
+  var orderAccepted = document.getElementById("order-accepted");
+
   function showCartStep(step) {
-    [stepList, stepForm, stepDone].forEach(function (s) { s.hidden = true; });
+    [stepList, stepForm, stepDone, orderAccepted].forEach(function (s) { s.hidden = true; });
     step.hidden = false;
     cartModal.querySelector(".modal__close").focus();
   }
@@ -1630,6 +1630,7 @@
       cart = {};                                                 // корзина исполнена
       try { localStorage.setItem(CART_KEY, "{}"); } catch (e) {}
       updateCartBadge();
+      refreshAllAddButtons();   // бейджи на карточках гаснут — корзина пуста
     }
     var maxBtn = document.getElementById("order-max");
     if (shop.maxOrderEndpoint) {
@@ -1689,6 +1690,12 @@
   });
 
   document.getElementById("cart-open").addEventListener("click", openCart);
+
+  /* «Отлично, жду звонка» — закрыть корзину; при следующем открытии
+     showCartStep сам скроет подтверждение и покажет список */
+  document.getElementById("order-finish").addEventListener("click", function () {
+    closeModal(cartModal);
+  });
 
   /* ================= Hero: автослайд-шоу фотографий ================= */
   /* Случайный порядок, кроссфейд 600мс + лёгкий зум (стиль Ковальски:
@@ -2044,18 +2051,22 @@
       add.type = "button";
       add.className = "card__add featured-card__add";
       add.dataset.uid = p.uid;
+      add.innerHTML = CART_ICON_SVG + '<span class="add-badge"></span>';
       if (stockInfo(p).disabled) {
         add.remove();
+      } else if (p.variants && p.variants.length) {
+        /* как в каталоге: у товара варианты — кнопка открывает карточку выбора */
+        add.setAttribute("aria-label", "Выбрать вариант: " + p.name);
+        add.addEventListener("click", function () { openModal(p); });
       } else {
-        add.innerHTML = CART_ICON_SVG + '<span class="add-badge"></span>';
         add.setAttribute("aria-label", "В корзину: " + p.name);
         add.addEventListener("click", function (e) {
           addToCart(p);
           flyToCart(e, p);              /* та же анимация полёта, что в каталоге */
           refreshAddButton(add, p);     /* бейдж с количеством — синхронен корзине */
         });
-        refreshAddButton(add, p);       /* стартовое состояние бейджа */
       }
+      refreshAddButton(add, p);         /* стартовое состояние бейджа */
 
       rowEl.appendChild(price);
       rowEl.appendChild(add);
@@ -2063,6 +2074,11 @@
       body.appendChild(rowEl);
       card.appendChild(photo);
       card.appendChild(body);
+      /* клик по всей мини-карточке открывает товар (кнопки — сами за себя) */
+      card.addEventListener("click", function (e) {
+        if (e.target.closest("button")) return;
+        openModal(p);
+      });
       row.appendChild(card);
     });
   }

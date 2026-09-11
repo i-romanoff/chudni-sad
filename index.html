@@ -104,11 +104,6 @@
         </div>
         <div class="cat-search-wrap">
           <input id="cat-search" class="cat-search" type="search" placeholder="Поиск по каталогу: сорт, вид…" autocomplete="off" aria-label="Поиск по каталогу">
-          <select id="cat-sort" class="cat-sort" aria-label="Сортировка каталога">
-            <option value="name">По названию</option>
-            <option value="price-asc">Сначала дешевле</option>
-            <option value="price-desc">Сначала дороже</option>
-          </select>
         </div>
         <div class="catalog__bar">
           <div class="tabs" id="tabs" role="tablist" aria-label="Категории растений"><!-- вкладки собираются в app.js --></div>
@@ -173,22 +168,21 @@
   </main>
 
   <footer class="footer">
-    <div class="container footer__inner">
-      <span>© <span id="year"></span> Питомник «Чудный сад»</span>
-      <span class="footer__domain">chudni-sad.ru</span>
-    </div>
     <div class="container">
       <nav class="footer-menu" aria-label="Ссылки">
-        <a href="about.html">О питомнике</a><span class="fm-sep"></span>
-        <a href="guarantees.html">Гарантии</a><span class="fm-sep"></span>
-        <a href="articles.html">Посадка и уход</a><span class="fm-sep"></span>
-        <a href="price.html">Прайс-лист</a><span class="fm-sep"></span>
-        <a href="offer.html">Оферта</a><span class="fm-sep"></span>
+        <a href="about.html">О питомнике</a>
+        <a href="guarantees.html">Гарантии</a>
+        <a href="articles.html">Посадка и уход</a>
+        <a href="price.html">Прайс-лист</a>
+        <a href="offer.html">Оферта</a>
         <a href="privacy.html">Политика ПДн</a>
       </nav>
     </div>
     <div class="container" style="margin-top:14px">
-      <div class="ymap"><iframe src="https://yandex.ru/map-widget/v1/?ll=104.294476%2C52.427236&z=15&pt=104.294476,52.427236,pm2rdm" width="100%" height="320" frameborder="0" allowfullscreen="true" loading="lazy" title="Мы на карте"></iframe></div>
+      <div class="ymap"><iframe src="https://yandex.ru/map-widget/v1/?ll=104.294476%2C52.427236&amp;z=15&amp;pt=104.294476,52.427236,pm2rdm" width="100%" height="320" frameborder="0" allowfullscreen="true" loading="lazy" title="Мы на карте"></iframe></div>
+    </div>
+    <div class="container footer__inner">
+      <span>© <span id="year">2026</span> Питомник «Чудный сад»</span>
     </div>
   </footer>
 
@@ -286,12 +280,18 @@
           <button class="btn btn--primary btn--big" id="order-copy" type="button">Скопировать текст заказа</button>
           <a class="btn btn--big cart__max is-disabled" id="order-max" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true">Отправить в MAX</a>        </div>
         <p class="cart__hint cart__hint--ok" id="copy-ok" hidden>Текст скопирован — вставьте его в чат в MAX.</p>
-        <div id="order-accepted" hidden>
-          <h3 class="cart__title">Заказ принят! 🌿</h3>
-          <p class="cart__hint">Номер заказа: <b id="order-num">—</b></p>
-          <p class="cart__hint">Мы позвоним по телефону <b id="order-phone-echo"></b>, всё подтвердим и договоримся о встрече.</p>
-          <button class="btn btn--primary btn--big" id="order-finish" type="button">Отлично, жду звонка</button>
-        </div>
+      </div>
+
+      <!-- Подтверждение заказа — ВНЕ cart-step-done: раньше лежало внутри,
+           и скрытие шага отправки прятло его вместе с собой — покупатель
+           видел пустое окно (баг «пустого уведомления»). -->
+      <div id="order-accepted" hidden>
+        <h3 class="cart__title">Заказ принят! 🌿</h3>
+        <p class="cart__hint cart__hint--main">Ваш заказ отправлен в обработку, мы с вами свяжемся. Хорошего дня!</p>
+        <p class="cart__hint">Номер заказа: <b id="order-num">—</b></p>
+        <p class="cart__hint">Мы позвоним по телефону <b id="order-phone-echo"></b>, всё подтвердим и договоримся о встрече.</p>
+        <p class="cart__hint cart__hint--sign">🌸 Ваш Чудный сад</p>
+        <button class="btn btn--primary btn--big" id="order-finish" type="button">Отлично, жду звонка</button>
       </div>
 
       </div>

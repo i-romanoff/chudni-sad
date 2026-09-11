@@ -1,7 +1,7 @@
 /* Service worker сайта «Чудный сад».
    Каталог и страница — network-first (покупатель видит свежий
    ассортименты после публикации), остальное — cache-first. */
-var CACHE = "chudni-sad-v35-1";
+var CACHE = "chudni-sad-v38-0";
 
 var CORE = [
   "./",
@@ -13,7 +13,13 @@ var CORE = [
   "./assets/img/logo.png",
   "./assets/img/favicon.png",
   "./assets/img/icon-192.png",
-  "./assets/img/icon-512.png"
+  "./assets/img/icon-512.png",
+  "./price.html",
+  "./about.html",
+  "./guarantees.html",
+  "./articles.html",
+  "./offer.html",
+  "./privacy.html"
 ];
 
 /* Свежесть важнее мгновения: сеть первой, кэш — если сети нет */
