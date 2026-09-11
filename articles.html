@@ -7,18 +7,29 @@
 <meta name="description" content="Статьи о посадке и уходе за растениями в сибирском климате: гортензии, яблони-полукультурки, обрезка, полив. Просто, с лайфхаками и без лишней науки.">
 <link rel="icon" href="assets/img/favicon.png">
 <link rel="stylesheet" href="css/style.css">
+<script>
+/* Тема до первой отрисовки — как на главной: тёмная применяется на ВСЕХ страницах */
+(function () {
+  var t = null;
+  try { t = localStorage.getItem("chudniSadTheme"); } catch (e) {}
+  if (t !== "dark" && t !== "light") {
+    t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  if (t === "dark") document.documentElement.classList.add("theme-dark");
+})();
+</script>
 <style>
 .articles-page { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
 .articles-page header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
-.articles-page header a.brand { font-family: Prata, serif; font-size: 20px; color: var(--forest-deep); text-decoration: none; }
-.article { background: #fff; border-radius: 18px; padding: 26px 26px 18px; margin-bottom: 22px; box-shadow: 0 6px 24px rgba(19,33,26,.08); }
-.article h2 { margin: 0 0 4px; font-size: 24px; color: var(--forest-deep); }
+.articles-page header a.brand { font-family: Prata, serif; font-size: 20px; color: var(--forest); text-decoration: none; }
+.article { background: var(--paper-card); border-radius: 18px; padding: 26px 26px 18px; margin-bottom: 22px; box-shadow: 0 6px 24px rgba(19,33,26,.08); }
+.article h2 { margin: 0 0 4px; font-size: 24px; color: var(--forest); }
 .article .lead { color: var(--moss); margin: 0 0 14px; font-style: italic; }
-.article h3 { font-size: 18px; margin: 18px 0 6px; color: var(--forest-deep); }
+.article h3 { font-size: 18px; margin: 18px 0 6px; color: var(--forest); }
 .article p, .article li { line-height: 1.65; }
 .article ul { padding-left: 20px; }
 .lifehack { background: var(--paper); border-left: 4px solid var(--lime); border-radius: 8px; padding: 10px 14px; margin: 12px 0; }
-.lifehack b { color: var(--forest-deep); }
+.lifehack b { color: var(--forest); }
 .back { color: var(--forest); text-decoration: none; font-weight: 600; }
 footer { text-align: center; padding: 24px; color: var(--moss); }
 </style>
@@ -26,7 +37,7 @@ footer { text-align: center; padding: 24px; color: var(--moss); }
 <body>
 <div class="articles-page">
   <header>
-    <a class="brand" href="index.html" style="text-decoration:none"><img class="brand__logo" src="assets/img/logo.png" alt="Логотип питомника «Чудный сад»: ирис" width="52" height="52" style="border-radius:50%"><span class="brand__name" style="color:var(--forest-deep,#2e4a2e)">Чудный&nbsp;сад</span></a>
+    <a class="brand" href="index.html" style="text-decoration:none"><img class="brand__logo" src="assets/img/logo.png" alt="Логотип питомника «Чудный сад»: ирис" width="52" height="52" style="border-radius:50%"><span class="brand__name">Чудный&nbsp;сад</span></a>
     <a class="back" href="index.html">← В каталог</a>
   </header>
 

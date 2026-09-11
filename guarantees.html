@@ -7,18 +7,29 @@
 <meta name="description" content="Гарантии питомника «Чудный сад»: районированные сибирские сорта, живая консультация агронома, честное решение каждой ситуации. Как мы обеспечиваем приживаемость саженцев.">
 <link rel="icon" type="image/png" href="assets/img/favicon.png">
 <link rel="stylesheet" href="css/style.css">
+<script>
+/* Тема до первой отрисовки — как на главной: тёмная применяется на ВСЕХ страницах */
+(function () {
+  var t = null;
+  try { t = localStorage.getItem("chudniSadTheme"); } catch (e) {}
+  if (t !== "dark" && t !== "light") {
+    t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  if (t === "dark") document.documentElement.classList.add("theme-dark");
+})();
+</script>
 <style>
 .guar-page { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
 .guar-page header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
-.guar-page header a.brand { font-family: Prata, serif; font-size: 20px; color: var(--forest-deep); text-decoration: none; }
-.guar { background: #fff; border-radius: 18px; padding: 26px 26px 18px; margin-bottom: 22px; box-shadow: 0 6px 24px rgba(19,33,26,.08); }
-.guar h2 { margin: 0 0 4px; font-size: 24px; color: var(--forest-deep); }
-.guar h3 { font-size: 18px; margin: 18px 0 6px; color: var(--forest-deep); }
+.guar-page header a.brand { font-family: Prata, serif; font-size: 20px; color: var(--forest); text-decoration: none; }
+.guar { background: var(--paper-card); border-radius: 18px; padding: 26px 26px 18px; margin-bottom: 22px; box-shadow: 0 6px 24px rgba(19,33,26,.08); }
+.guar h2 { margin: 0 0 4px; font-size: 24px; color: var(--forest); }
+.guar h3 { font-size: 18px; margin: 18px 0 6px; color: var(--forest); }
 .guar p, .guar li { line-height: 1.65; }
 .guar ul { padding-left: 20px; }
 .guar .lead { color: var(--moss); margin: 0 0 14px; font-style: italic; }
 .pill-line { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
-.pill-line span { background: #eef3e4; border-radius: 999px; padding: 6px 14px; font-size: 14px; color: var(--forest-deep); }
+.pill-line span { background: var(--paper); border-radius: 999px; padding: 6px 14px; font-size: 14px; color: var(--ink); }
 .back { color: var(--forest); text-decoration: none; font-weight: 600; }
 footer { text-align: center; padding: 24px; color: var(--moss); }
 </style>
@@ -26,7 +37,7 @@ footer { text-align: center; padding: 24px; color: var(--moss); }
 <body>
 <div class="guar-page">
   <header>
-    <a class="brand" href="index.html" style="text-decoration:none"><img class="brand__logo" src="assets/img/logo.png" alt="Логотип питомника «Чудный сад»: ирис" width="52" height="52" style="border-radius:50%"><span class="brand__name" style="color:var(--forest-deep,#2e4a2e)">Чудный&nbsp;сад</span></a>
+    <a class="brand" href="index.html" style="text-decoration:none"><img class="brand__logo" src="assets/img/logo.png" alt="Логотип питомника «Чудный сад»: ирис" width="52" height="52" style="border-radius:50%"><span class="brand__name">Чудный&nbsp;сад</span></a>
     <nav style="display:flex; gap:14px">
       <a class="back" href="index.html">← Каталог</a>
       <a class="back" href="articles.html">Посадка и уход</a>

@@ -1528,8 +1528,9 @@
   }
 
   function buildOrderText() {
-    var lines = ["Здравствуйте! Заказ с сайта chudni-sad.ru.", "",
-      "Имя: " + orderName.value.trim(),
+    /* v38.1: без «Здравствуйте! Заказ с сайта…» — Цветан получает
+       только поля заказа (Имя/Телефон/Состав/Итого) */
+    var lines = ["Имя: " + orderName.value.trim(),
       "Телефон: " + orderPhone.value.trim(), "", "Состав заказа:"];
 
     cartEntries().forEach(function (item, i) {
