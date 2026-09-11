@@ -1106,14 +1106,28 @@
     modalLatin.textContent = product.latin;
     modalTitle.textContent = product.name;
 
+    var renderPrice = function (oldKop, newTxt) {
+      /* скидка: старая цена зачёркнута, новая — акцентным цветом */
+      modalPrice.innerHTML = '<s class="modal__price-old"></s><span class="modal__price-new"></span> <small></small>';
+      var oldEl = modalPrice.querySelector(".modal__price-old");
+      if (oldKop) {
+        oldEl.textContent = fmtRub(oldKop);
+        oldEl.style.display = "";
+      } else {
+        oldEl.style.display = "none";
+      }
+      var newEl = modalPrice.querySelector(".modal__price-new");
+      newEl.textContent = newTxt;
+      newEl.classList.toggle("is-sale", !!oldKop);
+      modalPrice.querySelector("small").textContent =
+        volumeLabel(product) + (product.age ? " · " + product.age : "");
+    };
+
     var priceText = fmtPrice(product);
     if (product.priceMin !== product.priceMax) {
       priceText += " (цена зависит от варианта)";
     }
-    modalPrice.innerHTML = "<span></span> <small></small>";
-    modalPrice.querySelector("span").textContent = priceText;
-    modalPrice.querySelector("small").textContent =
-      volumeLabel(product) + (product.age ? " · " + product.age : "");
+    renderPrice(product.oldPriceMin, priceText);
     /* распродан — цену не показываем */
     modalPrice.style.display = (product.stockCount === 0 && !product.preorder) ? "none" : "";
 
@@ -1133,7 +1147,7 @@
 
     renderSlider(product);
     function updateModalForVariant(v) {
-      modalPrice.querySelector("span").textContent = fmtRub(v.price);
+      renderPrice(v.oldPrice, fmtRub(v.price));
       var sold = v.qty === 0;
       modalPrice.style.display = sold ? "none" : "";
       modalAdd.disabled = sold;
@@ -1215,7 +1229,9 @@
         var chip = document.createElement("button");
         chip.type = "button";
         chip.className = "var-chip" + (v.qty === 0 ? " is-out" : "");
-        chip.textContent = v.label + " · " + Math.round(v.price / 100) + " ₽";
+        chip.innerHTML = v.label + " · " +
+          (v.oldPrice ? "<s>" + Math.round(v.oldPrice / 100) + " ₽</s> " : "") +
+          Math.round(v.price / 100) + " ₽";
         chip.onclick = function () {
           if (v.qty === 0) return;
           selIdx = i;
@@ -1528,9 +1544,14 @@
   }
 
   function buildOrderText() {
-    /* v38.1: без «Здравствуйте! Заказ с сайта…» — Цветан получает
-       только поля заказа (Имя/Телефон/Состав/Итого) */
-    var lines = ["Имя: " + orderName.value.trim(),
+    /* v38.2: дата и время первой строкой — Цветан видит, когда пришёл заказ.
+       Без шапок с доменом (v38.1). */
+    var d = new Date();
+    var when = "Дата и время: " + ("0" + d.getDate()).slice(-2) + "." +
+      ("0" + (d.getMonth() + 1)).slice(-2) + "." + d.getFullYear() + " " +
+      d.getHours() + ":" + ("0" + d.getMinutes()).slice(-2);
+    var lines = [when,
+      "Имя: " + orderName.value.trim(),
       "Телефон: " + orderPhone.value.trim(), "", "Состав заказа:"];
 
     cartEntries().forEach(function (item, i) {

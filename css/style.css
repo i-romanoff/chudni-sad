@@ -1226,6 +1226,14 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
   font-size: 25px;
   margin-bottom: 16px;
 }
+/* Скидка: старая цена зачёркнута, новая — фирменным акцентом (v38.2) */
+.modal__price s {
+  margin-right: 8px;
+  font-size: 19px; font-weight: 500;
+  color: var(--moss);
+}
+.modal__price .modal__price-new.is-sale { color: var(--graffiti-pink); }
+.var-chip s { margin-right: 3px; opacity: .75; }
 .modal__price small {
   font-family: var(--font-body);
   font-size: 15px; font-weight: 500; color: var(--moss);

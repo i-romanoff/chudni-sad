@@ -1,5 +1,5 @@
 // Каталог «Чудный сад». СГЕНЕРИРОВАНО программой управления — не редактировать руками.
-// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-12 01:53
+// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-12 02:31
 window.CATALOG = {
   "categories": [
     "Гортензии",
@@ -28,6 +28,9 @@ window.CATALOG = {
       "category": "Плодовые деревья и кустарники",
       "priceMin": 70000,
       "priceMax": 80000,
+      "oldPriceMin": null,
+      "oldPriceMax": null,
+      "salePercent": 0,
       "variants": [
         {
           "label": "60",
@@ -116,6 +119,9 @@ window.CATALOG = {
       "category": "Плодовые деревья и кустарники",
       "priceMin": 140000,
       "priceMax": 140000,
+      "oldPriceMin": null,
+      "oldPriceMax": null,
+      "salePercent": 0,
       "variants": [],
       "volume": null,
       "age": "",
@@ -171,6 +177,9 @@ window.CATALOG = {
       "category": "Плодовые деревья и кустарники",
       "priceMin": 140000,
       "priceMax": 140000,
+      "oldPriceMin": null,
+      "oldPriceMax": null,
+      "salePercent": 0,
       "variants": [],
       "volume": null,
       "age": "",
@@ -248,6 +257,9 @@ window.CATALOG = {
       "category": "Плодовые деревья и кустарники",
       "priceMin": 80000,
       "priceMax": 100000,
+      "oldPriceMin": null,
+      "oldPriceMax": null,
+      "salePercent": 0,
       "variants": [
         {
           "label": "70",
@@ -337,6 +349,9 @@ window.CATALOG = {
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
+      "oldPriceMin": null,
+      "oldPriceMax": null,
+      "salePercent": 0,
       "variants": [],
       "volume": null,
       "age": "",
@@ -415,6 +430,9 @@ window.CATALOG = {
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
+      "oldPriceMin": null,
+      "oldPriceMax": null,
+      "salePercent": 0,
       "variants": [],
       "volume": null,
       "age": "",
@@ -484,6 +502,9 @@ window.CATALOG = {
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
+      "oldPriceMin": null,
+      "oldPriceMax": null,
+      "salePercent": 0,
       "variants": [],
       "volume": null,
       "age": "",
@@ -554,6 +575,9 @@ window.CATALOG = {
       "category": "Плодовые деревья и кустарники",
       "priceMin": 95000,
       "priceMax": 95000,
+      "oldPriceMin": null,
+      "oldPriceMax": null,
+      "salePercent": 0,
       "variants": [],
       "volume": null,
       "age": "",
@@ -619,6 +643,9 @@ window.CATALOG = {
       "category": "Плодовые деревья и кустарники",
       "priceMin": 95000,
       "priceMax": 95000,
+      "oldPriceMin": null,
+      "oldPriceMax": null,
+      "salePercent": 0,
       "variants": [],
       "volume": null,
       "age": "",
@@ -684,6 +711,9 @@ window.CATALOG = {
       "category": "Плодовые деревья и кустарники",
       "priceMin": 95000,
       "priceMax": 95000,
+      "oldPriceMin": null,
+      "oldPriceMax": null,
+      "salePercent": 0,
       "variants": [],
       "volume": null,
       "age": "",
@@ -752,18 +782,23 @@ window.CATALOG = {
       "name": "Гортензия метельчатая Литтл Лайм",
       "latin": "Hydrangea paniculata 'Little Lime'",
       "category": "Гортензии",
-      "priceMin": 75000,
-      "priceMax": 85000,
+      "priceMin": 67500,
+      "priceMax": 76500,
+      "oldPriceMin": 75000,
+      "oldPriceMax": 85000,
+      "salePercent": 10,
       "variants": [
         {
           "label": "60",
-          "price": 75000,
-          "qty": 20
+          "price": 67500,
+          "qty": 20,
+          "oldPrice": 75000
         },
         {
           "label": "70",
-          "price": 85000,
-          "qty": 10
+          "price": 76500,
+          "qty": 10,
+          "oldPrice": 85000
         }
       ],
       "volume": null,
@@ -772,7 +807,7 @@ window.CATALOG = {
       "badges": [
         {
           "type": "sale",
-          "label": "10%"
+          "label": "-10%"
         }
       ],
       "preorder": false,
@@ -841,5 +876,6 @@ window.CATALOG = {
       ],
       "featured": false
     }
-  ]
+  ],
+  "generatedAt": "2026-09-12"
 };
