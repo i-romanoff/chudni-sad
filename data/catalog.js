@@ -1,5 +1,5 @@
 // Каталог «Чудный сад». СГЕНЕРИРОВАНО программой управления — не редактировать руками.
-// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-11 23:39
+// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-11 23:42
 window.CATALOG = {
   "categories": [
     "Гортензии",
@@ -107,7 +107,7 @@ window.CATALOG = {
           "alt": "Вишня войлочная \"Даманка\""
         }
       ],
-      "featured": true
+      "featured": false
     },
     {
       "id": "grusha-nevelichka-dyuymovochka-2026090914474",
@@ -162,7 +162,7 @@ window.CATALOG = {
           "alt": "Груша Невеличка \"Дюймовочка\""
         }
       ],
-      "featured": false
+      "featured": true
     },
     {
       "id": "sliva-pamyati-putova-2026090914474",
@@ -834,7 +834,7 @@ window.CATALOG = {
           "alt": "Гортензия метельчатая Литтл Лайм"
         }
       ],
-      "featured": true
+      "featured": false
     }
   ]
 };
