@@ -1784,6 +1784,21 @@ html.theme-dark .action-fab { background: #2c3034; }
 }
 #order-bot-link { margin-top: 10px; width: 100%; }
 
+/* «Телефон из профиля MAX»: компактная кнопка под полем (внутри label нельзя —
+   клик по кнопке задевал поле, и она растягивалась на всю ширину) */
+.phone-max-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin: -8px 0 14px; padding: 8px 14px;
+  border-radius: 10px; border: 1.5px dashed var(--forest);
+  background: transparent; color: var(--forest);
+  font-family: var(--font-body); font-size: 14px; font-weight: 600;
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+.phone-max-btn:hover { background: rgba(181, 201, 106, .25); }
+.phone-max-btn:disabled { opacity: .55; cursor: wait; }
+html.theme-dark .phone-max-btn { border-color: var(--forest); color: var(--forest); }
+
 /* Страховка от класса display-багов: hidden-атрибут сильнее любых
    display-правил (кнопка .btn перебивала hidden и была видна без ссылки) */
 [hidden] { display: none !important; }
