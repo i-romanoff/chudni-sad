@@ -1577,6 +1577,12 @@
         fmtRub(item.price) + " = " + fmtRub(item.price * item.qty));
     });
     lines.push("", "Итого: " + fmtRub(cartTotalSum()));
+    /* v39.2: диагностика мини-приложения — если MAX открывает витрину с
+       параметрами пользователя, они видны здесь (для автосвязи заказа
+       с чатом клиента). Без параметров строка не добавляется. */
+    if (location.search) {
+      lines.push("(служебно: " + location.search + ")");
+    }
     return lines.join("\n");
   }
 
@@ -1739,6 +1745,52 @@
      showCartStep сам скроет подтверждение и покажет список */
   document.getElementById("order-finish").addEventListener("click", function () {
     closeModal(cartModal);
+  });
+
+  /* ---------- Оферта и ПДн слоем поверх формы (v39.2) ----------
+     В мини-приложении MAX переход по ссылке (target=_blank) выбрасывает
+     в браузер телефона и теряет введённые имя/телефон. Открываем документ
+     слоем внутри корзины: закрыл — форма на месте. */
+  function openDocOverlay(url) {
+    var old = document.getElementById("doc-overlay");
+    if (old) old.remove();
+    var wrap = document.createElement("div");
+    wrap.id = "doc-overlay";
+    wrap.innerHTML = '<div class="doc-overlay__backdrop"></div>' +
+      '<div class="doc-overlay__win"><button class="modal__close" type="button" aria-label="Закрыть">×</button>' +
+      '<div class="doc-overlay__body"><p class="cart__hint">Загружаю…</p></div></div>';
+    document.body.appendChild(wrap);
+    document.body.style.overflow = "hidden";
+    function closeDoc() {
+      wrap.remove();
+      document.body.style.overflow = "";
+    }
+    wrap.querySelector(".modal__close").addEventListener("click", closeDoc);
+    wrap.querySelector(".doc-overlay__backdrop").addEventListener("click", closeDoc);
+    fetch(url).then(function (r) { return r.text(); }).then(function (html) {
+      var doc = new DOMParser().parseFromString(html, "text/html");
+      var main = doc.querySelector("main") || doc.body;
+      var body = wrap.querySelector(".doc-overlay__body");
+      body.innerHTML = "";
+      body.appendChild(main);
+      /* ссылки между документами и «вернуться» — тоже внутри слоя */
+      body.querySelectorAll('a[href$=".html"], a[href="./"]').forEach(function (a) {
+        var href = a.getAttribute("href");
+        a.addEventListener("click", function (e) {
+          e.preventDefault();
+          if (href === "./") closeDoc();
+          else openDocOverlay(href);
+        });
+      });
+    }).catch(function () { closeDoc(); });
+  }
+  ["offer.html", "privacy.html"].forEach(function (u) {
+    document.querySelectorAll('#cart a[href="' + u + '"]').forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        openDocOverlay(u);
+      });
+    });
   });
 
   /* ================= Hero: автослайд-шоу фотографий ================= */
