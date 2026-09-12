@@ -1543,14 +1543,31 @@
     cartTotal.textContent = "Итого: " + fmtRub(cartTotalSum());
   }
 
-  function buildOrderText() {
-    /* v38.2: дата и время первой строкой — Цветан видит, когда пришёл заказ.
-       Без шапок с доменом (v38.1). */
+  /* Уникальный номер заказа: ЧС-ГГММДД-XXXX, 4 случайные цифры (crypto).
+     Генерится ДО отправки — попадает в текст MAX и на экран подтверждения.
+     Коллизии в один день маловероятны, а ERP при импорте проверяет по базе. */
+  var currentOrderNo = "";
+
+  function genOrderNo() {
     var d = new Date();
-    var when = "Дата и время: " + ("0" + d.getDate()).slice(-2) + "." +
-      ("0" + (d.getMonth() + 1)).slice(-2) + "." + d.getFullYear() + " " +
-      d.getHours() + ":" + ("0" + d.getMinutes()).slice(-2);
-    var lines = [when,
+    var buf = new Uint32Array(1);
+    if (window.crypto && window.crypto.getRandomValues) {
+      window.crypto.getRandomValues(buf);
+    } else {
+      buf[0] = Math.floor(Math.random() * 4294967296);
+    }
+    return "ЧС-" + ("0" + (d.getFullYear() % 100)).slice(-2) +
+      ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2) +
+      "-" + ("0000" + (buf[0] % 10000)).slice(-4);
+  }
+
+  function buildOrderText() {
+    /* v39: первая строка — номер заказа (уникальный, выдаётся ДО отправки):
+       по нему жена находит бронь в ERP, а бот отвечает на вопрос о статусе. */
+    var lines = ["Номер заказа: " + (currentOrderNo || genOrderNo()),
+      "Дата и время: " + ("0" + new Date().getDate()).slice(-2) + "." +
+      ("0" + (new Date().getMonth() + 1)).slice(-2) + "." + new Date().getFullYear() + " " +
+      new Date().getHours() + ":" + ("0" + new Date().getMinutes()).slice(-2),
       "Имя: " + orderName.value.trim(),
       "Телефон: " + orderPhone.value.trim(), "", "Состав заказа:"];
 
@@ -1632,19 +1649,24 @@
     }
     agreeErr.textContent = "";
     orderError.textContent = "";
+    currentOrderNo = genOrderNo();   /* один номер на всю жизнь этого заказа */
     var text = buildOrderText();
     orderPreview.textContent = text;
 
     document.getElementById("copy-ok").hidden = true;
     showCartStep(stepDone);
 
-    /* подтверждение заказа: номер + очистка корзины (вызывается после отправки) */
+    /* подтверждение заказа: номер выдан заранее (currentOrderNo), тот же,
+       что ушёл в тексте MAX; кнопка «подружиться с ботом» — по настройке */
     function acceptOrder(sent) {
-      var d = new Date();
-      var num = "ЧС-" + ("0" + d.getFullYear() % 100).slice(-2) +
-        ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2) + "-" +
-        ("00" + d.getSeconds() % 1000).slice(-3);
-      document.getElementById("order-num").textContent = num;
+      document.getElementById("order-num").textContent = currentOrderNo || genOrderNo();
+      var botLink = document.getElementById("order-bot-link");
+      var botHint = document.getElementById("order-bot-hint");
+      if (botLink && shop.maxBotLink) {
+        botLink.href = shop.maxBotLink;
+        botLink.hidden = false;
+        if (botHint) botHint.hidden = false;
+      }
       document.getElementById("order-phone-echo").textContent = orderPhone.value.trim();
       document.getElementById("order-accepted").hidden = false;
       document.getElementById("cart-step-done").hidden = true;   // прячем кнопки отправки

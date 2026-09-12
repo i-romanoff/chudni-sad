@@ -1766,6 +1766,23 @@ html.theme-dark .action-fab { background: #2c3034; }
   color: var(--forest);
   margin-top: 14px;
 }
+/* Номер заказа — главный артефакт покупателя: крупно, легко переписать */
+.order-num-box {
+  margin: 10px 0;
+  padding: 10px 14px;
+  background: var(--paper);
+  border-radius: 12px;
+  text-align: center;
+}
+.order-num-label { font-size: 14.5px; color: var(--moss); }
+.order-num-box b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 27px;
+  letter-spacing: .04em;
+  color: var(--forest);
+}
+#order-bot-link { margin-top: 10px; width: 100%; }
 
 /* Шапка юридических/информационных страниц: логотип как на главной */
 .doc-head {

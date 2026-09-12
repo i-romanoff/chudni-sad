@@ -288,8 +288,13 @@
       <div id="order-accepted" hidden>
         <h3 class="cart__title">Заказ принят! 🌿</h3>
         <p class="cart__hint cart__hint--main">Ваш заказ отправлен в обработку, мы с вами свяжемся. Хорошего дня!</p>
-        <p class="cart__hint">Номер заказа: <b id="order-num">—</b></p>
+        <div class="order-num-box">
+          <span class="order-num-label">Номер заказа — сохраните или запишите:</span>
+          <b id="order-num">—</b>
+        </div>
         <p class="cart__hint">Мы позвоним по телефону <b id="order-phone-echo"></b>, всё подтвердим и договоримся о встрече.</p>
+        <a class="btn btn--ghost btn--big" id="order-bot-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Подружиться с Цветаном — пришлём статус заказа 🌿</a>
+        <p class="cart__hint" id="order-bot-hint" hidden>Напишите боту любое сообщение — он будет присылать статусы вашего заказа. Спросить статус можно в любой момент, назвав номер заказа.</p>
         <p class="cart__hint cart__hint--sign">🌸 Ваш Чудный сад</p>
         <button class="btn btn--primary btn--big" id="order-finish" type="button">Отлично, жду звонка</button>
       </div>

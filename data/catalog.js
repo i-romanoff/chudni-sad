@@ -1,5 +1,5 @@
 // Каталог «Чудный сад». СГЕНЕРИРОВАНО программой управления — не редактировать руками.
-// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-12 09:53
+// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-12 11:30
 window.CATALOG = {
   "categories": [
     "Гортензии",
@@ -18,7 +18,8 @@ window.CATALOG = {
     "telegram": "",
     "max": "https://max.ru/channel_beautifulGarden",
     "maxOrderEndpoint": "https://functions.yandexcloud.net/d4e04291pde3n99uqrdo?secret=chudni-2026-secret",
-    "maxOrderTemplate": ""
+    "maxOrderTemplate": "",
+    "maxBotLink": ""
   },
   "products": [
     {
