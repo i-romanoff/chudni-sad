@@ -1561,6 +1561,19 @@
       "-" + ("0000" + (buf[0] % 10000)).slice(-4);
   }
 
+  /* ---------- Мини-приложение MAX (MAX Bridge, v39.4) ----------
+     Внутри MAX WebApp.initDataUnsafe.user — профиль открывшего:
+     prefill имени в заказе и MAX id для автосвязи заказа с его чатом. */
+  function maxUser() {
+    try {
+      if (window.WebApp && window.WebApp.initDataUnsafe &&
+          window.WebApp.initDataUnsafe.user && window.WebApp.initDataUnsafe.user.id) {
+        return window.WebApp.initDataUnsafe.user;
+      }
+    } catch (e) {}
+    return null;
+  }
+
   function buildOrderText() {
     /* v39: первая строка — номер заказа (уникальный, выдаётся ДО отправки):
        по нему жена находит бронь в ERP, а бот отвечает на вопрос о статусе. */
@@ -1569,7 +1582,14 @@
       ("0" + (new Date().getMonth() + 1)).slice(-2) + "." + new Date().getFullYear() + " " +
       new Date().getHours() + ":" + ("0" + new Date().getMinutes()).slice(-2),
       "Имя: " + orderName.value.trim(),
-      "Телефон: " + orderPhone.value.trim(), "", "Состав заказа:"];
+      "Телефон: " + orderPhone.value.trim()];
+    var mu = maxUser();
+    if (mu && mu.id) {
+      /* MAX id → бот при импорте привязывает заказ к чату клиента:
+         статусы «принят/в работе/готов» прилетают ему автоматически */
+      lines.push("MAX id: " + mu.id);
+    }
+    lines.push("", "Состав заказа:");
 
     cartEntries().forEach(function (item, i) {
       lines.push((i + 1) + ". " + item.name + (item.preorder ? " (предзаказ — доставка весной)" : "") +
@@ -1590,6 +1610,13 @@
     if (cartTotalCount() === 0) return;
     orderError.textContent = "";
     showCartStep(stepForm);
+    /* имя из профиля MAX (мини-приложение) — как в демо-магазине */
+    if (!orderName.value.trim()) {
+      var mu = maxUser();
+      if (mu && (mu.first_name || mu.last_name)) {
+        orderName.value = ((mu.first_name || "") + " " + (mu.last_name || "")).trim();
+      }
+    }
     setTimeout(function () { orderName.focus(); }, 60);
   });
 
@@ -1668,7 +1695,9 @@
       document.getElementById("order-num").textContent = currentOrderNo || genOrderNo();
       var botLink = document.getElementById("order-bot-link");
       var botHint = document.getElementById("order-bot-hint");
-      if (botLink && shop.maxBotLink) {
+      if (botLink && shop.maxBotLink && !maxUser()) {
+        /* из мини-приложения заказ УЖЕ связан с чатом (MAX id в тексте) —
+           «подружиться» не нужно */
         botLink.href = shop.maxBotLink;
         botLink.hidden = false;
         if (botHint) botHint.hidden = false;
