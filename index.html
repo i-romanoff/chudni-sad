@@ -261,6 +261,7 @@
         <label class="field">
           <span class="field__label">Телефон</span>
           <input class="field__input" id="order-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__">
+          <button class="btn btn--ghost" id="order-phone-max" type="button" hidden>📞 Взять телефон из профиля MAX</button>
         </label>
         <p class="field__error" id="order-error" role="alert"></p>
         <label class="agree-row">
@@ -297,7 +298,7 @@
           <b id="order-num">—</b>
         </div>
         <p class="cart__hint">Мы позвоним по телефону <b id="order-phone-echo"></b>, всё подтвердим и договоримся о встрече.</p>
-        <a class="btn btn--ghost btn--big" id="order-bot-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Подружиться с Цветаном — пришлём статус заказа 🌿</a>
+        <a class="btn btn--ghost btn--big" id="order-bot-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Бот в мессенджере MAX для отслеживания заказа 🌿</a>
         <p class="cart__hint" id="order-bot-hint" hidden>Напишите боту любое сообщение — он будет присылать статусы вашего заказа. Спросить статус можно в любой момент, назвав номер заказа.</p>
         <p class="cart__hint cart__hint--sign">🌸 Ваш Чудный сад</p>
         <button class="btn btn--primary btn--big" id="order-finish" type="button">Отлично, жду звонка</button>

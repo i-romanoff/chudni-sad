@@ -1610,15 +1610,42 @@
     if (cartTotalCount() === 0) return;
     orderError.textContent = "";
     showCartStep(stepForm);
-    /* имя из профиля MAX (мини-приложение) — как в демо-магазине */
-    if (!orderName.value.trim()) {
-      var mu = maxUser();
-      if (mu && (mu.first_name || mu.last_name)) {
-        orderName.value = ((mu.first_name || "") + " " + (mu.last_name || "")).trim();
-      }
+    /* имя и телефон из профиля MAX (мини-приложение) — как в демо-магазине */
+    var mu = maxUser();
+    if (!orderName.value.trim() && mu && (mu.first_name || mu.last_name)) {
+      orderName.value = ((mu.first_name || "") + " " + (mu.last_name || "")).trim();
     }
+    var phoneBtn = document.getElementById("order-phone-max");
+    if (phoneBtn) phoneBtn.hidden = !mu;
+    /* из доков MAX Bridge: предупреждение «потеряете заполненные данные»
+       при закрытии мини-приложения — пока форма заказа заполнена */
+    try {
+      if (window.WebApp && window.WebApp.enableClosingConfirmation) {
+        window.WebApp.enableClosingConfirmation();
+      }
+    } catch (e) {}
     setTimeout(function () { orderName.focus(); }, 60);
   });
+
+  /* телефон из нативного запроса MAX (requestContact → Promise {phone, hash}) */
+  var phoneMaxBtn = document.getElementById("order-phone-max");
+  if (phoneMaxBtn) {
+    phoneMaxBtn.addEventListener("click", function () {
+      if (!window.WebApp || !window.WebApp.requestContact) return;
+      phoneMaxBtn.disabled = true;
+      window.WebApp.requestContact().then(function (res) {
+        phoneMaxBtn.disabled = false;
+        if (res && res.phone) {
+          orderPhone.value = res.phone;
+          orderPhone.dispatchEvent(new Event("input"));   /* маска приведёт к +7 (…) */
+          orderError.textContent = "";
+          setTimeout(function () { orderName.focus(); }, 0);
+        }
+      }).catch(function () {
+        phoneMaxBtn.disabled = false;   /* клиент отказался делиться номером */
+      });
+    });
+  }
 
   document.getElementById("order-back").addEventListener("click", function () {
     showCartStep(stepList);
