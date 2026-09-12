@@ -1304,6 +1304,13 @@
     var price = fmtPrice(shareProduct);
     var url = location.origin + location.pathname;
     var text = shareProduct.name + " — " + price + ". Питомник «Чудный сад»";
+    /* внутри мини-приложения MAX — нативный экран шеринга (v41) */
+    if (window.WebApp && typeof window.WebApp.shareContent === "function") {
+      try {
+        window.WebApp.shareContent({ text: text, link: url });
+        return;
+      } catch (e) { /* в вебе метод не поддерживается — обычный путь */ }
+    }
     if (navigator.share) {
       navigator.share({ title: "Чудный сад", text: text, url: url }).catch(function () {});
     } else if (navigator.clipboard && navigator.clipboard.writeText) {
