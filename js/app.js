@@ -1391,7 +1391,7 @@
         retry.textContent = okSend ? "Отправлено ✓" : "Отправить повторно";
         if (okSend) {
           try { localStorage.removeItem(UNSENT_KEY); } catch (e) {}
-          info.textContent = "Заказ отправлен — мы позвоним для подтверждения ✓";
+          info.textContent = "Заказ отправлен — мы напишем вам в MAX для подтверждения ✓";
         }
       };
       if (!shop.maxOrderEndpoint) { done(false); return; }
@@ -1547,6 +1547,7 @@
      Генерится ДО отправки — попадает в текст MAX и на экран подтверждения.
      Коллизии в один день маловероятны, а ERP при импорте проверяет по базе. */
   var currentOrderNo = "";
+  var currentPin = "";
 
   function genOrderNo() {
     var d = new Date();
@@ -1559,6 +1560,17 @@
     return "ЧС-" + ("0" + (d.getFullYear() % 100)).slice(-2) +
       ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2) +
       "-" + ("0000" + (buf[0] % 10000)).slice(-4);
+  }
+
+  /* код выдачи: клиент называет его при получении (v40) */
+  function genPin() {
+    var buf = new Uint32Array(1);
+    if (window.crypto && window.crypto.getRandomValues) {
+      window.crypto.getRandomValues(buf);
+    } else {
+      buf[0] = Math.floor(Math.random() * 4294967296);
+    }
+    return ("0000" + (buf[0] % 10000)).slice(-4);
   }
 
   /* ---------- Мини-приложение MAX (MAX Bridge, v39.4) ----------
@@ -1589,6 +1601,7 @@
          статусы «принят/в работе/готов» прилетают ему автоматически */
       lines.push("MAX id: " + mu.id);
     }
+    lines.push("Код выдачи: " + currentPin);
     lines.push("", "Состав заказа:");
 
     cartEntries().forEach(function (item, i) {
@@ -1710,6 +1723,7 @@
     agreeErr.textContent = "";
     orderError.textContent = "";
     currentOrderNo = genOrderNo();   /* один номер на всю жизнь этого заказа */
+    currentPin = genPin();           /* код выдачи — назовёт при получении */
     var text = buildOrderText();
     orderPreview.textContent = text;
 
@@ -1720,6 +1734,7 @@
        что ушёл в тексте MAX; кнопка «подружиться с ботом» — по настройке */
     function acceptOrder(sent) {
       document.getElementById("order-num").textContent = currentOrderNo || genOrderNo();
+      document.getElementById("order-pin").textContent = currentPin || "—";
       var botLink = document.getElementById("order-bot-link");
       var botHint = document.getElementById("order-bot-hint");
       if (botLink && shop.maxBotLink && !maxUser()) {
