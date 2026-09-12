@@ -1,5 +1,5 @@
 // Каталог «Чудный сад». СГЕНЕРИРОВАНО программой управления — не редактировать руками.
-// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-12 02:31
+// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-12 09:53
 window.CATALOG = {
   "categories": [
     "Гортензии",
@@ -783,9 +783,9 @@ window.CATALOG = {
       "latin": "Hydrangea paniculata 'Little Lime'",
       "category": "Гортензии",
       "priceMin": 67500,
-      "priceMax": 76500,
+      "priceMax": 85500,
       "oldPriceMin": 75000,
-      "oldPriceMax": 85000,
+      "oldPriceMax": 95000,
       "salePercent": 10,
       "variants": [
         {
@@ -797,8 +797,14 @@ window.CATALOG = {
         {
           "label": "70",
           "price": 76500,
-          "qty": 10,
+          "qty": 5,
           "oldPrice": 85000
+        },
+        {
+          "label": "80",
+          "price": 85500,
+          "qty": 5,
+          "oldPrice": 95000
         }
       ],
       "volume": null,
