@@ -1784,6 +1784,10 @@ html.theme-dark .action-fab { background: #2c3034; }
 }
 #order-bot-link { margin-top: 10px; width: 100%; }
 
+/* Страховка от класса display-багов: hidden-атрибут сильнее любых
+   display-правил (кнопка .btn перебивала hidden и была видна без ссылки) */
+[hidden] { display: none !important; }
+
 /* Шапка юридических/информационных страниц: логотип как на главной */
 .doc-head {
   display: flex; align-items: center; justify-content: space-between;
