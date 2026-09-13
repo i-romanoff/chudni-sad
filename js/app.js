@@ -1085,6 +1085,7 @@
     var grid = document.createElement("div");
     grid.className = "similar-grid";
     picked.forEach(function (sp) {
+      if (!sp.photos || !sp.photos.length) return;   /* v44: без фото — не показываем */
       var card = document.createElement("button");
       card.type = "button";
       card.className = "similar-card";
@@ -2141,6 +2142,8 @@
     var toY = cartRect.top + cartRect.height / 2 - 32;
 
     var img = document.createElement("img");
+    /* v44: у товара может не быть фото — полёт отменяем, корзина всё равно наполнится */
+    if (!product.photos || !product.photos.length) return;
     img.src = "assets/img/" + product.photos[0].file;
     img.className = "fly-img";
     img.alt = "";

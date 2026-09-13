@@ -1,5 +1,5 @@
 // Каталог «Чудный сад». СГЕНЕРИРОВАНО программой управления — не редактировать руками.
-// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-14 00:27
+// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-14 04:49
 window.CATALOG = {
   "categories": [
     "Гортензии",
@@ -479,12 +479,23 @@ window.CATALOG = {
       "name": "Яблоня полукультурная \"Краса Бурятии\"",
       "latin": "Malus prunifolia 'Krasa Buratii'",
       "category": "Плодовые деревья и кустарники",
-      "priceMin": 120000,
-      "priceMax": 120000,
+      "priceMin": 60000,
+      "priceMax": 95000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
+      "variants": [
+        {
+          "label": "C2 · высота 40–60 см",
+          "price": 60000,
+          "qty": 8
+        },
+        {
+          "label": "C5 · высота 60–80 см",
+          "price": 95000,
+          "qty": 12
+        }
+      ],
       "volume": null,
       "age": "",
       "stockCount": 20,
