@@ -938,12 +938,14 @@
     document.body.style.overflow = "hidden";
     lbShow(index || 0);
     lb.querySelector(".lightbox__close").focus();
+    syncBackButton();
   }
 
   function lbClose() {
     lb.hidden = true;
     document.body.style.overflow = "hidden";   /* модалка товара осталась открыта */
     lbZoomTo(1);
+    syncBackButton();
   }
 
   /* Гашение синтетического клика после жеста (пинч/свайп не должны
@@ -1263,6 +1265,7 @@
     modal.hidden = false;
     document.body.style.overflow = "hidden";
     modal.querySelector(".modal__close").focus();
+    syncBackButton();
   }
 
   function closeModal(el) {
@@ -1276,10 +1279,12 @@
       cartModal.hidden = false;
       document.body.style.overflow = "hidden";
       cartModal.querySelector(".modal__close").focus();
+      syncBackButton();
       return;
     }
     document.body.style.overflow = "";
     if (lastFocused) lastFocused.focus();
+    syncBackButton();
   }
 
   [modal, cartModal].forEach(function (el) {
@@ -1295,6 +1300,44 @@
       else if (!cartModal.hidden) closeModal(cartModal);
     }
   });
+
+  /* ================= Нативная кнопка «Назад» MAX (v43) =================
+     В мини-приложении системная кнопка BackButton дублирует верхний слой:
+     лайтбокс → оферта → карточка → шаг корзины. Вне MAX (обычный сайт) Bridge
+     недоступен — всё безопасно превращается в no-op. */
+  var BB = (function () {
+    try {
+      var b = window.WebApp && window.WebApp.BackButton;
+      if (b && b.show && b.hide && b.onClick) return b;
+    } catch (e) {}
+    return null;
+  })();
+  var bbHandler = null;
+  function bbSet(visible, onBack) {
+    if (!BB) return;
+    try {
+      if (bbHandler) { BB.offClick(bbHandler); bbHandler = null; }
+      if (visible) {
+        bbHandler = onBack;
+        BB.onClick(bbHandler);
+        BB.show();
+      } else {
+        BB.hide();
+      }
+    } catch (e) {}
+  }
+  function syncBackButton() {
+    if (!lb.hidden) { bbSet(true, lbClose); return; }
+    var doc = document.getElementById("doc-overlay");
+    if (doc) { bbSet(true, function () { doc.querySelector(".modal__close").click(); }); return; }
+    if (!modal.hidden) { bbSet(true, function () { closeModal(modal); }); return; }
+    if (!cartModal.hidden) {
+      if (!stepForm.hidden) { bbSet(true, function () { showCartStep(stepList); }); return; }
+      bbSet(true, function () { closeModal(cartModal); });
+      return;
+    }
+    bbSet(false);
+  }
 
   /* ================= Поделиться карточкой товара =================
      Телефон: системная шторка (MAX, WhatsApp, SMS…).
@@ -1342,6 +1385,7 @@
     cartModal.hidden = false;
     document.body.style.overflow = "hidden";
     cartModal.querySelector(".modal__close").focus();
+    syncBackButton();
   }
 
   /* ---------- Неотправленный заказ: сеть моргнула — заказ не теряем ---------- */
@@ -1429,6 +1473,7 @@
     [stepList, stepForm, stepDone, orderAccepted].forEach(function (s) { s.hidden = true; });
     step.hidden = false;
     cartModal.querySelector(".modal__close").focus();
+    syncBackButton();
   }
 
   function renderCart() {
@@ -1617,12 +1662,8 @@
         fmtRub(item.price) + " = " + fmtRub(item.price * item.qty));
     });
     lines.push("", "Итого: " + fmtRub(cartTotalSum()));
-    /* v39.2: диагностика мини-приложения — если MAX открывает витрину с
-       параметрами пользователя, они видны здесь (для автосвязи заказа
-       с чатом клиента). Без параметров строка не добавляется. */
-    if (location.search) {
-      lines.push("(служебно: " + location.search + ")");
-    }
+    /* v43: диагностический блок v39.2 («(служебно: …)») удалён — MAX кладёт
+       start-параметр диплинка в URL, и строка попадала в текст заказа */
     return lines.join("\n");
   }
 
@@ -1842,9 +1883,11 @@
     function closeDoc() {
       wrap.remove();
       document.body.style.overflow = "";
+      syncBackButton();
     }
     wrap.querySelector(".modal__close").addEventListener("click", closeDoc);
     wrap.querySelector(".doc-overlay__backdrop").addEventListener("click", closeDoc);
+    syncBackButton();
     fetch(url).then(function (r) { return r.text(); }).then(function (html) {
       var doc = new DOMParser().parseFromString(html, "text/html");
       var main = doc.querySelector("main") || doc.body;
@@ -2282,6 +2325,43 @@
   updateCartBadge();
   renderFilterPanel();
   updateFilterBadge();
+
+  /* Диплинк из MAX-канала: анонс с кнопкой «Открыть в приложении» →
+     start_param = uid товара → автоматически открываем его карточку (v42).
+     v43: fallback на ?WebAppStartParam= из URL + устойчивый поиск карточки —
+     при дрейфе uid (переименование в ERP vs опубликованный каталог) нормализуем
+     ё/й и ищем вхождение, иначе диплинк молча не срабатывал. */
+  (function () {
+    function openFromDeepLink(sp) {
+      if (!sp || sp.indexOf("ЧС-") === 0) return;
+      setTimeout(function () {
+        var btn = document.querySelector('#cards .card__add[data-uid="' + sp + '#0"]');
+        if (!btn) {
+          var norm = function (s) {
+            return (s || "").toLowerCase().replace(/ё/g, "е").replace(/й/g, "и");
+          };
+          /* хвостовой штамп uid (-ГГГГММДДЧЧММСС…) уникален и не зависит от
+             транслитерации имени — надёжнее всего переживает переименования */
+          var ts = (sp.match(/-(\d{9,})$/) || [])[1] || "";
+          var target = norm(sp);
+          var all = document.querySelectorAll('#cards .card__add[data-uid]');
+          for (var i = 0; i < all.length && !btn; i++) {
+            var au = norm(all[i].getAttribute("data-uid"));
+            if (au.indexOf(target) !== -1 || (ts && au.indexOf("-" + ts) !== -1)) btn = all[i];
+          }
+        }
+        if (btn) btn.click();
+      }, 800);
+    }
+    try {
+      var sp = (window.WebApp && window.WebApp.initDataUnsafe)
+        ? window.WebApp.initDataUnsafe.start_param : "";
+      if (!sp && location.search) {
+        sp = new URLSearchParams(location.search).get("WebAppStartParam") || "";
+      }
+      openFromDeepLink(sp);
+    } catch (e) {}
+  })();
 
   /* SEO: JSON-LD ItemList ассортимента (для поисковых систем) */
   try {

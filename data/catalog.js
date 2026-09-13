@@ -1,5 +1,5 @@
 // Каталог «Чудный сад». СГЕНЕРИРОВАНО программой управления — не редактировать руками.
-// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-13 00:08
+// Цены в КОПЕЙКАХ. Сгенерировано: 2026-09-14 00:24
 window.CATALOG = {
   "categories": [
     "Гортензии",
@@ -27,26 +27,15 @@ window.CATALOG = {
       "name": "Вишня войлочная \"Даманка\"",
       "latin": "Cerasus tomentosa 'Damanka'",
       "category": "Плодовые деревья и кустарники",
-      "priceMin": 70000,
-      "priceMax": 80000,
+      "priceMin": 60000,
+      "priceMax": 60000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [
-        {
-          "label": "60",
-          "price": 70000,
-          "qty": 10
-        },
-        {
-          "label": "80",
-          "price": 80000,
-          "qty": 10
-        }
-      ],
+      "variants": [],
       "volume": null,
       "age": "",
-      "stockCount": 20,
+      "stockCount": 18,
       "badges": [],
       "preorder": false,
       "short": "Нежная вишня с бархатными плодами и сладким вкусом для вашего сада",
@@ -257,22 +246,11 @@ window.CATALOG = {
       "latin": "Malus domestica 'Sibirskaya'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 80000,
-      "priceMax": 100000,
+      "priceMax": 80000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [
-        {
-          "label": "70",
-          "price": 80000,
-          "qty": 12
-        },
-        {
-          "label": "80",
-          "price": 100000,
-          "qty": 8
-        }
-      ],
+      "variants": [],
       "volume": null,
       "age": "2",
       "stockCount": 20,
@@ -792,7 +770,7 @@ window.CATALOG = {
         {
           "label": "60",
           "price": 67500,
-          "qty": 20,
+          "qty": 2,
           "oldPrice": 75000
         },
         {
@@ -810,7 +788,7 @@ window.CATALOG = {
       ],
       "volume": null,
       "age": "",
-      "stockCount": 30,
+      "stockCount": 12,
       "badges": [
         {
           "type": "sale",
@@ -884,5 +862,5 @@ window.CATALOG = {
       "featured": false
     }
   ],
-  "generatedAt": "2026-09-13"
+  "generatedAt": "2026-09-14"
 };
