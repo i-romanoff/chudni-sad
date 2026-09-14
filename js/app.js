@@ -138,7 +138,20 @@
     return cartEntries().reduce(function (sum, item) { return sum + item.price * item.qty; }, 0);
   }
 
+  /* v45: тактильный отклик в MAX (Bridge HapticFeedback).
+     Вне MAX / старых клиентах — тихий no-op. kind: light | ok | err */
+  function haptic(kind) {
+    try {
+      var h = window.WebApp && window.WebApp.HapticFeedback;
+      if (!h) return;
+      if (kind === "ok" && h.notificationOccurred) h.notificationOccurred("success");
+      else if (kind === "err" && h.notificationOccurred) h.notificationOccurred("error");
+      else if (h.impactOccurred) h.impactOccurred("light");
+    } catch (e) {}
+  }
+
   function addToCart(product) {
+    haptic();
     /* ключ = uid + подпись варианта: два варианта одного растения — разные строки */
     var key = product.uid + "|" + (product.variantLabel || "");
     /* maxQty — снимок остатка на момент добавления (0 — учёт остатков выключен) */
@@ -1771,6 +1784,7 @@
     }
     agreeErr.textContent = "";
     orderError.textContent = "";
+    haptic("ok");                    /* v45: заказ принят на витрине — вибро-подтверждение */
     currentOrderNo = genOrderNo();   /* один номер на всю жизнь этого заказа */
     currentPin = genPin();           /* код выдачи — назовёт при получении */
     var text = buildOrderText();
