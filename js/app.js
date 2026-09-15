@@ -1351,9 +1351,9 @@
         var chip = document.createElement("button");
         chip.type = "button";
         chip.className = "var-chip" + (v.qty === 0 ? " is-out" : "");
-        chip.innerHTML = v.label + " · " +
-          (v.oldPrice ? "<s>" + Math.round(v.oldPrice / 100) + " ₽</s> " : "") +
-          Math.round(v.price / 100) + " ₽";
+        /* v48.5: в пилюле только подпись варианта — цена показывается
+           в карточке при тапе (просьба хозяйки) */
+        chip.textContent = v.label;
         chip.onclick = function () {
           if (v.qty === 0) return;
           selIdx = i;
