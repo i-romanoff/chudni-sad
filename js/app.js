@@ -201,13 +201,14 @@
   /* v48: шторки/карточка закрываются свайпом вниз (iOS и Android).
      handle — где стартует жест, panel — что тянем за пальцем,
      backdrop — чем затемняем (прозрачнеет вслед за жестом),
-     getScroller — какой элемент может скроллиться внутри (или null):
+     getScroller — что может скроллиться внутри (или null),
+     guard — допуск жеста только с определённого места (или null):
      пока он не на верхе, тянуть шторку рано — работает его скролл. */
-  function attachSwipeDown(handle, panel, backdrop, getScroller, onClose) {
+  function attachSwipeDown(handle, panel, backdrop, getScroller, onClose, guard) {
     if (!handle || !panel) return;
     var startX = 0, startY = 0, startT = 0, dy = 0, active = false, scroller = null;
     handle.addEventListener("touchstart", function (e) {
-      if (e.touches.length !== 1) { active = false; return; }
+      if (e.touches.length !== 1 || (guard && !guard(e))) { active = false; return; }
       active = true;
       startX = e.touches[0].clientX; startY = e.touches[0].clientY;
       startT = Date.now(); dy = 0;
@@ -1345,8 +1346,7 @@
     if (oldVars) oldVars.remove();
     if (variants.length) {
       var varBox = document.createElement("div");
-      varBox.id = "modal-vars";
-      varBox.style.cssText = "display:flex;flex-wrap:wrap;gap:8px;margin:10px 0";
+      varBox.id = "modal-vars";   /* лэйаут в style.css: ПК — рядами, мобайл — Ozon-лента */
       variants.forEach(function (v, i) {
         var chip = document.createElement("button");
         chip.type = "button";
@@ -1420,12 +1420,11 @@
     });
   });
 
-  /* v48: карточку на смартфоне закрывает свайп вниз за шапку с названием
-     (жест стартует только на шапке — слайдеру фото ничего не мешает) */
+  /* v48: карточку на смартфоне закрывает свайп вниз от верхней кромки
+     окна (зона крестика, ~48px) — ниже начинается обычный скролл */
   (function () {
-    var modalHead = modal.querySelector(".modal__head");
     var modalWin = modal.querySelector(".modal__window");
-    attachSwipeDown(modalHead, modalWin, null, null, function () {
+    attachSwipeDown(modalWin, modalWin, null, null, function () {
       modalWin.style.transition = "transform .26s cubic-bezier(.32, .72, 0, 1)";
       modalWin.style.transform = "translateY(112%)";
       setTimeout(function () {
@@ -1433,6 +1432,9 @@
         modalWin.style.transform = "";
         closeModal(modal);
       }, 270);
+    }, function (e) {
+      var r = modalWin.getBoundingClientRect();
+      return e.touches[0].clientY - r.top <= 48;
     });
   })();
   document.addEventListener("keydown", function (event) {

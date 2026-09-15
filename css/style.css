@@ -1272,6 +1272,8 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
   color: var(--moss);
 }
 .modal__price .modal__price-new.is-sale { color: var(--graffiti-pink); }
+/* Варианты: на ПК переносятся рядами; на смартфоне — Ozon-лента (см. v48-блок) */
+#modal-vars { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
 .var-chip s { margin-right: 3px; opacity: .75; }
 .modal__price small {
   font-family: var(--font-body);
@@ -1898,10 +1900,11 @@ html.theme-dark .phone-max-btn { border-color: var(--forest); color: var(--fores
   }
 }
 
-/* Карточка товара на телефоне: шапка с названием сверху, ряд кнопок
-   снизу — оба зафиксированы; окно остаётся «плавающим» с полем 10px.
-   Приём: .modal__info{display:contents} делает её детей пунктами
-   flex-скролла, у шапки и кнопок — sticky внутри скролла. */
+/* Карточка товара на телефоне: ряд кнопок зафиксирован снизу, всё
+   остальное (фото, название, цена, варианты, характеристики) скроллит;
+   окно остаётся «плавающим» с полем 10px. Приём:
+   .modal__info{display:contents} делает её детей пунктами flex-скролла,
+   у CTA-ряда — sticky внутри скролла. */
 @media (max-width: 700px) {
   .modal__window { height: calc(96vh - 20px); height: calc(96dvh - 20px); }
   .modal__scroll {
@@ -1911,24 +1914,30 @@ html.theme-dark .phone-max-btn { border-color: var(--forest); color: var(--fores
     overscroll-behavior: contain;   /* страница под модалкой не поддёргивается */
   }
   .modal__info { display: contents; }
-  .modal__head {
-    order: 0;
-    position: sticky; top: 0; z-index: 2;
-    background: var(--paper-card);
-    border-bottom: 1.5px solid rgba(30, 50, 38, .15);
-    padding: 12px 52px 10px 16px;   /* справа место под крестик */
-  }
-  .modal__head .modal__latin { margin-bottom: 2px; }
-  .modal__head .modal__title { margin-bottom: 0; }
-  .modal__head .modal__price { margin-top: 6px; margin-bottom: 0; }
   .modal__gallery { order: 1; }
-  .modal__desc, .modal__traits, .modal__similar, .modal__hint { order: 1; }
   /* padding .modal__info перестал существовать (display:contents) —
      боковые поля переезжают на детей */
+  .modal__latin, .modal__title, .modal__price,
   .modal__desc, .modal__traits, .modal__similar, .modal__hint {
+    order: 1;
     margin-left: 16px; margin-right: 16px;
   }
   .modal__hint { margin-top: 0; margin-bottom: 14px; }
+  /* Варианты — Ozon-лента: один ряд, свайп влево/вправо;
+     если вмещаются — прокрутки нет (её просто не возникает) */
+  #modal-vars {
+    order: 1;
+    flex-wrap: nowrap;
+    overflow-x: auto; overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    margin: 10px 0;
+    padding: 2px 16px 4px;
+  }
+  #modal-vars::-webkit-scrollbar { display: none; }
+  #modal-vars .var-chip { flex: none; white-space: nowrap; scroll-snap-align: start; }
   .modal__cta-row {
     order: 2;
     position: sticky; bottom: 0; z-index: 2;
@@ -1938,5 +1947,4 @@ html.theme-dark .phone-max-btn { border-color: var(--forest); color: var(--fores
     padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px));
   }
 }
-html.theme-dark .modal__head { border-bottom-color: rgba(214, 218, 221, .16); }
 html.theme-dark .modal__cta-row { border-top-color: rgba(214, 218, 221, .16); }
