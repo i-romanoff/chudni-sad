@@ -1975,4 +1975,15 @@ html.theme-dark .modal__cta-row { border-top-color: rgba(214, 218, 221, .16); }
   /* Согласия — каждая строка одной строкой (просьба хозяйки) */
   .agree-row { white-space: nowrap; font-size: 13px; gap: 8px; padding: 7px 2px; }
   .agree-row input { width: 18px; height: 18px; }
+  /* Шаг «Заказ принят»: всё влезает в экран без скролла —
+     поджимаем вертикальные отступы (просьба хозяйки) */
+  .cart__title { font-size: 22px; margin-bottom: 8px; }
+  .cart__hint { margin-top: 5px; font-size: 15px; }
+  .cart__hint--main { font-size: 16px; }
+  .cart__hint--sign { font-size: 18px; margin-top: 6px; }
+  .order-num-box { margin: 6px 0; padding: 6px 10px; }
+  .order-num-box b { font-size: 24px; }
+  .order-num-label { font-size: 13.5px; }
+  #order-bot-link { margin-top: 6px; min-height: 48px; padding: 8px 14px; }
+  #order-finish { margin-top: 6px; }
 }
