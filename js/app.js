@@ -61,6 +61,17 @@
   }
   applyThemeMeta();
 
+  /* v48: высота шапки в CSS-переменную — на телефоне шапка fixed,
+     контенту нужен точный padding-top, якорям — scroll-padding-top */
+  var headerEl = document.querySelector(".header");
+  function syncHeaderH() {
+    if (!headerEl) return;
+    document.documentElement.style.setProperty("--header-h", headerEl.offsetHeight + "px");
+  }
+  syncHeaderH();
+  window.addEventListener("load", syncHeaderH);
+  window.addEventListener("resize", syncHeaderH);
+
   var fmtPrice = function (product) {
     if (product.priceMin === product.priceMax) return fmtRub(product.priceMin);
     return fmtRub(product.priceMin) + " – " + fmtRub(product.priceMax);
@@ -148,6 +159,89 @@
       else if (kind === "err" && h.notificationOccurred) h.notificationOccurred("error");
       else if (h.impactOccurred) h.impactOccurred("light");
     } catch (e) {}
+  }
+
+  /* ============ v48: скролл-лок, который держит iOS ============
+     overflow:hidden на body iOS прокручивает всё равно — фон «ездет»
+     под модалками. Надёжный паттерн: зафиксировать body на текущей
+     позиции. Счётчик держит вложенность слоёв (корзина → карточка →
+     лайтбокс → оферта): сколько открылось, столько и закрывается. */
+  var ScrollLock = (function () {
+    var depth = 0, savedY = 0;
+    return {
+      lock: function () {
+        if (depth === 0) {
+          savedY = window.scrollY || window.pageYOffset || 0;
+          document.body.style.position = "fixed";
+          document.body.style.top = (-savedY) + "px";
+          document.body.style.left = "0";
+          document.body.style.right = "0";
+        }
+        depth++;
+      },
+      unlock: function () {
+        if (depth === 0) return;
+        depth--;
+        if (depth === 0) {
+          document.body.style.position = "";
+          document.body.style.top = "";
+          document.body.style.left = "";
+          document.body.style.right = "";
+          /* без smooth: мгновенный возврат на сохранённую позицию */
+          var htmlEl = document.documentElement;
+          var prev = htmlEl.style.scrollBehavior;
+          htmlEl.style.scrollBehavior = "auto";
+          window.scrollTo(0, savedY);
+          htmlEl.style.scrollBehavior = prev;
+        }
+      }
+    };
+  })();
+
+  /* v48: шторки/карточка закрываются свайпом вниз (iOS и Android).
+     handle — где стартует жест, panel — что тянем за пальцем,
+     backdrop — чем затемняем (прозрачнеет вслед за жестом),
+     getScroller — какой элемент может скроллиться внутри (или null):
+     пока он не на верхе, тянуть шторку рано — работает его скролл. */
+  function attachSwipeDown(handle, panel, backdrop, getScroller, onClose) {
+    if (!handle || !panel) return;
+    var startX = 0, startY = 0, startT = 0, dy = 0, active = false, scroller = null;
+    handle.addEventListener("touchstart", function (e) {
+      if (e.touches.length !== 1) { active = false; return; }
+      active = true;
+      startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+      startT = Date.now(); dy = 0;
+      scroller = getScroller ? getScroller(e.target) : null;
+      panel.style.transition = "none";
+    }, { passive: true });
+    handle.addEventListener("touchmove", function (e) {
+      if (!active) return;
+      var ndy = e.touches[0].clientY - startY;
+      var ndx = e.touches[0].clientX - startX;
+      if (Math.abs(ndx) > Math.abs(ndy) + 8) {   /* горизонтальный жест — не наш */
+        active = false; panel.style.transition = ""; panel.style.transform = "";
+        return;
+      }
+      if (ndy <= 0 || (scroller && scroller.scrollTop > 0)) return;
+      dy = ndy;
+      e.preventDefault();                        /* тянем шторку вместо страницы */
+      panel.style.transform = "translateY(" + (dy > 240 ? 240 + (dy - 240) * 0.25 : dy) + "px)";
+      if (backdrop) backdrop.style.opacity = String(Math.max(0, 1 - dy / 420));
+    }, { passive: false });
+    function release(fired) {
+      if (!active) return;
+      active = false;
+      panel.style.transition = "";
+      panel.style.transform = "";
+      if (backdrop) backdrop.style.opacity = "";
+      if (fired) {
+        var vel = dy / Math.max(1, Date.now() - startT);   /* px за мс */
+        if (dy > 110 || vel > 0.5) onClose();
+      }
+      dy = 0;
+    }
+    handle.addEventListener("touchend", function () { release(true); });
+    handle.addEventListener("touchcancel", function () { release(false); });
   }
 
   function addToCart(product) {
@@ -352,6 +446,7 @@
   }
 
   function openFilter() {
+    ScrollLock.lock();          /* v48: фон за шторкой больше не скроллится */
     renderFilterPanel();
     renderFacets();
     filterSheet.hidden = false;
@@ -440,9 +535,20 @@
   }
 
   function closeFilter() {
+    ScrollLock.unlock();        /* v48: снимаем сразу — таймер скрытия не трогаем */
     filterSheet.classList.remove("show");
     setTimeout(function () { filterSheet.hidden = true; }, 380);
   }
+
+  /* v48: свайп вниз за граббер/верх шторки закрывает её; тянуть можно
+     и когда список категорий промотан на самый верх */
+  attachSwipeDown(
+    filterSheet.querySelector(".filter-sheet__panel"),
+    filterSheet.querySelector(".filter-sheet__panel"),
+    filterSheet.querySelector(".filter-sheet__backdrop"),
+    function (target) { return target.closest(".filter-sheet__body"); },
+    closeFilter
+  );
 
   /* «Сбросить всё»: категории + все фасеты — одним нажатием */
   var resetBtn = document.getElementById("filter-reset");
@@ -948,7 +1054,7 @@
       lbDots.appendChild(dot);
     });
     lb.hidden = false;
-    document.body.style.overflow = "hidden";
+    ScrollLock.lock();          /* v48: лайтбокс — ещё один слой замка */
     lbShow(index || 0);
     lb.querySelector(".lightbox__close").focus();
     syncBackButton();
@@ -956,7 +1062,7 @@
 
   function lbClose() {
     lb.hidden = true;
-    document.body.style.overflow = "hidden";   /* модалка товара осталась открыта */
+    ScrollLock.unlock();        /* карточка товара осталась открыта — её замок держит */
     lbZoomTo(1);
     syncBackButton();
   }
@@ -1277,7 +1383,14 @@
     renderSimilar(product);
 
     modal.hidden = false;
-    document.body.style.overflow = "hidden";
+    /* v48: сброс скролла строго ПОСЛЕ показа — у display:none нет
+       раскладки, присвоение scrollTop «в тени» игнорируется, и новая
+       карточка открывалась с прокруткой прошлой (баг «сразу внизу») */
+    modal.scrollTop = 0;
+    var mScroll = modal.querySelector(".modal__scroll");
+    if (mScroll) mScroll.scrollTop = 0;
+
+    ScrollLock.lock();
     modal.querySelector(".modal__close").focus();
     syncBackButton();
   }
@@ -1291,12 +1404,12 @@
       modal.classList.remove("open-over-cart");
       renderCart();
       cartModal.hidden = false;
-      document.body.style.overflow = "hidden";
+      /* замок не трогаем: корзина осталась под карточкой, её слой держит */
       cartModal.querySelector(".modal__close").focus();
       syncBackButton();
       return;
     }
-    document.body.style.overflow = "";
+    ScrollLock.unlock();
     if (lastFocused) lastFocused.focus();
     syncBackButton();
   }
@@ -1306,6 +1419,22 @@
       if (event.target.closest("[data-close]")) closeModal(el);
     });
   });
+
+  /* v48: карточку на смартфоне закрывает свайп вниз за шапку с названием
+     (жест стартует только на шапке — слайдеру фото ничего не мешает) */
+  (function () {
+    var modalHead = modal.querySelector(".modal__head");
+    var modalWin = modal.querySelector(".modal__window");
+    attachSwipeDown(modalHead, modalWin, null, null, function () {
+      modalWin.style.transition = "transform .26s cubic-bezier(.32, .72, 0, 1)";
+      modalWin.style.transform = "translateY(112%)";
+      setTimeout(function () {
+        modalWin.style.transition = "";
+        modalWin.style.transform = "";
+        closeModal(modal);
+      }, 270);
+    });
+  })();
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
       /* Esc закрывает ВЕРХНИЙ слой: лайтбокс → модалка товара → корзина */
@@ -1397,7 +1526,7 @@
     renderCart();
     renderUnsent();
     cartModal.hidden = false;
-    document.body.style.overflow = "hidden";
+    ScrollLock.lock();
     cartModal.querySelector(".modal__close").focus();
     syncBackButton();
   }
@@ -1894,10 +2023,10 @@
       '<div class="doc-overlay__win"><button class="modal__close" type="button" aria-label="Закрыть">×</button>' +
       '<div class="doc-overlay__body"><p class="cart__hint">Загружаю…</p></div></div>';
     document.body.appendChild(wrap);
-    document.body.style.overflow = "hidden";
+    ScrollLock.lock();
     function closeDoc() {
       wrap.remove();
-      document.body.style.overflow = "";
+      ScrollLock.unlock();
       syncBackButton();
     }
     wrap.querySelector(".modal__close").addEventListener("click", closeDoc);

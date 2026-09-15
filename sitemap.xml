@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://i-romanoff.github.io/chudni-sad/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <url><loc>https://chudni-sad.ru/</loc><lastmod>2026-09-15</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://chudni-sad.ru/articles.html</loc><lastmod>2026-09-15</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://chudni-sad.ru/about.html</loc><lastmod>2026-09-15</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://chudni-sad.ru/price.html</loc><lastmod>2026-09-15</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://chudni-sad.ru/guarantees.html</loc><lastmod>2026-09-15</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://chudni-sad.ru/offer.html</loc><lastmod>2026-09-15</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://chudni-sad.ru/privacy.html</loc><lastmod>2026-09-15</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
 </urlset>

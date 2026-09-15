@@ -28,7 +28,12 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* v48: якоря не прячутся под шапкой; --header-h выставляет app.js
+     по фактической высоте шапки (на телефоне она fixed) */
+  scroll-padding-top: calc(var(--header-h, 86px) + 8px);
+}
 
 body {
   font-family: var(--font-body);
@@ -141,6 +146,23 @@ img { display: block; max-width: 100%; }
   border-color: var(--forest);
 }
 .btn--ghost:hover { background: var(--forest); color: var(--paper-card); }
+
+/* v48: «Позвонить» — цветовая схема виджета меню: тёмная хвоя с
+   лаймовой рамкой. В тёмной теме — графит со светлой хвоей (как FAB). */
+.btn--call {
+  background: var(--forest);
+  color: #fff;
+  border-color: var(--lime);
+  box-shadow: 0 10px 26px rgba(19, 33, 26, .35);
+}
+.btn--call:hover {
+  background: var(--forest-deep);
+  box-shadow: 0 14px 30px rgba(19, 33, 26, .42);
+  transform: translateY(-2px);
+}
+.btn--call:active { transform: scale(.97); box-shadow: 0 6px 16px rgba(19, 33, 26, .3); }
+html.theme-dark .btn--call { background: #2c3034; color: var(--forest); }
+html.theme-dark .btn--call:hover { background: #34383d; }
 
 .btn--big { padding: 14px 32px; font-size: 18px; min-height: 56px; }
 
@@ -524,9 +546,12 @@ html.theme-dark .fav-btn { background: rgba(38, 41, 45, .85); color: #e08a9d; }
 }
 .filter-sheet.show .filter-sheet__backdrop { opacity: 1; }
 .filter-sheet__panel {
-  position: absolute; left: 10px; right: 10px; bottom: 10px;
-  border-radius: 24px;
-  padding: 10px 18px 18px;
+  position: absolute; left: 0; right: 0; bottom: 0;
+  display: flex; flex-direction: column;
+  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);        /* v48: не выше экрана с адресной строкой */
+  border-radius: 22px 22px 0 0;           /* v48: full-bleed — никаких зазоров */
+  padding: 6px 18px calc(14px + env(safe-area-inset-bottom, 0px));
   background: rgba(249, 250, 241, .78);
   -webkit-backdrop-filter: blur(24px) saturate(1.8);
   backdrop-filter: blur(24px) saturate(1.8);
@@ -536,10 +561,20 @@ html.theme-dark .fav-btn { background: rgba(38, 41, 45, .85); color: #e08a9d; }
 }
 .filter-sheet.show .filter-sheet__panel { transform: translateY(0); }
 .filter-sheet__grab {
+  flex: none;
   width: 44px; height: 5px;
   border-radius: 999px;
   background: rgba(30, 50, 38, .25);
   margin: 6px auto 12px;
+}
+/* v48: середина скроллит, граббер/заголовок и футер всегда на виду */
+.filter-sheet__body {
+  flex: 1 1 auto; min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  margin: 0 -18px;
+  padding: 0 18px;
 }
 .filter-sheet__title {
   font-size: 20px; font-weight: 700;
@@ -580,7 +615,7 @@ html.theme-dark .fav-btn { background: rgba(38, 41, 45, .85); color: #e08a9d; }
   color: #1c2a18;
   transform: scale(1.05);
 }
-.filter-sheet__foot { display: flex; gap: 8px; margin-top: 4px; }
+.filter-sheet__foot { display: flex; gap: 8px; margin-top: 4px; flex: none; }
 .filter-sheet__foot .filter-sheet__reset { flex: 0 0 auto; }
 .filter-sheet__foot .filter-sheet__done { flex: 1; width: auto; }
 .facet-empty { font-size: 13px; color: var(--moss); opacity: .75; }
@@ -1073,12 +1108,14 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
   font-size: 16px; font-weight: 500; color: var(--moss); text-align: center;
 }
 
-/* ---------- Кнопки мессенджеров ---------- */
+/* ---------- Кнопки мессенджеров: ряд круглых иконок в цветах темы (v48) ---------- */
+.social-row { display: flex; gap: 10px; }
+.social-row .social-btn { flex: 1; padding: 9px 10px; }
 .social-btn {
   display: flex; align-items: center; justify-content: center; gap: 12px;
   background: var(--paper-card);
   border: 2px solid rgba(30, 50, 38, .25);
-  border-radius: 12px;
+  border-radius: 999px;
   min-height: 56px;
   padding: 10px 18px;
   text-decoration: none;
@@ -1092,15 +1129,17 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
   box-shadow: var(--shadow-soft);
   border-color: var(--moss);
 }
+.social-btn:active { transform: scale(.96); }
 .social-btn__icon {
   display: grid; place-items: center;
   width: 36px; height: 36px; flex: none;
   border-radius: 50%;
-  color: #fff; font-size: 18px; line-height: 1;
+  background: var(--paper);   /* бейдж в цветах темы — тёмная подстраивается сама */
+  color: var(--forest);       /* SVG красится через currentColor */
+  font-size: 18px; line-height: 1;
+  transition: transform .18s ease;
 }
-.social-btn--tg .social-btn__icon { background: #1c7fb5; }
-.social-btn--max .social-btn__icon { background: #fff; }
-.social-btn__icon--img, .social-btn__icon--svg { color: #4636c9; }
+.social-btn:hover .social-btn__icon { transform: scale(1.08); }
 .social-btn__icon svg.max-logo { width: 22px; height: 21px; margin-left: 2px; }
 
 /* ---------- Кнопка «В начало» (десктоп) ---------- */
@@ -1486,7 +1525,7 @@ html.theme-dark .agree-row a { color: #e08a9d; }
      Полупрозрачная и компактная — почти не спорит с контентом под ней. */
   .to-top {
     display: flex;
-    right: 10px; bottom: 88px;
+    right: 10px; bottom: 16px;   /* v48: виджет меню спрятан — «Наверх» больше не поднимается */
     width: 42px; height: 42px;
     z-index: 55;
     opacity: .85;
@@ -1537,7 +1576,6 @@ html.theme-dark .agree-row a { color: #e08a9d; }
   .mobile-bar__item--call { background: var(--graffiti-pink); color: #fff; }
   .cards { grid-template-columns: 1fr; gap: 22px; }
   .hero__actions .btn { flex: 1; }
-  .contacts__actions .social-btn { justify-content: flex-start; }
   .footer { padding-bottom: 96px; }
 }
 
@@ -1661,9 +1699,10 @@ html.theme-dark .agree-row a { color: #e08a9d; }
 .action-fab__menu a:active { background: var(--lime); }
 html.theme-dark .action-fab__menu { background: #26292d; }
 html.theme-dark .action-fab__menu a { background: #1e2124; color: #d6dadd; }
+/* v48: плавающий виджет меню на телефонах спрятан («пока») — контакты
+   остаются в секции «Контакты». Вернуть: заменить на display: flex. */
 @media (max-width: 700px) {
-  .action-fab { display: flex; }
-  .to-top { bottom: 82px; }
+  .action-fab, .action-fab__menu { display: none !important; }
 }
 
 /* ============================================================
@@ -1756,6 +1795,11 @@ html.theme-dark .action-fab { background: #2c3034; }
   html.theme-dark .cart-btn:hover {
     background: transparent; border-color: var(--forest); color: var(--forest);
   }
+  /* v48: новые кнопки тоже не «залипают» после тапа */
+  .btn--call:hover { background: var(--forest); color: #fff; transform: none; box-shadow: 0 10px 26px rgba(19, 33, 26, .35); }
+  html.theme-dark .btn--call:hover { background: #2c3034; color: var(--forest); box-shadow: none; }
+  .social-btn:hover { transform: none; box-shadow: none; }
+  .social-btn:hover .social-btn__icon { transform: none; }
 }
 
 /* Подтверждение заказа: основной текст крупнее, подпись — рукописная */
@@ -1837,3 +1881,62 @@ html.theme-dark .phone-max-btn { border-color: var(--forest); color: var(--fores
 /* Компактная сетка: бейдж наличия меньше, точка тоже */
 .cards--compact .card__stock { gap: 4px; }
 .cards--compact .card__stock::before { width: 5px; height: 5px; }
+
+/* ============================================================
+   v48 — мобильные фиксы: шапка fixed, карточка товара с
+   зафиксированной шапкой и рядом кнопок, середина скроллит
+   ============================================================ */
+
+/* Шапка на телефонах: fixed вместо sticky. iOS Safari ломает sticky
+   после модалок (переключение overflow на body) — шапка «отклеивалась»
+   и уезжала вместе со страницей. Высоту кладёт в --header-h app.js. */
+@media (max-width: 700px) {
+  body { padding-top: var(--header-h, 86px); }
+  .header {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+}
+
+/* Карточка товара на телефоне: шапка с названием сверху, ряд кнопок
+   снизу — оба зафиксированы; окно остаётся «плавающим» с полем 10px.
+   Приём: .modal__info{display:contents} делает её детей пунктами
+   flex-скролла, у шапки и кнопок — sticky внутри скролла. */
+@media (max-width: 700px) {
+  .modal__window { height: calc(96vh - 20px); height: calc(96dvh - 20px); }
+  .modal__scroll {
+    display: flex; flex-direction: column;
+    height: 100%; max-height: none; min-height: 0;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;   /* страница под модалкой не поддёргивается */
+  }
+  .modal__info { display: contents; }
+  .modal__head {
+    order: 0;
+    position: sticky; top: 0; z-index: 2;
+    background: var(--paper-card);
+    border-bottom: 1.5px solid rgba(30, 50, 38, .15);
+    padding: 12px 52px 10px 16px;   /* справа место под крестик */
+  }
+  .modal__head .modal__latin { margin-bottom: 2px; }
+  .modal__head .modal__title { margin-bottom: 0; }
+  .modal__head .modal__price { margin-top: 6px; margin-bottom: 0; }
+  .modal__gallery { order: 1; }
+  .modal__desc, .modal__traits, .modal__similar, .modal__hint { order: 1; }
+  /* padding .modal__info перестал существовать (display:contents) —
+     боковые поля переезжают на детей */
+  .modal__desc, .modal__traits, .modal__similar, .modal__hint {
+    margin-left: 16px; margin-right: 16px;
+  }
+  .modal__hint { margin-top: 0; margin-bottom: 14px; }
+  .modal__cta-row {
+    order: 2;
+    position: sticky; bottom: 0; z-index: 2;
+    margin-top: auto;
+    background: var(--paper-card);
+    border-top: 1.5px solid rgba(30, 50, 38, .15);
+    padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+}
+html.theme-dark .modal__head { border-bottom-color: rgba(214, 218, 221, .16); }
+html.theme-dark .modal__cta-row { border-top-color: rgba(214, 218, 221, .16); }

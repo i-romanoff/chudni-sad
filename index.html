@@ -20,7 +20,14 @@
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="assets/img/icon-192.png">
-  <link rel="canonical" href="https://i-romanoff.github.io/chudni-sad/">
+  <link rel="canonical" href="https://chudni-sad.ru/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Чудный сад — саженцы гортензий и спирей">
+  <meta property="og:description" content="Питомник «Чудный сад»: саженцы метельчатых гортензий, японских спирей, хвойных, плодовых и многолетних. Живые фото, цены, заказ через MAX.">
+  <meta property="og:url" content="https://chudni-sad.ru/">
+  <meta property="og:image" content="https://chudni-sad.ru/assets/img/logo.png">
+  <meta property="og:site_name" content="Чудный сад">
+  <meta property="og:locale" content="ru_RU">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prata&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
@@ -29,7 +36,17 @@
        (WebApp.initDataUnsafe.user) — автозаполнение имени и автосвязь
        заказа с чатом. Вне MAX скрипт просто не создаёт контекст. -->
   <script src="https://st.max.ru/js/max-web-app.js"></script>
-</head>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Питомник «Чудный сад»",
+    "url": "https://chudni-sad.ru",
+    "logo": "https://chudni-sad.ru/assets/img/logo.png",
+    "contactPoint": {"@type": "ContactPoint", "telephone": "+7-924-707-14-00", "contactType": "sales"}
+  }
+  </script>
+  </head>
 <body>
   <a class="skip-link" href="#catalog">Перейти к каталогу</a>
 
@@ -157,15 +174,17 @@
           <p class="contacts__text">Ответим на вопросы о растениях, поможем с выбором и посадкой. Готовый заказ из корзины отправьте нам в MAX — или просто позвоните.</p>
         </div>
         <div class="contacts__actions">
-          <a class="btn btn--primary btn--big" id="contacts-phone" href="#">Позвонить</a>
-          <a class="social-btn social-btn--max" id="contacts-max" href="#" target="_blank" rel="noopener noreferrer">
-            <span class="social-btn__icon social-btn__icon--img" aria-hidden="true"><svg class="max-logo" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3405 23.9342C9.97568 23.9342 8.87728 23.5899 6.97252 22.2125C5.76041 23.762 1.94518 24.9672 1.77774 22.9012C1.77774 21.3535 1.42788 20.0492 1.04269 18.6132C0.570922 16.8544 0.0461426 14.898 0.0461426 12.0546C0.0461426 5.27426 5.6424 0.175079 12.2777 0.175079C18.913 0.175079 24.1153 5.52322 24.1153 12.1205C24.1153 18.7178 18.7474 23.9342 12.3405 23.9342ZM12.4368 6.03673C9.20791 5.86848 6.68817 8.0948 6.13253 11.5794C5.6724 14.465 6.48821 17.9812 7.18602 18.1582C7.51488 18.2416 8.35763 17.564 8.87711 17.0475C9.73154 17.5981 10.712 18.0245 11.8019 18.0813C15.1168 18.254 18.0544 15.6761 18.228 12.382C18.4016 9.08792 15.7517 6.20946 12.4368 6.03673Z" fill="currentColor"></path></svg></span>
-            <span class="social-btn__label">Канал в MAX</span>
-          </a>
-          <a class="social-btn social-btn--tg" href="https://t.me/chydni_sad" target="_blank" rel="noopener noreferrer">
-            <span class="social-btn__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M21.9 3.4 2.5 10.9c-.9.35-.88 1.63.03 1.95l4.9 1.7 1.9 5.8c.27.83 1.34 1.02 1.88.33l2.7-3.5 4.9 3.6c.78.57 1.9.15 2.1-.8l3-14.9c.24-1.1-.85-2-1.98-1.62zM8.7 13.3l9.2-5.8c.4-.25.8.3.45.62l-7.5 6.8c-.26.24-.43.57-.48.93l-.25 1.83c-.03.25-.38.28-.45.04l-1.05-3.45c-.12-.4.05-.83.4-1.06z"/></svg></span>
-            <span class="social-btn__label">Написать в Telegram</span>
-          </a>
+          <!-- v48: «Позвонить» — в цветовой схеме виджета меню (хвоя + лайм);
+               мессенджеры — круглые иконки в цветах темы, в ряд под ней -->
+          <a class="btn btn--call btn--big" id="contacts-phone" href="#">Позвонить</a>
+          <div class="social-row">
+            <a class="social-btn social-btn--max" id="contacts-max" href="#" target="_blank" rel="noopener noreferrer" aria-label="Канал в MAX">
+              <span class="social-btn__icon" aria-hidden="true"><svg class="max-logo" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3405 23.9342C9.97568 23.9342 8.87728 23.5899 6.97252 22.2125C5.76041 23.762 1.94518 24.9672 1.77774 22.9012C1.77774 21.3535 1.42788 20.0492 1.04269 18.6132C0.570922 16.8544 0.0461426 14.898 0.0461426 12.0546C0.0461426 5.27426 5.6424 0.175079 12.2777 0.175079C18.913 0.175079 24.1153 5.52322 24.1153 12.1205C24.1153 18.7178 18.7474 23.9342 12.3405 23.9342ZM12.4368 6.03673C9.20791 5.86848 6.68817 8.0948 6.13253 11.5794C5.6724 14.465 6.48821 17.9812 7.18602 18.1582C7.51488 18.2416 8.35763 17.564 8.87711 17.0475C9.73154 17.5981 10.712 18.0245 11.8019 18.0813C15.1168 18.254 18.0544 15.6761 18.228 12.382C18.4016 9.08792 15.7517 6.20946 12.4368 6.03673Z" fill="currentColor"></path></svg></span>
+            </a>
+            <a class="social-btn social-btn--tg" href="https://t.me/chydni_sad" target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram">
+              <span class="social-btn__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 3.4 2.5 10.9c-.9.35-.88 1.63.03 1.95l4.9 1.7 1.9 5.8c.27.83 1.34 1.02 1.88.33l2.7-3.5 4.9 3.6c.78.57 1.9.15 2.1-.8l3-14.9c.24-1.1-.85-2-1.98-1.62zM8.7 13.3l9.2-5.8c.4-.25.8.3.45.62l-7.5 6.8c-.26.24-.43.57-.48.93l-.25 1.83c-.03.25-.38.28-.45.04l-1.05-3.45c-.12-.4.05-.83.4-1.06z"/></svg></span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -216,9 +235,12 @@
         <div class="modal__thumbs" id="modal-thumbs"></div>
       </div>
       <div class="modal__info">
-        <p class="modal__latin" id="modal-latin"></p>
-        <h3 class="modal__title" id="modal-title"></h3>
-        <p class="modal__price" id="modal-price"></p>
+        <!-- v48: шапка карточки — на смартфоне прилипает сверху, название всегда видно -->
+        <div class="modal__head">
+          <p class="modal__latin" id="modal-latin"></p>
+          <h3 class="modal__title" id="modal-title"></h3>
+          <p class="modal__price" id="modal-price"></p>
+        </div>
         <p class="modal__desc" id="modal-desc"></p>
         <dl class="modal__traits" id="modal-traits"></dl>
         <div class="modal__cta-row">
@@ -325,16 +347,19 @@
     <div class="filter-sheet__panel" role="dialog" aria-modal="true" aria-label="Категории растений">
       <div class="filter-sheet__grab" aria-hidden="true"></div>
       <h3 class="filter-sheet__title">Категории и фильтры</h3>
-      <div class="filter-sheet__list" id="filter-list"><!-- категории собираются в app.js --></div>
-      <div class="facet-group" id="facet-group">
-        <div class="facet-title">Высота взрослого растения</div>
-        <div class="facet-opts" id="facet-height"></div>
-        <div class="facet-title">Цветение</div>
-        <div class="facet-opts" id="facet-bloom"></div>
-        <div class="facet-title">Свет</div>
-        <div class="facet-opts" id="facet-light"></div>
-        <div class="facet-title">Зона USDA (зимостойкость)</div>
-        <div class="facet-opts" id="facet-zone"></div>
+      <!-- v48: середина шторки скроллит, граббер/заголовок и кнопки всегда на виду -->
+      <div class="filter-sheet__body">
+        <div class="filter-sheet__list" id="filter-list"><!-- категории собираются в app.js --></div>
+        <div class="facet-group" id="facet-group">
+          <div class="facet-title">Высота взрослого растения</div>
+          <div class="facet-opts" id="facet-height"></div>
+          <div class="facet-title">Цветение</div>
+          <div class="facet-opts" id="facet-bloom"></div>
+          <div class="facet-title">Свет</div>
+          <div class="facet-opts" id="facet-light"></div>
+          <div class="facet-title">Зона USDA (зимостойкость)</div>
+          <div class="facet-opts" id="facet-zone"></div>
+        </div>
       </div>
       <div class="filter-sheet__foot">
         <button class="btn btn--ghost filter-sheet__reset" id="filter-reset" type="button">Сбросить всё</button>
