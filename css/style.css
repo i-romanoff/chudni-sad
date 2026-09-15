@@ -1828,7 +1828,8 @@ html.theme-dark .action-fab { background: #2c3034; }
   letter-spacing: .04em;
   color: var(--forest);
 }
-#order-bot-link { margin-top: 10px; width: 100%; }
+#order-bot-link { margin-top: 10px; width: 100%; gap: 8px; }
+#order-bot-link .max-logo { width: 20px; height: 19px; flex: none; }
 
 /* «Телефон из профиля MAX»: компактная кнопка под полем (внутри label нельзя —
    клик по кнопке задевал поле, и она растягивалась на всю ширину) */
@@ -1891,12 +1892,16 @@ html.theme-dark .phone-max-btn { border-color: var(--forest); color: var(--fores
 
 /* Шапка на телефонах: fixed вместо sticky. iOS Safari ломает sticky
    после модалок (переключение overflow на body) — шапка «отклеивалась»
-   и уезжала вместе со страницей. Высоту кладёт в --header-h app.js. */
+   и уезжала вместе со страницей. Высоту кладёт в --header-h app.js.
+   translateZ(0) — свой композитный слой: без него fixed-шапка дёргается
+   при скролле во встроенных браузерах (Telegram и т.п.). */
 @media (max-width: 700px) {
   body { padding-top: var(--header-h, 86px); }
   .header {
     position: fixed; top: 0; left: 0; right: 0;
     padding-top: env(safe-area-inset-top, 0px);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
 }
 
@@ -1904,10 +1909,11 @@ html.theme-dark .phone-max-btn { border-color: var(--forest); color: var(--fores
    остальное (фото, название, цена, варианты, характеристики) скроллит;
    окно остаётся «плавающим» с полем 10px. Приём:
    .modal__info{display:contents} делает её детей пунктами flex-скролла,
-   у CTA-ряда — sticky внутри скролла. */
+   у CTA-ряда — sticky внутри скролла. Селектор с #modal: корзина тоже
+   носит класс .modal__scroll — её телефонное поведение ниже, своё. */
 @media (max-width: 700px) {
-  .modal__window { height: calc(96vh - 20px); height: calc(96dvh - 20px); }
-  .modal__scroll {
+  #modal .modal__window { height: calc(96vh - 20px); height: calc(96dvh - 20px); }
+  #modal .modal__scroll {
     display: flex; flex-direction: column;
     height: 100%; max-height: none; min-height: 0;
     -webkit-overflow-scrolling: touch;
@@ -1924,9 +1930,12 @@ html.theme-dark .phone-max-btn { border-color: var(--forest); color: var(--fores
   }
   .modal__hint { margin-top: 0; margin-bottom: 14px; }
   /* Варианты — Ozon-лента: один ряд, свайп влево/вправо;
-     если вмещаются — прокрутки нет (её просто не возникает) */
+     если вмещаются — прокрутки нет (её просто не возникает).
+     flex:none: у скролл-контейнера авто-минимум по высоте 0, иначе
+     flex-колонка сжимает ленту и чипы обрезаются (overflow-y hidden) */
   #modal-vars {
     order: 1;
+    flex: none;
     flex-wrap: nowrap;
     overflow-x: auto; overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
@@ -1948,3 +1957,22 @@ html.theme-dark .phone-max-btn { border-color: var(--forest); color: var(--fores
   }
 }
 html.theme-dark .modal__cta-row { border-top-color: rgba(214, 218, 221, .16); }
+
+/* Корзина на телефоне: окно-шит почти во весь экран, содержимое
+   скроллит внутри — кнопки «Отправить заказ»/«Хорошо, спасибо!»
+   всегда доскролливаются (раньше хвост окна уходил за экран) */
+@media (max-width: 700px) {
+  .cart__window {
+    height: calc(96vh - 20px); height: calc(96dvh - 20px);
+    display: flex; flex-direction: column;
+  }
+  .cart__scroll {
+    flex: 1 1 auto; min-height: 0;
+    height: auto; max-height: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  /* Согласия — каждая строка одной строкой (просьба хозяйки) */
+  .agree-row { white-space: nowrap; font-size: 13px; gap: 8px; padding: 7px 2px; }
+  .agree-row input { width: 18px; height: 18px; }
+}
