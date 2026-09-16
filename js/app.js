@@ -77,19 +77,15 @@
     return fmtRub(product.priceMin) + " – " + fmtRub(product.priceMax);
   };
 
+  /* v49.1: «Скоро в наличии» — оранжевая пилюля, цены нет;
+     остаток 0 — серая пилюля «Нет в наличии», цены нет; покупка недоступна. */
   var stockInfo = function (product) {
-    /* предзаказ: продаём без остатка — доставка весной */
-    if (product.preorder) {
-      return { text: "Предзаказ — доставка весной", cls: "card__stock card__stock--low", disabled: false };
-    }
-    if (product.stockCount === 0) {
-      return { text: "Продано", cls: "card__stock card__stock--out", disabled: true };
-    }
+    if (product.status === "Скоро в наличии")
+      return { text: "Скоро в наличии", cls: "card__stock card__stock--soon", disabled: true, noPrice: true };
+    if ((product.stockCount || 0) <= 0)
+      return { text: "Нет в наличии", cls: "card__stock card__stock--out", disabled: true, noPrice: true };
     if (product.stockCount === 1) {
       return { text: "Остался последний", cls: "card__stock card__stock--low" };
-    }
-    if (product.stockCount) {
-      return { text: "В наличии", cls: "card__stock" };
     }
     return { text: "В наличии", cls: "card__stock" };
   };
@@ -261,7 +257,6 @@
         uid: product.uid,
         name: product.name,
         variantLabel: product.variantLabel || "",
-        preorder: !!product.preorder,
         price: product.priceMin,
         priceLabel: fmtPrice(product),
         photo: product.photos[0].file,
@@ -830,7 +825,7 @@
         add.disabled = true;
         add.style.opacity = ".55";
         add.style.cursor = "default";
-        add.title = "Продано";
+        add.title = "Нет в наличии";
         add.classList.add("is-sold-out");
       } else if (product.variants && product.variants.length) {
         /* У товара варианты цены (объём/высота) — кнопка открывает карточку выбора */
@@ -1214,7 +1209,8 @@
       card.querySelector("img").src = "assets/img/" + sp.photos[0].file;
       card.querySelector("img").alt = sp.photos[0].alt;
       card.querySelector(".sc-name").textContent = sp.name;
-      card.querySelector(".sc-price").textContent = fmtPrice(sp);
+      card.querySelector(".sc-price").textContent =
+        stockInfo(sp).noPrice ? "Нет в наличии" : fmtPrice(sp);
       card.addEventListener("click", function () { openModal(sp); });
       grid.appendChild(card);
     });
@@ -1251,8 +1247,19 @@
       priceText += " (цена зависит от варианта)";
     }
     renderPrice(product.oldPriceMin, priceText);
-    /* распродан — цену не показываем */
-    modalPrice.style.display = (product.stockCount === 0 && !product.preorder) ? "none" : "";
+    /* распродан/скоро — цену не показываем */
+    modalPrice.style.display = (product.status === "Скоро в наличии" || (product.stockCount || 0) <= 0) ? "none" : "";
+    /* v49.1: пилюля статуса в модалке */
+    var stockPill = document.getElementById("modal-stock-pill");
+    if (!stockPill) {
+      stockPill = document.createElement("span");
+      stockPill.id = "modal-stock-pill";
+      modalPrice.parentNode.insertBefore(stockPill, modalPrice);
+    }
+    var stInfo = stockInfo(product);
+    stockPill.textContent = stInfo.text;
+    stockPill.className = "modal__stock-pill " + stInfo.cls;
+    stockPill.style.display = (stInfo.text === "В наличии") ? "none" : "inline-block";
 
     modalDesc.textContent = product.description;
 
@@ -1274,7 +1281,7 @@
       var sold = v.qty === 0;
       modalPrice.style.display = sold ? "none" : "";
       modalAdd.disabled = sold;
-      modalAdd.textContent = sold ? "Продано" : "В корзину";
+      modalAdd.textContent = sold ? "Нет в наличии" : "В корзину";
       var pseudo = Object.assign({}, product, {
         uid: product.uid,
         variantLabel: v.label,
@@ -1305,7 +1312,7 @@
 
     var stock = stockInfo(product);
     modalAdd.disabled = !!stock.disabled;
-    modalAdd.textContent = stock.disabled ? "Продано" : "В корзину";
+    modalAdd.textContent = stock.disabled ? "Нет в наличии" : "В корзину";
     /* Продано: предложение сообщить о поступлении через MAX */
     var oldNotify = document.getElementById("modal-notify");
     if (oldNotify) oldNotify.remove();
@@ -1374,7 +1381,7 @@
       } else {
         /* все варианты распроданы — базовую кнопку «В корзину» глушим */
         modalAdd.disabled = true;
-        modalAdd.textContent = "Продано";
+        modalAdd.textContent = "Нет в наличии";
         if (modalBuyNow) modalBuyNow.style.display = "none";
       }
     }
@@ -1489,7 +1496,7 @@
      ПК/старые браузеры: ссылка копируется в буфер. */
   document.getElementById("modal-share").addEventListener("click", function () {
     if (!shareProduct) return;
-    var price = fmtPrice(shareProduct);
+    var price = stockInfo(shareProduct).noPrice ? "цены уточняйте" : fmtPrice(shareProduct);
     var url = location.origin + location.pathname;
     var text = shareProduct.name + " — " + price + ". Питомник «Чудный сад»";
     /* внутри мини-приложения MAX — нативный экран шеринга (v41) */
@@ -1802,7 +1809,7 @@
     lines.push("", "Состав заказа:");
 
     cartEntries().forEach(function (item, i) {
-      lines.push((i + 1) + ". " + item.name + (item.preorder ? " (предзаказ — доставка весной)" : "") +
+      lines.push((i + 1) + ". " + item.name +
         " — " + item.qty + " шт × " +
         fmtRub(item.price) + " = " + fmtRub(item.price * item.qty));
     });
@@ -2319,7 +2326,7 @@
     var txt = button.querySelector(".card__add-txt");
     var badge = button.querySelector(".add-badge");
     if (button.disabled) {
-      if (!button.querySelector("svg")) button.textContent = "Продано";
+      if (!button.querySelector("svg")) button.textContent = "Нет в наличии";
       return;
     }
     /* у товара с вариантами кнопка карточки — «Выбрать», количество
@@ -2410,7 +2417,7 @@
       rowEl.className = "featured-card__row";
       var price = document.createElement("span");
       price.className = "featured-card__price";
-      price.textContent = fmtPrice(p);
+      price.textContent = stockInfo(p).noPrice ? "Нет в наличии" : fmtPrice(p);
 
       var add = document.createElement("button");
       add.type = "button";

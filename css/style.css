@@ -836,6 +836,13 @@ html.hide-totop .to-top { display: none !important; }
 }
 .card__stock--low::before, .card__stock--out::before { display: none; }
 .card__stock--low { background: var(--graffiti-pink); color: #fff; }
+.card__stock--soon { background: #d9822b; color: #fff; }   /* v49.1: «Скоро в наличии» */
+.modal__stock-pill {
+  display: inline-block; padding: 6px 14px; border-radius: 999px;
+  font-size: 15px; font-weight: 700; margin-bottom: 8px;
+}
+.modal__stock-pill.card__stock--out { background: rgba(19, 33, 26, .8); color: #fff; }
+.modal__stock-pill.card__stock--soon { background: #d9822b; color: #fff; }
 .card__stock--out { background: rgba(19, 33, 26, .8); color: #fff; }
 
 .card__tag {
