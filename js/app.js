@@ -1894,6 +1894,49 @@
     }, 0);
   }
 
+  /* v51: выбор оплаты после отправки заказа. Онлайн — через ERP (Robokassa,
+     мок до подключения ключей); «при получении» — старый путь, Robokassa
+     не упоминается. Нет erpUrl / API недоступен — блок просто не показывается. */
+  function showPayBlock(payItems, payTotal) {
+    var block = document.getElementById("order-pay");
+    if (!block) return;
+    if (!shop.erpUrl) { block.hidden = true; return; }
+    block.hidden = false;
+    document.getElementById("pay-choice").hidden = false;
+    var err = document.getElementById("pay-error");
+    if (err) err.textContent = "";
+    var btn = document.getElementById("pay-online");
+    btn.disabled = false;
+    btn.textContent = "💳 Оплатить онлайн (карта / СБП)";
+    btn.onclick = function () {
+      btn.disabled = true;
+      btn.textContent = "Готовим оплату…";
+      fetch(shop.erpUrl + "/api/payment-create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ref: currentOrderNo,
+          items: payItems,
+          total: payTotal,
+          phone: orderPhone.value.trim()
+        })
+      }).then(function (res) {
+        return res.json().then(function (j) { return { ok: res.ok, j: j }; });
+      }).then(function (r) {
+        if (!r.ok || !r.j.ok) throw new Error((r.j && r.j.error) || "HTTP " + r.ok);
+        var url = r.j.payUrl || "";
+        window.location.href = /^https?:/i.test(url) ? url : shop.erpUrl + url;
+      }).catch(function () {
+        btn.disabled = false;
+        btn.textContent = "💳 Оплатить онлайн (карта / СБП)";
+        if (err) err.textContent = "Онлайн-оплата сейчас недоступна — не беда, оплатите при получении.";
+      });
+    };
+    document.getElementById("pay-later").onclick = function () {
+      block.hidden = true;   /* оплата при получении — как раньше, без Robokassa */
+    };
+  }
+
   document.getElementById("order-send").addEventListener("click", function () {
     var name = orderName.value.trim();
     var phone = orderPhone.value.trim();
@@ -1933,6 +1976,10 @@
 
     /* подтверждение заказа: номер выдан заранее (currentOrderNo), тот же,
        что ушёл в тексте MAX; кнопка «подружиться с ботом» — по настройке */
+    var payItems = cartEntries().map(function (item) {
+      return { title: item.name, price: item.price, qty: item.qty };
+    });
+    var payTotal = cartTotalSum();      /* копейки — capture ДО очистки корзины */
     function acceptOrder(sent) {
       document.getElementById("order-num").textContent = currentOrderNo || genOrderNo();
       document.getElementById("order-pin").textContent = currentPin || "—";
@@ -1953,6 +2000,7 @@
       try { localStorage.setItem(CART_KEY, "{}"); } catch (e) {}
       updateCartBadge();
       refreshAllAddButtons();   // бейджи на карточках гаснут — корзина пуста
+      showPayBlock(payItems, payTotal);   /* v51: «Оплатить онлайн» / «при получении» */
     }
     var maxBtn = document.getElementById("order-max");
     if (shop.maxOrderEndpoint) {
@@ -2480,6 +2528,30 @@
   updateCartBadge();
   renderFilterPanel();
   updateFilterBadge();
+
+  /* v51: живые остатки/цены с ERP (гибрид catalog.js + API): оплаты и брони
+     отражаются на витрине сразу, без републикации. Без erpUrl — тихо пропускается. */
+  if (shop.erpUrl) {
+    fetch(shop.erpUrl + "/api/catalog-live")
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j || !j.ok || !j.items) return;
+        var touched = false;
+        products.forEach(function (p) {
+          var d = j.items[p.id];
+          if (!d) return;
+          touched = true;
+          p.stockCount = d.qty;
+          p.status = d.status;
+          if (d.priceMin != null) p.priceMin = d.priceMin;
+          if (d.priceMax != null) p.priceMax = d.priceMax;
+          p.salePercent = d.salePercent || 0;
+          if (d.variants) p.variants = d.variants;
+        });
+        if (touched) { renderCards(); renderFeatured(); }
+      })
+      .catch(function () { /* ERP недоступна — работаем по статичному каталогу */ });
+  }
 
   /* Диплинк из MAX-канала: анонс с кнопкой «Открыть в приложении» →
      start_param = uid товара → автоматически открываем его карточку (v42).
