@@ -99,6 +99,11 @@ img { display: block; max-width: 100%; }
 }
 .section-title--light { color: var(--paper-card); }
 
+/* Prata на больших заголовках вложенных страниц (оферта, ПДн, гарантии,
+   статьи, прайс, о питомнике) и в заголовках статей */
+h1 { font-family: var(--font-serif); font-weight: 400; }
+.article h2 { font-family: var(--font-serif); font-weight: 400; }
+
 /* ---------- Кнопки: крупные, контрастные ---------- */
 .btn {
   display: inline-flex;
@@ -1425,7 +1430,7 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
 
 /* Юридические документы (оферта / политика ПДн) */
 .doc-page { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
-.doc-page h1 { font-family: var(--font-display); font-size: clamp(26px, 4vw, 38px);
+.doc-page h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(26px, 4vw, 38px);
   color: var(--forest); margin-bottom: 8px; }
 .doc-page .doc-upd { color: var(--moss); font-size: 14px; margin-bottom: 26px; }
 .doc-page h2 { font-family: var(--font-display); font-size: 20px; color: var(--forest);
