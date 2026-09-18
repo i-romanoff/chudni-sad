@@ -444,7 +444,7 @@ html.theme-dark .cat-search { background: #26292d; }
 .fav-btn.is-on { color: var(--graffiti-pink); }
 html.theme-dark .fav-btn { background: rgba(38, 41, 45, .85); color: #e08a9d; }
 .fav-only { display: inline-flex; align-items: center; justify-content: center;
-  width: 42px; height: 42px; border-radius: 12px; border: 2px solid var(--forest);
+  width: 50px; height: 50px; border-radius: 12px; border: 2px solid var(--forest);
   background: transparent; color: var(--forest); cursor: pointer; }
 .fav-only.is-on { background: var(--graffiti-pink); border-color: var(--graffiti-pink); color: #fff; }
 .catalog__bar { align-items: center; }
@@ -474,7 +474,7 @@ html.theme-dark .fav-btn { background: rgba(38, 41, 45, .85); color: #e08a9d; }
 .filter-btn {
   display: none; flex: none;
   position: relative;
-  width: 50px; height: 46px;
+  width: 50px; height: 50px;   /* Б-12х: вровень с переключателем вида (50px) */
   align-items: center; justify-content: center;
   border: 2px solid var(--forest);
   border-radius: 12px;
@@ -1538,7 +1538,16 @@ html.theme-dark .footer__doc { color: #a2abb1; }
 
 /* ---------- Футер-меню: лента ссылок (по образцу садовых центров) ---------- */
 /* Копирайт: паддинг сверху — не прилипает к карте */
-.footer__inner { padding-top: 20px; }
+.footer__inner { padding-top: 20px; display: flex; flex-wrap: wrap; gap: 8px 24px;
+  align-items: baseline; justify-content: space-between; }
+.footer__copy { font-size: 13px; color: var(--moss, #7a8f5a); }
+.footer__dev { font-size: 13px; color: var(--moss, #7a8f5a); text-decoration: none;
+  border-bottom: 1px dashed rgba(122, 143, 90, .55); padding-bottom: 1px; }
+.footer__dev b { color: var(--forest); font-weight: 600; }
+.footer__dev:hover { color: var(--graffiti-pink); border-bottom-color: var(--graffiti-pink); }
+.footer__dev:hover b { color: var(--graffiti-pink); }
+html.theme-dark .footer__copy, html.theme-dark .footer__dev { color: #8fa08f; }
+html.theme-dark .footer__dev b { color: #c8d3bd; }
 
 .footer-menu {
   display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
@@ -1739,8 +1748,8 @@ html.theme-dark .agree-row a { color: #e08a9d; }
 }
 .modal__cta-row .btn--primary { min-width: 0; }
 
-/* сердечко-«только избранное» — в размер кнопки фильтра (50×46) */
-.fav-only { width: 50px; height: 46px; border-radius: 12px; font-size: 20px; }
+/* сердечко-«только избранное» — в размер кнопки фильтра и переключателя вида (50×50) */
+.fav-only { width: 50px; height: 50px; border-radius: 12px; font-size: 20px; }
 
 /* мобильные модалки: контент никогда не вылезает за край */
 @media (max-width: 900px) {

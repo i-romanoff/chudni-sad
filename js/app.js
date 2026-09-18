@@ -435,10 +435,21 @@
     });
   }
 
+  function facetSelections() {
+    /* сколько выбрано фасетных фильтров (высота/цветение/свет/зона) */
+    var n = 0;
+    if (activeFacets.height) n++;
+    n += activeFacets.bloom.length;
+    if (activeFacets.light) n++;
+    if (activeFacets.zone !== null && activeFacets.zone !== undefined) n++;
+    return n;
+  }
   function updateFilterBadge() {
     if (!filterCount) return;
-    filterCount.hidden = activeCats.length === 0;
-    filterCount.textContent = activeCats.length;
+    /* бейдж = категории + фасеты (раньше выбор «Июнь» на иконке не отражался) */
+    var n = activeCats.length + facetSelections();
+    filterCount.hidden = n === 0;
+    filterCount.textContent = n;
   }
 
   function openFilter() {
@@ -528,6 +539,7 @@
         };
       });
     }
+    updateFilterBadge();   /* фасеты тоже зажигают бейдж на иконке фильтра */
   }
 
   function closeFilter() {
@@ -1565,20 +1577,46 @@
     var price = stockInfo(shareProduct).noPrice ? "цены уточняйте" : fmtPrice(shareProduct);
     var url = location.origin + location.pathname;
     var text = shareProduct.name + " — " + price + ". Питомник «Чудный сад»";
-    /* внутри мини-приложения MAX — нативный экран шеринга (v41) */
-    if (window.WebApp && typeof window.WebApp.shareContent === "function") {
+    var done = function () {
+      shareTxt.textContent = "Скопировано ✓";
+      setTimeout(function () { shareTxt.textContent = "Поделиться"; }, 1600);
+    };
+    /* Б-12х: резервное копирование — работает и без защищённого контекста
+       (LAN http://IP:8788, где navigator.share/clipboard недоступны) */
+    var legacyCopy = function () {
+      var ta = document.createElement("textarea");
+      ta.value = text + " · " + url;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      shareTxt.textContent = ok ? "Скопировано ✓" : "Скопируйте ссылку из адресной строки";
+      setTimeout(function () { shareTxt.textContent = "Поделиться"; }, 2200);
+    };
+    /* внутри мини-приложения MAX — нативный экран шеринга (v41).
+       ВАЖНО: st.max.ru создаёт window.WebApp и ВНЕ MAX, а shareContent там
+       молча ничего не делает (выглядит как «кнопка не работает») — пускаем
+       через эту ветку только реальный мини-апп (авторизованный user). */
+    var inMax = !!(window.WebApp && window.WebApp.initDataUnsafe && window.WebApp.initDataUnsafe.user);
+    if (inMax && typeof window.WebApp.shareContent === "function") {
       try {
         window.WebApp.shareContent({ text: text, link: url });
         return;
-      } catch (e) { /* в вебе метод не поддерживается — обычный путь */ }
+      } catch (e) { /* не сработал — обычный путь */ }
     }
     if (navigator.share) {
-      navigator.share({ title: "Чудный сад", text: text, url: url }).catch(function () {});
-    } else if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text + " · " + url).then(function () {
-        shareTxt.textContent = "Скопировано ✓";
-        setTimeout(function () { shareTxt.textContent = "Поделиться"; }, 1600);
+      navigator.share({ title: "Чудный сад", text: text, url: url }).catch(function (err) {
+        if (err && err.name === "AbortError") return;   /* пользователь сам закрыл шторку */
+        legacyCopy();   /* share отклонён (не https/нет шеринга) — копируем */
       });
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text + " · " + url).then(done, legacyCopy);
+    } else {
+      legacyCopy();
     }
   });
 
