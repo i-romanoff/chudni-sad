@@ -253,27 +253,44 @@ html.theme-dark .theme-btn .icon-sun { display: block; }
 .cart-btn__count[hidden] { display: none; }
 
 /* ---------- Обещание питомника (первый экран) ---------- */
-/* По Ковальски: типографика и контраст вместо рамок и коробок.
-   Тёмная полоса сразу под шапкой даёт сильный контрастный якорь
-   на светлом фисташковом фоне; ключевые слова — лаймом. */
+/* v54 (по Ковальски): тёмная полоса убрана — слоган живёт воздухом.
+   Цитата крупной антиквой Prata на фоне страницы, ключевая фраза
+   с лаймовым подчёркиванием; кегль и контраст — под чтение на солнце. */
 .promise {
-  background: var(--forest-deep);
-  color: #eef3e2;
+  background: transparent;
 }
 .promise__inner {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 26px;
+  padding-bottom: 18px;
   text-align: center;
 }
 .promise__text {
-  font-size: 17px;
+  font-family: var(--font-serif);
+  font-size: 25px;
   line-height: 1.45;
-  font-weight: 500;
-  letter-spacing: .01em;
+  color: var(--forest);
+  max-width: 980px;
+  margin: 0 auto;
 }
+.promise__text::before { content: "«"; color: #8fae62; }
+.promise__text::after { content: "»"; color: #8fae62; }
 .promise__text strong {
-  color: var(--lime);
-  font-weight: 700;
+  font-weight: 400;
+  color: var(--ink);
+  box-shadow: inset 0 -3px 0 var(--lime);
+  padding-bottom: 1px;
+}
+.promise__sign {
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 19px;
+  color: #7fa04f;
+  margin-top: 8px;
+}
+@media (max-width: 700px) {
+  .promise__inner { padding-top: 18px; padding-bottom: 14px; }
+  .promise__text { font-size: 18.5px; }
+  .promise__sign { font-size: 17px; }
 }
 
 /* ---------- Hero ---------- */
@@ -1132,11 +1149,16 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
 }
 
 /* ---------- Как купить ---------- */
+/* v54: тёмная секция стала светлой (как у смягчённой ленты) — кегль и
+   контраст сохранены; в тёмной теме секция остаётся тёмной (там это родно). */
 .care {
-  background: var(--forest-deep);
-  padding: 72px 0;
+  background: #dce8c2;
+  border-top: 1px solid rgba(30, 50, 38, .14);
+  border-bottom: 1px solid rgba(30, 50, 38, .14);
+  padding: 64px 0;
 }
-.care .eyebrow { color: var(--lime); }
+.care .eyebrow--light { color: #6b8a3f; }
+.care .section-title--light { color: var(--forest); }
 .care .section-title { margin-bottom: 40px; }
 
 .steps {
@@ -1147,25 +1169,34 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
   counter-reset: step;
 }
 .steps__item {
-  border-top: 2.5px solid var(--lime);
+  border-top: 2.5px solid rgba(30, 50, 38, .22);   /* v54 B: линия приглушённая */
   padding-top: 18px;
 }
 .steps__item::before {
   counter-increment: step;
   content: counter(step);
   font-family: var(--font-display); font-weight: 700;
-  font-size: 32px;
-  color: var(--lime);
-  display: block;
-  margin-bottom: 8px;
+  font-size: 22px;
+  color: var(--forest);
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--lime);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
 }
 .steps__item h3 {
   font-family: var(--font-display); font-weight: 700;
   font-size: 22px;
-  color: #fff;
+  color: var(--ink);
   margin-bottom: 8px;
 }
-.steps__item p { color: #d3dcc9; font-size: 17px; }
+.steps__item p { color: var(--moss); font-size: 17px; }
+
+html.theme-dark .care { background: var(--forest-deep); border-color: transparent; }
+html.theme-dark .care .eyebrow--light { color: var(--lime); }
+html.theme-dark .care .section-title--light { color: #fff; }   /* var(--paper-card) в тёмной теме тёмный */
+html.theme-dark .steps__item { border-top-color: rgba(255, 255, 255, .16); }
+html.theme-dark .steps__item h3 { color: #fff; }
+html.theme-dark .steps__item p { color: #d3dcc9; }
 
 /* ---------- Контакты ---------- */
 .contacts { padding: 72px 0; }
@@ -1459,6 +1490,13 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
 .cart-item__price { font-size: 15px; color: var(--moss); margin-top: 2px; }
 .cart-item__controls { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
 .cart-item__sum { font-family: var(--font-display); font-weight: 700; font-size: 18px; }
+/* Б-13: живые остатки в корзине (сверка с каталогом при каждом открытии) */
+.cart-item__avail { font-size: 13px; font-weight: 600; color: var(--moss); margin-top: 3px; }
+.cart-item__avail--out { color: var(--graffiti-pink); }
+.cart-item--out { opacity: .55; }
+.cart-dropped { font-size: 13.5px; color: var(--graffiti-pink);
+  background: rgba(178, 50, 72, .08); border-radius: 10px; padding: 8px 12px; margin-bottom: 10px; }
+html.theme-dark .cart-dropped { background: rgba(255, 93, 93, .12); }
 .cart-item__qty {
   display: flex; align-items: center; gap: 10px;
 }
@@ -1524,6 +1562,13 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
 .doc-page .doc-upd { color: var(--moss); font-size: 14px; margin-bottom: 26px; }
 .doc-page h2 { font-family: var(--font-display); font-size: 20px; color: var(--forest);
   margin: 26px 0 10px; }
+/* v54: номер раздела — лайм-кружок (единый стиль с «Как купить») */
+.doc-page h2 .doc-num { display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%; background: var(--lime); color: var(--forest);
+  font: 700 16px var(--font-display); margin-right: 10px; vertical-align: -7px; }
+@media (max-width: 700px) {
+  .doc-page h2 .doc-num { width: 29px; height: 29px; font-size: 14px; margin-right: 8px; vertical-align: -5px; }
+}
 .doc-page p, .doc-page li { font-size: 16px; line-height: 1.6; margin-bottom: 8px; }
 .doc-page ul { margin: 0 0 10px 22px; }
 .doc-page .doc-back { display: inline-block; margin-bottom: 22px; color: var(--graffiti-pink);

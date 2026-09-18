@@ -96,6 +96,22 @@
     return "card__promo card__promo--promo";
   };
 
+  /* Б-13: живая доступность позиции по ТЕКУЩЕМУ каталогу (0 — закончился).
+     Корзина хранит снимок остатка с момента добавления — сверяемся при каждом
+     рендере: вариантный товар → остаток варианта, обычный → stockCount. */
+  var liveAvail = function (product, item) {
+    if (!product) return 0;
+    if (stockInfo(product).disabled) return 0;
+    if (product.variants && product.variants.length && item && item.variantLabel) {
+      for (var i = 0; i < product.variants.length; i++) {
+        if (product.variants[i].label === item.variantLabel)
+          return product.variants[i].qty || 0;
+      }
+      return 0;   /* вариант пропал из карточки */
+    }
+    return product.stockCount || 0;
+  };
+
   var volumeLabel = function (product) {
     if (!product || !product.volume) return "саженец";
     var liters = (product.volume % 1 === 0) ? product.volume : product.volume.toFixed(1).replace(".", ",");
@@ -1754,15 +1770,30 @@
     checkout.disabled = false;
     checkout.style.opacity = "";
 
+    /* Б-13: сверка корзины с ТЕКУЩИМ каталогом (пока клиент собирал заказ,
+       остатки могли измениться). dropped — исчезнувшие товары, zeroRows —
+       закончившиеся; qty выше остатка ужимается с плашкой. */
+    var dropped = [], zeroRows = 0, cartChanged = false;
+
     entries.forEach(function (item) {
       var product = products.find(function (p) { return p.uid === item.uid; });
       if (!product) {
-        /* товар исчез из каталога — строка не отрисовывается */
+        /* товар исчез из каталога — убираем из заказа, но СООБЩАЕМ (Б-13:
+           раньше удалялось молча и клиент не замечал «похудевший» заказ) */
+        dropped.push(item.name);
         delete cart[item.key];
         return;
       }
+      var avail = liveAvail(product, item);
+      if (avail > 0) {
+        if (item.qty > avail) {
+          item.qty = avail;          /* каталог ужался — ужимаем количество */
+          cartChanged = true;
+        }
+        item.maxQty = avail;         /* «+» не выше живого остатка */
+      }
       var row = document.createElement("div");
-      row.className = "cart-item";
+      row.className = "cart-item" + (avail === 0 ? " cart-item--out" : "");
 
       /* Фото и название кликабельны: карточка товара открывается ПОВЕРХ
          корзины, после закрытия пользователь вернётся в корзину. */
@@ -1787,6 +1818,18 @@
       info.querySelector(".cart-item__price").textContent = item.priceLabel;
       /* При одной цене серый диапазон под названием дублирует сумму справа */
       info.querySelector(".cart-item__price").style.display = item.range ? "" : "none";
+      if (avail === 0) {
+        zeroRows++;
+        var badgeOut = document.createElement("p");
+        badgeOut.className = "cart-item__avail cart-item__avail--out";
+        badgeOut.textContent = "Закончился — уберите из заказа";
+        info.appendChild(badgeOut);
+      } else if (avail <= 3) {
+        var badgeLow = document.createElement("p");
+        badgeLow.className = "cart-item__avail";
+        badgeLow.textContent = "Осталось " + avail + " шт";
+        info.appendChild(badgeLow);
+      }
       if (product) {
         info.classList.add("cart-item__info--link");
         info.addEventListener("click", function () {
@@ -1850,6 +1893,20 @@
       row.appendChild(controls);
       cartItems.appendChild(row);
     });
+
+    /* Б-13: плашка про исчезнувшие из каталога позиции (больше не молча) */
+    if (dropped.length) {
+      var dropNote = document.createElement("p");
+      dropNote.className = "cart-dropped";
+      dropNote.textContent = "Из заказа убрано (больше не продаётся): " + dropped.join(", ");
+      cartItems.insertBefore(dropNote, cartItems.firstChild);
+      cartChanged = true;
+    }
+    if (cartChanged) saveCart();
+    if (zeroRows) {                 /* отправка заблокирована, пока есть нулевые */
+      checkout.disabled = true;
+      checkout.style.opacity = ".55";
+    }
 
     cartTotal.textContent = "Итого: " + fmtRub(cartTotalSum());
   }
@@ -1928,6 +1985,7 @@
 
   document.getElementById("cart-checkout").addEventListener("click", function () {
     if (cartTotalCount() === 0) return;
+    haptic();   /* v54: лёгкий тап при переходе к форме заказа */
     orderError.textContent = "";
     showCartStep(stepForm);
     /* имя и телефон из профиля MAX (мини-приложение) — как в демо-магазине */
@@ -2097,7 +2155,11 @@
            «подружиться» не нужно */
         botLink.href = shop.maxBotLink;
         botLink.hidden = false;
-        if (botHint) botHint.hidden = false;
+        if (botHint) {
+          botHint.hidden = false;
+          /* Б-17: без начатого чата бот НЕ МОЖЕТ писать клиенту (chat.not.found) */
+          botHint.textContent = "Нажмите — сюда придут подтверждение, код выдачи и статусы заказа";
+        }
       }
       document.getElementById("order-phone-echo").textContent = orderPhone.value.trim();
       document.getElementById("order-accepted").hidden = false;
@@ -2140,8 +2202,10 @@
           })
         }).then(function (res) {
           if (!res.ok) throw new Error("HTTP " + res.status);
+          haptic("ok");   /* v54: заказ принят в MAX */
           acceptOrder(true);
         }).catch(function () {
+          haptic("err");   /* v54: отправка не прошла — заказ сохранён локально */
           saveUnsent({ name: orderName.value.trim(), phone: orderPhone.value.trim(), text: text });
           document.getElementById("copy-ok").textContent =
             "Не получилось отправить. Заказ сохранён — откройте корзину позже и нажмите «Отправить повторно».";
