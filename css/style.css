@@ -78,6 +78,9 @@ img { display: block; max-width: 100%; }
   .social-btn:hover { transform: none; box-shadow: none; }
   .tab:hover { background: transparent; }
   .to-top:hover { background: var(--forest); }
+  /* Б-12: добор — похожие товары и кнопка «В корзине» тоже не залипают */
+  .similar-card:hover { transform: none; }
+  .btn--in-cart:hover, .card__add.is-added:hover { transform: none; }
 }
 
 /* ---------- Типографика ---------- */
@@ -119,7 +122,7 @@ h1 { font-family: var(--font-serif); font-weight: 400; }
   border-radius: 999px;
   border: 2.5px solid transparent;
   cursor: pointer;
-  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease, filter .16s ease;
 }
 .btn:active { transform: scale(.97); }
 
@@ -974,6 +977,23 @@ html { scrollbar-width: thin; scrollbar-color: rgba(30, 50, 38, .45) transparent
   opacity: 1;
   animation: none;
 }
+/* Б-11: «Хиты сезона» — тот же blur-up, что в каталоге */
+.featured-card__photo img {
+  opacity: 0;
+  background: linear-gradient(110deg, #dfe7d2 30%, #eef2e2 50%, #dfe7d2 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+}
+.featured-card__photo img.is-loaded {
+  opacity: 1;
+  animation: none;
+}
+/* Б-11: повторные рендеры лент (фильтры/поиск/живые остатки) — без каскада */
+.card.no-stagger, .featured-card.no-stagger { animation: none; }
+
+/* Б-12: занятая кнопка — двойной заказ невозможен, видно, что работает */
+.btn[disabled], .btn:disabled { opacity: .55; cursor: wait; }
+.btn.is-busy { filter: blur(2px); opacity: .7; }
 
 /* ---------- Полёт в корзину ---------- */
 .fly-img {

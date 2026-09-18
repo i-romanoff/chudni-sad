@@ -579,6 +579,10 @@
     if (activeCardDrag) { activeCardDrag.up(e); activeCardDrag = null; }
   });
 
+  /* Б-11: каскад появления карточек — только на первом рендере; перерендеры
+     (фильтры, поиск, фоновые живые остатки) рисуются мгновенно */
+  var staggerDone = { cards: false, featured: false };
+
   function renderCards() {
     cardsRoot.innerHTML = "";
     /* Поиск по названию/латыни работает вместе с фильтром категорий */
@@ -614,9 +618,10 @@
       var main = product.photos[0];
 
       var card = document.createElement("article");
-      card.className = "card";
-      /* каскад появления: первые карточки сразу, дальше с задержкой */
-      card.style.animationDelay = (Math.min(index, 10) * 45) + "ms";
+      card.className = "card" + (staggerDone.cards ? " no-stagger" : "");
+      /* каскад появления: только на первом рендере (Б-11) — фильтры,
+         поиск и фоновое обновление остатков рисуются без анимации */
+      if (!staggerDone.cards) card.style.animationDelay = (Math.min(index, 10) * 45) + "ms";
 
       var photoBtn = document.createElement("button");
       photoBtn.type = "button";
@@ -864,6 +869,7 @@
 
       cardsRoot.appendChild(card);
     });
+    staggerDone.cards = true;
   }
 
   /* ================= Модальное окно товара ================= */
@@ -2068,11 +2074,20 @@
     var maxBtn = document.getElementById("order-max");
     if (shop.maxOrderEndpoint) {
       maxBtn.classList.remove("is-disabled");
+      maxBtn.__busy = false;   /* Б-12: новый заказ — кнопка снова активна */
       maxBtn.removeAttribute("aria-disabled");
       maxBtn.textContent = "Отправить в MAX";
       maxBtn.onclick = function (event) {
         event.preventDefault();
-        maxBtn.textContent = "Отправляем…";
+        if (maxBtn.__busy) return;   /* Б-12: повторный клик не проходит */
+        maxBtn.__busy = true;
+        maxBtn.classList.add("is-disabled");
+        /* blur-кроссфейд: текст растворяется, на его место «Отправляем…» */
+        maxBtn.classList.add("is-busy");
+        setTimeout(function () {
+          maxBtn.textContent = "Отправляем…";
+          maxBtn.classList.remove("is-busy");
+        }, 160);
         fetch(shop.maxOrderEndpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -2093,7 +2108,13 @@
           document.getElementById("copy-ok").textContent =
             "Не получилось отправить. Заказ сохранён — откройте корзину позже и нажмите «Отправить повторно».";
           document.getElementById("copy-ok").hidden = false;
-          maxBtn.textContent = "Отправить в MAX";
+          maxBtn.classList.add("is-busy");
+          setTimeout(function () {
+            maxBtn.textContent = "Отправить в MAX";
+            maxBtn.classList.remove("is-busy");
+            maxBtn.classList.remove("is-disabled");   /* Б-12: можно отправить повторно */
+            maxBtn.__busy = false;
+          }, 160);
         });
       };
     } else {
@@ -2503,8 +2524,8 @@
     if (!hits.length) { sec.style.display = "none"; return; }
     hits.forEach(function (p, i) {
       var card = document.createElement("article");
-      card.className = "featured-card";
-      card.style.animationDelay = (Math.min(i, 8) * 60) + "ms";
+      card.className = "featured-card" + (staggerDone.featured ? " no-stagger" : "");
+      if (!staggerDone.featured) card.style.animationDelay = (Math.min(i, 8) * 60) + "ms";
 
       var photo = document.createElement("button");
       photo.type = "button";
@@ -2515,6 +2536,10 @@
       img.alt = p.photos[0].alt;
       img.loading = "lazy";
       img.decoding = "async";
+      /* Б-11: blur-up как в каталоге — shimmer до загрузки, потом .is-loaded */
+      var onImg = function () { img.classList.add("is-loaded"); };
+      if (img.complete && img.naturalWidth) onImg();
+      else img.addEventListener("load", onImg);
       photo.appendChild(img);
       photo.addEventListener("click", function () { openModal(p); });
 
@@ -2565,6 +2590,7 @@
       });
       row.appendChild(card);
     });
+    staggerDone.featured = true;
   }
 
   /* ================= PWA: работа сайта как приложения =================
