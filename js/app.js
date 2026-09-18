@@ -840,6 +840,7 @@
         add.addEventListener("click", function (event) {
           addToCart(product);
           flyToCart(event, product);
+          showToast();             /* Б-10: подтверждение без открытия корзины */
           refreshAddButton(add, product);
           add.classList.add("is-added");
           setTimeout(function () { add.classList.remove("is-added"); }, 900);
@@ -885,6 +886,44 @@
   var shareProduct = null;
   var modalProduct = null;
   var shareTxt = document.querySelector(".modal__share-txt");
+
+  /* ---------- Б-10: помощники анимации и тост «Добавлено в корзину» ---------- */
+  var REDUCE_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)");
+  /* двойной rAF: гарантированный кадр со стартовыми стилями до навешивания
+     класса-анимации (тот же приём, что в openFilter для шторки) */
+  function raf2(fn) {
+    requestAnimationFrame(function () { requestAnimationFrame(fn); });
+  }
+
+  var toastEl = document.getElementById("toast");
+  var toastTimer = null;
+  function showToast() {
+    if (!toastEl) return;
+    clearTimeout(toastTimer);
+    toastEl.hidden = false;
+    toastEl.classList.remove("is-hiding");
+    raf2(function () { toastEl.classList.add("show"); });
+    toastTimer = setTimeout(hideToast, 2500);
+  }
+  function hideToast() {
+    if (!toastEl || toastEl.hidden) return;
+    clearTimeout(toastTimer);
+    toastTimer = null;
+    toastEl.classList.remove("show");
+    toastEl.classList.add("is-hiding");
+    setTimeout(function () {
+      toastEl.hidden = true;
+      toastEl.classList.remove("is-hiding");
+    }, 180);
+  }
+  var toastGo = document.getElementById("toast-go");
+  if (toastGo) {
+    toastGo.addEventListener("click", function () {
+      hideToast();
+      if (!modal.hidden) closeModal(modal, true);   /* мгновенно: корзина открывается здесь же */
+      openCart();
+    });
+  }
 
   function renderSlider(product) {
     modalTrack.innerHTML = "";
@@ -1293,6 +1332,7 @@
         if (v.qty === 0) return;
         addToCart(pseudo);
         flyToCart(event, product);
+        showToast();               /* Б-10: корзина не открывается — подтверждаем тостом */
         refreshAddButton(modalAdd, pseudo);
         modalAdd.classList.add("is-added");
         setTimeout(function () { modalAdd.classList.remove("is-added"); }, 900);
@@ -1301,7 +1341,7 @@
         modalBuyNow.onclick = function () {
           if (v.qty === 0) return;
           addToCart(pseudo);
-          closeModal(modal);
+          closeModal(modal, true);   /* Б-10: мгновенно — корзина открывается здесь же */
           openCart();
           setTimeout(function () { document.getElementById("cart-checkout").click(); }, 150);
         };
@@ -1329,6 +1369,7 @@
       if (stock.disabled) return;
       addToCart(product);
       flyToCart(event, product);
+      showToast();               /* Б-10: корзина не открывается — подтверждаем тостом */
       refreshAddButton(modalAdd, product);
       modalAdd.classList.add("is-added");
       setTimeout(function () { modalAdd.classList.remove("is-added"); }, 900);
@@ -1339,7 +1380,7 @@
       modalBuyNow.onclick = function () {
         if (stock.disabled) return;
         addToCart(product);
-        closeModal(modal);
+        closeModal(modal, true);   /* Б-10: мгновенно — корзина открывается здесь же */
         openCart();
         setTimeout(function () { document.getElementById("cart-checkout").click(); }, 150);
       };
@@ -1390,6 +1431,10 @@
     renderSimilar(product);
 
     modal.hidden = false;
+    /* Б-10: если окно закрывалось мгновение назад — отменяем отложенное
+       скрытие, иначе оно спрячет только что открытую карточку */
+    if (modal._closeTimer) { clearTimeout(modal._closeTimer); modal._closeTimer = null; }
+    modal.classList.remove("is-closing");
     /* v48: сброс скролла строго ПОСЛЕ показа — у display:none нет
        раскладки, присвоение scrollTop «в тени» игнорируется, и новая
        карточка открывалась с прокруткой прошлой (баг «сразу внизу») */
@@ -1399,26 +1444,41 @@
 
     ScrollLock.lock();
     modal.querySelector(".modal__close").focus();
+    raf2(function () { modal.classList.add("is-open"); });   /* Б-10: вход */
     syncBackButton();
   }
 
-  function closeModal(el) {
-    el.hidden = true;
-    if (el === modal && openedFromCart) {
-      /* карточка была открыта из корзины — возвращаем в корзину
-         и перерисовываем её (изменения из карточки уже в localStorage) */
-      openedFromCart = false;
-      modal.classList.remove("open-over-cart");
-      renderCart();
-      cartModal.hidden = false;
-      /* замок не трогаем: корзина осталась под карточкой, её слой держит */
-      cartModal.querySelector(".modal__close").focus();
+  function closeModal(el, instant) {
+    /* Б-10: выход с анимацией ≤240мс (класс .is-closing, см. style.css).
+       Guard от повторного вызова, пока окно ещё «закрывается»
+       (Esc-спам, data-close и Esc в одном кадре). instant — путь без
+       анимации: свайп-закрытие (окно уже улетело) и buy-now (там
+       закрытие раньше было синхронным). */
+    if (el.hidden || el.classList.contains("is-closing")) return;
+    var finish = function () {
+      el._closeTimer = null;
+      el.hidden = true;
+      el.classList.remove("is-closing");
+      if (el === modal && openedFromCart) {
+        /* карточка была открыта из корзины — возвращаем в корзину
+           и перерисовываем её (изменения из карточки уже в localStorage) */
+        openedFromCart = false;
+        modal.classList.remove("open-over-cart");
+        renderCart();
+        cartModal.hidden = false;
+        /* замок не трогаем: корзина осталась под карточкой, её слой держит */
+        cartModal.querySelector(".modal__close").focus();
+        syncBackButton();
+        return;
+      }
+      ScrollLock.unlock();
+      if (lastFocused) lastFocused.focus();
       syncBackButton();
-      return;
-    }
-    ScrollLock.unlock();
-    if (lastFocused) lastFocused.focus();
-    syncBackButton();
+    };
+    if (instant || REDUCE_MOTION.matches) { finish(); return; }
+    el.classList.remove("is-open");
+    el.classList.add("is-closing");
+    el._closeTimer = setTimeout(finish, 240);
   }
 
   [modal, cartModal].forEach(function (el) {
@@ -1437,7 +1497,7 @@
       setTimeout(function () {
         modalWin.style.transition = "";
         modalWin.style.transform = "";
-        closeModal(modal);
+        closeModal(modal, true);   /* Б-10: окно уже улетело свайпом — без второй анимации */
       }, 270);
     }, function (e) {
       var r = modalWin.getBoundingClientRect();
@@ -1535,8 +1595,11 @@
     renderCart();
     renderUnsent();
     cartModal.hidden = false;
+    if (cartModal._closeTimer) { clearTimeout(cartModal._closeTimer); cartModal._closeTimer = null; }
+    cartModal.classList.remove("is-closing");
     ScrollLock.lock();
     cartModal.querySelector(".modal__close").focus();
+    raf2(function () { cartModal.classList.add("is-open"); });   /* Б-10: вход */
     syncBackButton();
   }
 
@@ -2483,6 +2546,7 @@
         add.addEventListener("click", function (e) {
           addToCart(p);
           flyToCart(e, p);              /* та же анимация полёта, что в каталоге */
+          showToast();                  /* Б-10: подтверждение без открытия корзины */
           refreshAddButton(add, p);     /* бейдж с количеством — синхронен корзине */
         });
       }
