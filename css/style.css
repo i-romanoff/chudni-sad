@@ -1177,7 +1177,7 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
   content: counter(step);
   font-family: var(--font-display); font-weight: 700;
   font-size: 22px;
-  color: var(--forest);
+  color: var(--forest-deep);   /* фиксы v54.1: в dark --forest светлеет → цифра таяла на лайме */
   width: 48px; height: 48px; border-radius: 50%;
   background: var(--lime);
   display: flex; align-items: center; justify-content: center;
@@ -1562,12 +1562,14 @@ html.theme-dark .cart-dropped { background: rgba(255, 93, 93, .12); }
 .doc-page .doc-upd { color: var(--moss); font-size: 14px; margin-bottom: 26px; }
 .doc-page h2 { font-family: var(--font-display); font-size: 20px; color: var(--forest);
   margin: 26px 0 10px; }
-/* v54: номер раздела — лайм-кружок (единый стиль с «Как купить») */
+/* v54: номер раздела — лайм-кружок (единый стиль с «Как купить»).
+   v54.1: цвет цифры — forest-deep (в dark --forest светлеет и таял на лайме);
+   vertical-align -3px — круг по центру строки (замер: -7px давал +3,3px вниз) */
 .doc-page h2 .doc-num { display: inline-flex; align-items: center; justify-content: center;
-  width: 34px; height: 34px; border-radius: 50%; background: var(--lime); color: var(--forest);
-  font: 700 16px var(--font-display); margin-right: 10px; vertical-align: -7px; }
+  width: 34px; height: 34px; border-radius: 50%; background: var(--lime); color: var(--forest-deep);
+  font: 700 16px var(--font-display); margin-right: 10px; vertical-align: -3px; }
 @media (max-width: 700px) {
-  .doc-page h2 .doc-num { width: 29px; height: 29px; font-size: 14px; margin-right: 8px; vertical-align: -5px; }
+  .doc-page h2 .doc-num { width: 29px; height: 29px; font-size: 14px; margin-right: 8px; vertical-align: -2px; }
 }
 .doc-page p, .doc-page li { font-size: 16px; line-height: 1.6; margin-bottom: 8px; }
 .doc-page ul { margin: 0 0 10px 22px; }
