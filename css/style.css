@@ -1545,6 +1545,7 @@ html.theme-dark .footer__doc { color: #a2abb1; }
 .footer__dev a { color: var(--forest); text-decoration: none;
   border-bottom: 1px dashed rgba(122, 143, 90, .55); padding-bottom: 1px; }
 .footer__dev a:hover { color: var(--graffiti-pink); border-bottom-color: var(--graffiti-pink); }
+.footer__dev svg.mdi { fill: currentColor; vertical-align: -2px; margin-right: 3px; }
 html.theme-dark .footer__copy, html.theme-dark .footer__dev { color: #8fa08f; }
 html.theme-dark .footer__dev a { color: #c8d3bd; }
 
