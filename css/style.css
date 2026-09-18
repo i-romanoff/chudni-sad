@@ -1541,13 +1541,12 @@ html.theme-dark .footer__doc { color: #a2abb1; }
 .footer__inner { padding-top: 20px; display: flex; flex-wrap: wrap; gap: 8px 24px;
   align-items: baseline; justify-content: space-between; }
 .footer__copy { font-size: 13px; color: var(--moss, #7a8f5a); }
-.footer__dev { font-size: 13px; color: var(--moss, #7a8f5a); text-decoration: none;
+.footer__dev { font-size: 13px; color: var(--moss, #7a8f5a); }
+.footer__dev a { color: var(--forest); text-decoration: none;
   border-bottom: 1px dashed rgba(122, 143, 90, .55); padding-bottom: 1px; }
-.footer__dev b { color: var(--forest); font-weight: 600; }
-.footer__dev:hover { color: var(--graffiti-pink); border-bottom-color: var(--graffiti-pink); }
-.footer__dev:hover b { color: var(--graffiti-pink); }
+.footer__dev a:hover { color: var(--graffiti-pink); border-bottom-color: var(--graffiti-pink); }
 html.theme-dark .footer__copy, html.theme-dark .footer__dev { color: #8fa08f; }
-html.theme-dark .footer__dev b { color: #c8d3bd; }
+html.theme-dark .footer__dev a { color: #c8d3bd; }
 
 .footer-menu {
   display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
