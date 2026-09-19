@@ -275,7 +275,7 @@
         variantLabel: product.variantLabel || "",
         price: product.priceMin,
         priceLabel: fmtPrice(product),
-        photo: product.photos[0].file,
+        photo: (product.photos && product.photos[0]) ? product.photos[0].file : "",
         qty: 1,
         maxQty: maxQty,
         addedAt: Date.now()
@@ -643,7 +643,7 @@
 
     visible.forEach(function (product, index) {
       var stock = stockInfo(product);
-      var main = product.photos[0];
+      var main = (product.photos && product.photos[0]) || null;   // v54.1: товар без фото не роняет каталог
 
       var card = document.createElement("article");
       card.className = "card" + (staggerDone.cards ? " no-stagger" : "");
@@ -2787,6 +2787,7 @@
     var seenIds = {}, ldItems = [];
     products.forEach(function (p) {
       if (seenIds[p.id]) return;
+      if (!p.photos || !p.photos[0]) return;   // v54.1: без фото — без item, но ItemList жив
       seenIds[p.id] = 1;
       ldItems.push({ "@type": "Product", "position": ldItems.length + 1,
         "name": p.name, "description": p.short || p.name,

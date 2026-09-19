@@ -1,13 +1,15 @@
 /* Service worker сайта «Чудный сад».
    Каталог и страница — network-first (покупатель видит свежий
    ассортименты после публикации), остальное — cache-first. */
-var CACHE = "chudni-sad-v53-9";
+var CACHE = "chudni-sad-v54-0";
 
 var CORE = [
   "./",
   "./index.html",
   "./css/style.css",
   "./js/app.js",
+  "./js/texts-loader.js",
+  "./texts.json",
   "./data/catalog.js",
   "./manifest.json",
   "./assets/img/logo.png",
@@ -23,7 +25,7 @@ var CORE = [
 ];
 
 /* Свежесть важнее мгновения: сеть первой, кэш — если сети нет */
-var FRESH = ["/data/catalog.js", "/index.html", "/"];
+var FRESH = ["/data/catalog.js", "/index.html", "/", "/texts.json"];
 
 self.addEventListener("install", function (e) {
   e.waitUntil(
@@ -57,11 +59,14 @@ self.addEventListener("fetch", function (e) {
      url.pathname === "/chudni-sad/data/catalog.js";
 
   if (wantsFresh) {
-    /* network-first: страница и каталог почти всегда из сети, кэш — как страховка */
+    /* network-first: страница и каталог почти всегда из сети, кэш — как страховка.
+     * resp.ok проверяем: транзиентный 404/500 не должен прилипать в кэш */
     e.respondWith(
       fetch(req).then(function (resp) {
-        var copy = resp.clone();
-        caches.open(CACHE).then(function (c) { c.put(req, copy); });
+        if (resp.ok) {
+          var copy = resp.clone();
+          caches.open(CACHE).then(function (c) { c.put(req, copy); });
+        }
         return resp;
       }).catch(function () {
         return caches.match(req).then(function (r) { return r || Response.error(); });
