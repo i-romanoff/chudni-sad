@@ -409,7 +409,7 @@ window.CATALOG = {
     {
       "id": "yablonya-polukulturnaya-komsomolec-buryatii-2026090914474",
       "name": "Яблоня полукультурная \"Комсомолец Бурятии\"",
-      "latin": "Malus domestica 'Комсомолец Бурятии'",
+      "latin": "Malus 'Komsomolets Buryatii'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
@@ -564,7 +564,7 @@ window.CATALOG = {
     {
       "id": "yablonya-pk-altayskoe-bagryanoe-2026090223225",
       "name": "Яблоня полукультурная \"Алтайское багряное\"",
-      "latin": "Malus domestica 'Алтайское багряное'",
+      "latin": "Malus pumila 'Алтайское багряное'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
@@ -632,7 +632,7 @@ window.CATALOG = {
           "alt": "Яблоня полукультурная \"Алтайское багряное\""
         }
       ],
-      "featured": false
+      "featured": true
     },
     {
       "id": "yablonya-pk-gornoaltayskoe-2026090223225",
@@ -712,7 +712,7 @@ window.CATALOG = {
     {
       "id": "yablonya-pk-uralskoe-nalivnoe-2026090223225",
       "name": "Яблоня полукультурная \"Уральское наливное\"",
-      "latin": "Malus domestica 'Уральское наливное'",
+      "latin": "Malus 'Ural'skoye nalivnoye'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
