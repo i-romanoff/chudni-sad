@@ -266,7 +266,7 @@ window.CATALOG = {
       "salePercent": 0,
       "variants": [],
       "volume": null,
-      "age": "2",
+      "age": "",
       "status": "В наличии",
       "stockCount": 20,
       "badges": [],
