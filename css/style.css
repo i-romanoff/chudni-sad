@@ -2175,3 +2175,40 @@ html.theme-dark .modal__cta-row { border-top-color: rgba(214, 218, 221, .16); }
   #order-bot-link { margin-top: 6px; min-height: 48px; padding: 8px 14px; }
   #order-finish { margin-top: 6px; }
 }
+
+/* ===== v56.10 (замечания хозяйки 22.09): названия без обрезки,
+   крупный режим 1 колонки для слабовидящих ===== */
+@media (max-width: 700px) {
+  /* компакт (2 колонки): длинные сорта — до 3 строк вместо обрезки */
+  .cards--compact .card__name {
+    -webkit-line-clamp: 3;
+    min-height: 3.84em;
+  }
+  /* широкий (1 колонка): цена и корзина крупнее — соразмерно карточке */
+  .cards:not(.cards--compact) .card__name {
+    -webkit-line-clamp: unset;
+    display: block;
+    overflow: visible;
+    font-size: 23px;
+  }
+  .cards:not(.cards--compact) .card__price { font-size: 27px; }
+  .cards:not(.cards--compact) .card__price.is-sale > span,
+  .cards:not(.cards--compact) .card__price { font-size: 27px; }
+  .cards:not(.cards--compact) .card__price small { font-size: 16px; }
+  .cards:not(.cards--compact) .card__price-old { font-size: 16px; }
+  .cards:not(.cards--compact) .card__add,
+  .cards:not(.cards--compact) .card__add.featured-card__add {
+    width: 56px; min-width: 56px; height: 56px; min-height: 56px;
+  }
+  .cards:not(.cards--compact) .card__add svg { width: 27px; height: 27px; }
+}
+@media (min-width: 701px) {
+  /* широкий на ПК/планшете: те же крупные цена/корзина в 1-колоночном виде */
+  .cards:not(.cards--compact) .card__price { font-size: 26px; }
+  .cards:not(.cards--compact) .card__price small { font-size: 15.5px; }
+  .cards:not(.cards--compact) .card__add,
+  .cards:not(.cards--compact) .card__add.featured-card__add {
+    width: 54px; min-width: 54px; height: 54px; min-height: 54px;
+  }
+  .cards:not(.cards--compact) .card__add svg { width: 26px; height: 26px; }
+}
