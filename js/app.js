@@ -839,9 +839,23 @@
 
       var price = document.createElement("p");
       price.className = "card__price";
-      price.innerHTML = "<span></span><small></small>";
+      /* v56.9: скидка — новая цена крупная акцентом, старая сзади мельче и зачёркнута */
+      price.innerHTML = "<s class=\"card__price-old\" hidden></s><span></span><small></small>";
       price.querySelector("span").textContent = fmtPrice(product);
       price.querySelector("small").textContent = volumeLabel(product);
+      if (product.oldPriceMin) {
+        /* v56.10: единый кегль со всеми ценами; диапазон — «от …» (влезает всегда) */
+        price.classList.add("is-sale");
+        var oldEl = price.querySelector(".card__price-old");
+        oldEl.hidden = false;
+        if (product.priceMin === product.priceMax) {
+          oldEl.textContent = "было " + fmtRub(product.oldPriceMin);
+        } else {
+          oldEl.textContent = "было " + fmtRub(product.oldPriceMin) + " – " + fmtRub(product.oldPriceMax);
+          price.querySelector("span").textContent = "от " + fmtRub(product.priceMin);
+        }
+        oldEl.title = "Цена до скидки";
+      }
 
       if (stock.disabled) price.style.display = "none"; else price.style.display = "";
       var actions = document.createElement("div");
@@ -1290,10 +1304,63 @@
     sim.appendChild(grid);
   }
 
+  /* v55.8: SEO-диплинки — карточка адресуется #p-<uid>, метатеги следуют
+     за товаром (title/description/og:*), «Поделиться» шлёт ссылку на товар.
+     Закрытие карточки возвращает базовые метатеги и чистит хеш. */
+  var baseMeta = null;
+  function setMeta(attr, key, val) {
+    var el = document.querySelector("meta[" + attr + '="' + key + '"]');
+    if (el) el.setAttribute("content", val);
+  }
+  function setProductMeta(p) {
+    if (!baseMeta) baseMeta = {
+      title: document.title,
+      desc: (document.querySelector('meta[name="description"]') || {}).content || "",
+      ogT: (document.querySelector('meta[property="og:title"]') || {}).content || "",
+      ogD: (document.querySelector('meta[property="og:description"]') || {}).content || ""
+    };
+    if (!p) {
+      document.title = baseMeta.title;
+      setMeta("name", "description", baseMeta.desc);
+      setMeta("property", "og:title", baseMeta.ogT);
+      setMeta("property", "og:description", baseMeta.ogD);
+      return;
+    }
+    var price = stockInfo(p).noPrice ? "цены уточняйте" : fmtPrice(p);
+    var t = p.name + " — Чудный сад";
+    var d = ((p.short || p.description || "").replace(/\s+/g, " ").trim() || p.name) + " · " + price;
+    document.title = t;
+    setMeta("name", "description", d);
+    setMeta("property", "og:title", t);
+    setMeta("property", "og:description", d);
+  }
+  function productHash(p) {
+    /* v55.8: в адресе — id каталога (числовой, стабильный); uid клонов
+       содержит «#копия» и для URL не годится */
+    return "#p-" + encodeURIComponent(p.id != null ? p.id : (p.uid || ""));
+  }
+  function replaceHash(hash) {
+    if (!history.replaceState) return;
+    try { history.replaceState(null, "", hash); } catch (e) { /* file:// и пр. */ }
+  }
+  function openFromHash() {
+    var m = /^#p-(.+)$/.exec(location.hash || "");
+    if (!m) return;
+    var pid;
+    try { pid = decodeURIComponent(m[1]); } catch (e) { return; }
+    var found = null;
+    products.forEach(function (x) {
+      if (String(x.id) === pid || (x.uid || "") === pid) found = x;
+    });
+    if (found) openModal(found);
+  }
+
   function openModal(product) {
     lastFocused = document.activeElement;
     shareProduct = product;
     modalProduct = product;
+    setProductMeta(product);
+    replaceHash(productHash(product));
 
     modalLatin.textContent = product.latin;
     modalTitle.textContent = product.name;
@@ -1493,6 +1560,11 @@
       el._closeTimer = null;
       el.hidden = true;
       el.classList.remove("is-closing");
+      if (el === modal) {
+        /* v55.8: карточка товара закрыта — базовые метатеги и чистый адрес */
+        setProductMeta(null);
+        replaceHash(location.pathname + location.search);
+      }
       if (el === modal && openedFromCart) {
         /* карточка была открыта из корзины — возвращаем в корзину
            и перерисовываем её (изменения из карточки уже в localStorage) */
@@ -1520,6 +1592,8 @@
       if (event.target.closest("[data-close]")) closeModal(el);
     });
   });
+  openFromHash();   /* v55.8: диплинк #p-<id> — открыть карточку сразу по адресу */
+  window.addEventListener("hashchange", openFromHash);   /* назад/вперёд и ручная правка адреса */
 
   /* v48: карточку на смартфоне закрывает свайп вниз от верхней кромки
      окна (зона крестика, ~48px) — ниже начинается обычный скролл */
@@ -1591,7 +1665,7 @@
   document.getElementById("modal-share").addEventListener("click", function () {
     if (!shareProduct) return;
     var price = stockInfo(shareProduct).noPrice ? "цены уточняйте" : fmtPrice(shareProduct);
-    var url = location.origin + location.pathname;
+    var url = location.origin + location.pathname + productHash(shareProduct);
     var text = shareProduct.name + " — " + price + ". Питомник «Чудный сад»";
     var done = function () {
       shareTxt.textContent = "Скопировано ✓";
@@ -2655,7 +2729,25 @@
       rowEl.className = "featured-card__row";
       var price = document.createElement("span");
       price.className = "featured-card__price";
-      price.textContent = stockInfo(p).noPrice ? "Нет в наличии" : fmtPrice(p);
+      if (stockInfo(p).noPrice) {
+        price.textContent = "Нет в наличии";
+      } else {
+        /* v56.9: скидка — как в карточках каталога: новая акцентом, старая зачёркнута */
+        price.innerHTML = "<s class=\"card__price-old\" hidden></s><span></span>";
+        price.querySelector("span").textContent = fmtPrice(p);
+        if (p.oldPriceMin) {
+          price.classList.add("is-sale");
+          var fOld = price.querySelector(".card__price-old");
+          fOld.hidden = false;
+          if (p.priceMin === p.priceMax) {
+            fOld.textContent = "было " + fmtRub(p.oldPriceMin);
+          } else {
+            fOld.textContent = "было " + fmtRub(p.oldPriceMin) + " – " + fmtRub(p.oldPriceMax);
+            price.querySelector("span").textContent = "от " + fmtRub(p.priceMin);
+          }
+          fOld.title = "Цена до скидки";
+        }
+      }
 
       var add = document.createElement("button");
       add.type = "button";

@@ -447,19 +447,26 @@ html.theme-dark .cat-search { background: #26292d; }
 
 /* Избранное */
 .fav-btn {
-  position: absolute; bottom: 10px; left: 10px; z-index: 2;
-  width: 34px; height: 34px;
+  position: absolute; bottom: 4px; left: 4px; z-index: 2;
+  width: 44px; height: 44px;   /* Б-35 (v56.0): тач-цель 44px, визуал сердечки прежний */
   display: flex; align-items: center; justify-content: center;
   border: none; border-radius: 50%;
-  background: rgba(255, 255, 255, .85);
+  background: transparent;
   color: var(--graffiti-pink);
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(19, 33, 26, .3);
   transition: transform .15s ease;
 }
+.fav-btn::before {   /* видимый круг 34px внутри тач-зоны 44px */
+  content: ""; position: absolute; inset: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .85);
+  box-shadow: 0 2px 8px rgba(19, 33, 26, .3);
+}
+.fav-btn .mdi, .fav-btn svg { position: relative; }
 .fav-btn:active { transform: scale(.9); }
 .fav-btn.is-on { color: var(--graffiti-pink); }
-html.theme-dark .fav-btn { background: rgba(38, 41, 45, .85); color: #e08a9d; }
+html.theme-dark .fav-btn::before { background: rgba(38, 41, 45, .85); }
+html.theme-dark .fav-btn { color: #e08a9d; }
 .fav-only { display: inline-flex; align-items: center; justify-content: center;
   width: 50px; height: 50px; border-radius: 12px; border: 2px solid var(--forest);
   background: transparent; color: var(--forest); cursor: pointer; }
@@ -723,6 +730,8 @@ html.theme-dark .filter-row__check { border-color: rgba(214, 218, 221, .4); }
   font-size: 17px; color: var(--ink);
   white-space: nowrap;
 }
+/* v56.10: скидка в хитах сезона — кегль единый, старая строкой сверху */
+.featured-card__price.is-sale { color: var(--graffiti-pink); }
 .featured-card__add {
   width: 40px; height: 40px; flex: none;
   display: flex; align-items: center; justify-content: center;
@@ -914,6 +923,23 @@ html.hide-totop .to-top { display: none !important; }
   font-weight: 500;
   color: var(--moss);
 }
+/* v56.10: скидка в карточке — кегль единый со всеми ценами (замечание
+   хозяйки: «950 выглядит меньше 675»), выразительность = цвет + старая
+   зачёркнутая строкой сверху; корзина жёстко справа, не выдавливается */
+.card__price { flex: 1 1 auto; min-width: 0; }
+.card__actions { flex: none; margin-left: auto; }
+.card__price.is-sale { color: var(--graffiti-pink); }
+.card__price-old, .featured-card__price s.card__price-old {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 13.5px; font-weight: 500;
+  color: var(--moss);
+  text-decoration: line-through;
+  margin: 0 0 2px;
+  opacity: 0.8;
+  white-space: normal;   /* v56.10: узкие карточки — «было …» переносится, не выпирает */
+}
+.card__price.is-sale small { color: var(--graffiti-pink); opacity: 0.8; }
 .card__actions { display: flex; gap: 10px; }
 /* Кнопка корзины в карточке: на всю ширину ряда «цена + кнопка»,
    с иконкой и текстом — вид одинаковый на ПК и мобиле (v38) */
