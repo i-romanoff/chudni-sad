@@ -120,7 +120,7 @@ window.CATALOG = {
       "volume": null,
       "age": "",
       "status": "В наличии",
-      "stockCount": 20,
+      "stockCount": 19,
       "badges": [
         {
           "type": "sale",
@@ -354,7 +354,7 @@ window.CATALOG = {
       "volume": null,
       "age": "",
       "status": "В наличии",
-      "stockCount": 20,
+      "stockCount": 19,
       "badges": [
         {
           "type": "sale",
@@ -431,7 +431,7 @@ window.CATALOG = {
       "volume": null,
       "age": "",
       "status": "В наличии",
-      "stockCount": 20,
+      "stockCount": 19,
       "badges": [
         {
           "type": "sale",
@@ -582,7 +582,7 @@ window.CATALOG = {
       "volume": 5.0,
       "age": "",
       "status": "В наличии",
-      "stockCount": 20,
+      "stockCount": 18,
       "badges": [
         {
           "type": "sale",
@@ -653,7 +653,7 @@ window.CATALOG = {
       "volume": null,
       "age": "",
       "status": "В наличии",
-      "stockCount": 20,
+      "stockCount": 14,
       "badges": [
         {
           "type": "sale",
@@ -718,5 +718,5 @@ window.CATALOG = {
       "featured": false
     }
   ],
-  "generatedAt": "2026-09-23"
+  "generatedAt": "2026-09-29"
 };
