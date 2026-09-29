@@ -162,14 +162,20 @@
   }
 
   /* v45: тактильный отклик в MAX (Bridge HapticFeedback).
-     Вне MAX / старых клиентах — тихий no-op. kind: light | ok | err */
+     v57.3: вне MAX — фолбэк navigator.vibrate (Android Chrome);
+     iOS Safari navigator.vibrate не поддерживает — там тихо (ограничение Apple).
+     Внутри MAX фолбэка нет: webview iOS отдаёт хаптику нативным мостом,
+     а на Android двойная вибрация выпала бы. kind: light | ok | err */
   function haptic(kind) {
     try {
       var h = window.WebApp && window.WebApp.HapticFeedback;
-      if (!h) return;
-      if (kind === "ok" && h.notificationOccurred) h.notificationOccurred("success");
-      else if (kind === "err" && h.notificationOccurred) h.notificationOccurred("error");
-      else if (h.impactOccurred) h.impactOccurred("light");
+      if (h) {
+        if (kind === "ok" && h.notificationOccurred) h.notificationOccurred("success");
+        else if (kind === "err" && h.notificationOccurred) h.notificationOccurred("error");
+        else if (h.impactOccurred) h.impactOccurred("light");
+        return;
+      }
+      if (navigator.vibrate) navigator.vibrate(kind === "err" ? [30, 40, 30] : 10);
     } catch (e) {}
   }
 
@@ -2100,6 +2106,7 @@
   }
 
   document.getElementById("order-back").addEventListener("click", function () {
+    haptic();   /* v57.3: тап «назад к корзине» */
     showCartStep(stepList);
   });
 
@@ -2224,9 +2231,12 @@
       document.getElementById("order-pin").textContent = currentPin || "—";
       var botLink = document.getElementById("order-bot-link");
       var botHint = document.getElementById("order-bot-hint");
-      if (botLink && shop.maxBotLink && !maxUser()) {
-        /* из мини-приложения заказ УЖЕ связан с чатом (MAX id в тексте) —
-           «подружиться» не нужно */
+      if (botLink && shop.maxBotLink) {
+        /* №61 (29.09): из мини-приложения заказ «связан с чатом» ТОЛЬКО по
+           MAX id (user_id) — это НЕ чат: бот писать по нему не может
+           (chat.not.found, кейс ЧС-260929-2882). Кнопку показываем ВСЕМ:
+           переход в чат бота = диалог открыт = привязка настоящего chat_id
+           (ERP привяжет и досыплет код выдачи при первом сообщении). */
         botLink.href = shop.maxBotLink;
         botLink.hidden = false;
         if (botHint) {
@@ -2255,6 +2265,7 @@
         event.preventDefault();
         if (maxBtn.__busy) return;   /* Б-12: повторный клик не проходит */
         maxBtn.__busy = true;
+        haptic();   /* v57.3: тап на входе — не ждём ответ сети */
         maxBtn.classList.add("is-disabled");
         /* blur-кроссфейд: текст растворяется, на его место «Отправляем…» */
         maxBtn.classList.add("is-busy");
@@ -2319,7 +2330,16 @@
     }
   });
 
-  document.getElementById("cart-open").addEventListener("click", openCart);
+  document.getElementById("cart-open").addEventListener("click", function () {
+    haptic();   /* v57.3: тап «перейти в корзину» */
+    openCart();
+  });
+
+  /* v57.3: тап по MAX-ссылкам (контакты, нижняя панель) — тактильный отклик.
+     Делегирование: ссылки есть в статике и заполняются из shop.* */
+  document.addEventListener("click", function (e) {
+    if (e.target.closest && e.target.closest("#contacts-max, #bar-max")) haptic();
+  });
 
   /* «Отлично, жду звонка» — закрыть корзину; при следующем открытии
      showCartStep сам скроет подтверждение и покажет список */
