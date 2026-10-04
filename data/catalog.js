@@ -535,16 +535,7 @@ window.CATALOG = {
         "light": "",
         "zone": null
       },
-      "photos": [
-        {
-          "file": "p242-1549457328.jpg",
-          "alt": "Яблоня полукультурная \"Краса Бурятии\""
-        },
-        {
-          "file": "p242-1549458487.jpg",
-          "alt": "Яблоня полукультурная \"Краса Бурятии\""
-        }
-      ],
+      "photos": [],
       "featured": false
     },
     {
@@ -770,5 +761,5 @@ window.CATALOG = {
       "featured": false
     }
   ],
-  "generatedAt": "2026-10-04"
+  "generatedAt": "2026-10-05"
 };
