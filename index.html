@@ -398,7 +398,9 @@
     <button class="toast__go" id="toast-go" type="button">Корзина</button>
   </div>
 
-  <script src="data/catalog.js"></script>
+  <!-- каталог — с уникальным URL при каждом открытии: CDN Fastly (Pages)
+       кэширует «через раз» старые версии, Date.now() гарантирует cache miss -->
+  <script>document.write('<script src="data/catalog.js?v=' + Date.now() + '"><\/script>');</script>
   <script src="js/app.js"></script>
 <script>
 (function () {
