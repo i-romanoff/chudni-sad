@@ -76,7 +76,7 @@ window.CATALOG = {
     },
     {
       "id": "grusha-nevelichka-dyuymovochka-2026090914474",
-      "name": "Груша Дюймовочка (Невеличка)",
+      "name": "Груша 'Дюймовочка' (Невеличка)",
       "latin": "Pyrus communis 'Dyumovochka'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 140000,
