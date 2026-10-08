@@ -88,7 +88,7 @@ window.CATALOG = {
       "volume": null,
       "age": "",
       "status": "В наличии",
-      "stockCount": 18,
+      "stockCount": 19,
       "badges": [
         {
           "type": "sale",
