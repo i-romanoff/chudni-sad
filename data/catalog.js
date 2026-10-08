@@ -2,7 +2,9 @@ window.CATALOG = {
   "categories": [
     "Гортензии",
     "Декоративные деревья и кустарники",
+    "Декоративные кустарники",
     "Многолетники",
+    "Пионы",
     "Плодовые деревья и кустарники",
     "Розы",
     "Хвойные"
@@ -23,7 +25,7 @@ window.CATALOG = {
   "products": [
     {
       "id": "vishnya-voylochnaya-damanka-2026090914474",
-      "name": "Вишня войлочная \"Даманка\"",
+      "name": "Вишня войлочная 'Даманка'",
       "latin": "Cerasus tomentosa 'Damanka'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 75000,
@@ -86,7 +88,7 @@ window.CATALOG = {
       "volume": null,
       "age": "",
       "status": "В наличии",
-      "stockCount": 19,
+      "stockCount": 18,
       "badges": [
         {
           "type": "sale",
@@ -189,7 +191,7 @@ window.CATALOG = {
     },
     {
       "id": "sliva-pamyati-putova-2026090914474",
-      "name": "Слива \"Памяти Путова\"",
+      "name": "Слива 'Памяти Путова'",
       "latin": "Prunus domestica 'Pamyati Putova'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 140000,
@@ -429,7 +431,7 @@ window.CATALOG = {
     },
     {
       "id": "yablonya-polukulturnaya-zavetnoe-2026090914474",
-      "name": "Яблоня крупноплодная полукультурка \"Заветное\"",
+      "name": "Яблоня крупноплодная полукультурка 'Заветное'",
       "latin": "Malus domestica 'Zavetnoe'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
@@ -572,7 +574,7 @@ window.CATALOG = {
     },
     {
       "id": "yablonya-polukulturnaya-komsomolec-buryatii-2026090914474",
-      "name": "Яблоня полукультурная \"Комсомолец Бурятии\"",
+      "name": "Яблоня полукультурная 'Комсомолец Бурятии'",
       "latin": "Malus 'Komsomolets Buryatii'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
@@ -679,7 +681,7 @@ window.CATALOG = {
     },
     {
       "id": "yablonya-pk-altayskoe-bagryanoe-2026090223225",
-      "name": "Яблоня полукультурная \"Алтайское багряное\"",
+      "name": "Яблоня полукультурная 'Алтайское багряное'",
       "latin": "Malus pumila 'Алтайское багряное'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
@@ -810,7 +812,7 @@ window.CATALOG = {
     },
     {
       "id": "yablonya-pk-gornoaltayskoe-2026090223225",
-      "name": "Яблоня полукультурная \"Горноалтайское\"",
+      "name": "Яблоня полукультурная 'Горноалтайское'",
       "latin": "Malus pumila 'Gornoaltayskoye'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
@@ -921,7 +923,7 @@ window.CATALOG = {
     },
     {
       "id": "yablonya-pk-uralskoe-nalivnoe-2026090223225",
-      "name": "Яблоня полукультурная \"Уральское наливное\"",
+      "name": "Яблоня полукультурная 'Уральское наливное'",
       "latin": "Malus 'Ural'skoye nalivnoye'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
