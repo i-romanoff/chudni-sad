@@ -1183,7 +1183,7 @@ window.CATALOG = {
       "volume": null,
       "age": "",
       "status": "В наличии",
-      "stockCount": 19,
+      "stockCount": 18,
       "badges": [
         {
           "type": "sale",
@@ -3425,7 +3425,7 @@ window.CATALOG = {
       "volume": null,
       "age": "",
       "status": "В наличии",
-      "stockCount": 40,
+      "stockCount": 39,
       "badges": [
         {
           "type": "sale",
