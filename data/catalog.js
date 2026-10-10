@@ -2879,7 +2879,7 @@ window.CATALOG = {
     {
       "id": "yablonya-polukulturnaya-krasa-buryatii-2026090914474",
       "name": "Яблоня 'Краса Бурятии'",
-      "latin": "Malus prunifolia 'Krasa Buratii'",
+      "latin": "Яблоня полукультурка Краса Бурятии",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
@@ -3014,10 +3014,6 @@ window.CATALOG = {
         },
         {
           "file": "p242-0118134328-2.jpg",
-          "alt": "Яблоня Краса Бурятии, полукультурка, летний сорт"
-        },
-        {
-          "file": "p242-0118136476-3.jpg",
           "alt": "Яблоня Краса Бурятии, полукультурка, летний сорт"
         }
       ],
