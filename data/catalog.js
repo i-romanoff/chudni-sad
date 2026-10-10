@@ -1975,6 +1975,10 @@ window.CATALOG = {
       },
       "photos": [
         {
+          "file": "p1350-2343163497-3.jpg",
+          "alt": "Роджерсия pinnata Саарбрюккен"
+        },
+        {
           "file": "p1350-2343160130-0.jpg",
           "alt": "Роджерсия pinnata Саарбрюккен"
         },
@@ -1984,10 +1988,6 @@ window.CATALOG = {
         },
         {
           "file": "p1350-2343161713-2.jpg",
-          "alt": "Роджерсия pinnata Саарбрюккен"
-        },
-        {
-          "file": "p1350-2343163497-3.jpg",
           "alt": "Роджерсия pinnata Саарбрюккен"
         },
         {
@@ -4137,11 +4137,22 @@ window.CATALOG = {
       "latin": "Paeonia hybrid 'Coral Charm'",
       "category": "Пионы",
       "priceMin": 105000,
-      "priceMax": 105000,
+      "priceMax": 130000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
+      "variants": [
+        {
+          "label": "ОКС 2-3",
+          "price": 105000,
+          "qty": 10
+        },
+        {
+          "label": "ОКС 3-5",
+          "price": 130000,
+          "qty": 5
+        }
+      ],
       "volume": null,
       "age": "",
       "status": "В наличии",
@@ -4278,8 +4289,8 @@ window.CATALOG = {
       "name": "Пион молочноцветковый 'Боул оф Крим'",
       "latin": "Paeonia lactiflora 'Bowl of Cream'",
       "category": "Пионы",
-      "priceMin": 2300,
-      "priceMax": 2300,
+      "priceMin": 190000,
+      "priceMax": 190000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
