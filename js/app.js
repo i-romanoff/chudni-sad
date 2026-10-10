@@ -2119,8 +2119,13 @@
     }
   });
   orderPhone.addEventListener("input", function () {
-    var digits = orderPhone.value.replace(/\D/g, "");
-    if (digits.charAt(0) === "7" || digits.charAt(0) === "8") digits = digits.slice(1);
+    /* Б-81: «+7 » — наш префикс, не данные; отделяем его ДО разбора цифр,
+       иначе номер с 8-префикса («+7 8 999 123 45 67») съедал ведущую 7
+       и кривил хвост: «+7 (899) 912-34-56» */
+    var body = orderPhone.value.indexOf("+7") === 0 ? orderPhone.value.slice(2) : orderPhone.value;
+    var digits = body.replace(/\D/g, "");
+    if (digits.charAt(0) === "8") digits = digits.slice(1);
+    else if (digits.length === 11 && digits.charAt(0) === "7") digits = digits.slice(1);
     digits = digits.slice(0, 10);
 
     var out = "+7";
@@ -2186,15 +2191,20 @@
   document.getElementById("order-send").addEventListener("click", function () {
     var name = orderName.value.trim();
     var phone = orderPhone.value.trim();
-    var digits = phone.replace(/\D/g, "");
+    /* Б-81: та же нормализация, что в маске — требуем ровно 10 цифр номера
+       тела (раньше «≥10 любых цифр» проходилось: «+7 » уже сидит в поле) */
+    var pbody = phone.indexOf("+7") === 0 ? phone.slice(2) : phone;
+    var digits = pbody.replace(/\D/g, "");
+    if (digits.charAt(0) === "8") digits = digits.slice(1);
+    else if (digits.length === 11 && digits.charAt(0) === "7") digits = digits.slice(1);
 
     if (name.length < 2) {
       orderError.textContent = "Напишите, пожалуйста, имя — как к вам обращаться.";
       orderName.focus();
       return;
     }
-    if (digits.length < 10) {
-      orderError.textContent = "Проверьте телефон: нужно не меньше 10 цифр, например +7 924 707-14-00.";
+    if (digits.length !== 10) {
+      orderError.textContent = "Проверьте телефон: нужно 10 цифр номера после +7, например +7 924 707-14-00.";
       orderPhone.focus();
       return;
     }
