@@ -112,12 +112,6 @@
     return product.stockCount || 0;
   };
 
-  var volumeLabel = function (product) {
-    if (!product || !product.volume) return "саженец";
-    var liters = (product.volume % 1 === 0) ? product.volume : product.volume.toFixed(1).replace(".", ",");
-    return "контейнер " + liters + " л";
-  };
-
   /* Иконка корзины для круглой кнопки в компактной карточке */
   var CART_ICON_SVG = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9.5" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M3 3.5h2l2.5 11h9.7a1.6 1.6 0 0 0 1.56-1.22L20.6 7H6.2"/></svg>';
 
@@ -808,20 +802,10 @@
         fav.querySelector("svg").setAttribute("fill", on ? "currentColor" : "none");
       });
 
-      var tag = document.createElement("span");
-      tag.className = "tag card__tag";
-      tag.setAttribute("aria-hidden", "true");
-      tag.innerHTML = '<span class="tag__latin"></span><span class="tag__hand"></span>';
-      tag.querySelector(".tag__latin").textContent = product.latin;
-      tag.querySelector(".tag__hand").textContent = product.age
-        ? product.age + " · " + volumeLabel(product)
-        : volumeLabel(product);
-
       photoWrap.appendChild(slider);
       photoWrap.appendChild(badges);
       photoWrap.appendChild(stockEl);
       photoWrap.appendChild(fav);
-      photoWrap.appendChild(tag);
       photoBtn.appendChild(photoWrap);
       photoBtn.addEventListener("click", function () {
         if (suppressClick) return;   /* это был свайп, а не тап */
@@ -846,9 +830,9 @@
       var price = document.createElement("p");
       price.className = "card__price";
       /* v56.9: скидка — новая цена крупная акцентом, старая сзади мельче и зачёркнута */
-      price.innerHTML = "<s class=\"card__price-old\" hidden></s><span></span><small></small>";
+      /* v57.4: тип тары под ценой убран (ОС хозяйки) — только цена */
+      price.innerHTML = "<s class=\"card__price-old\" hidden></s><span></span>";
       price.querySelector("span").textContent = fmtPrice(product);
-      price.querySelector("small").textContent = volumeLabel(product);
       if (product.oldPriceMin) {
         /* v56.10: единый кегль со всеми ценами; диапазон — «от …» (влезает всегда) */
         price.classList.add("is-sale");
@@ -928,7 +912,6 @@
   var modalDots = document.getElementById("modal-dots");
   var modalSlider = document.getElementById("modal-slider");
   var modalThumbs = document.getElementById("modal-thumbs");
-  var modalLatin = document.getElementById("modal-latin");
   var modalTitle = document.getElementById("modal-title");
   var modalPrice = document.getElementById("modal-price");
   var modalDesc = document.getElementById("modal-desc");
@@ -1277,23 +1260,38 @@
     });
   })();
 
-  /* Похожие сорта: та же категория, до 4 мини-карточек; клик — карточка того сорта */
+  /* Также рекомендуем: та же категория, до 4 мини-карточек; клик — карточка того
+     сорта. ОС 10.2026: кандидаты сортируются по остатку ПО УБЫВАНИЮ — сначала
+     то, что реально есть на складе; товары с нулевым остатком не выбрасываются,
+     а добираются в хвосте, если в категории не хватает «наличия». */
   function renderSimilar(product) {
     var sim = document.getElementById("modal-similar");
     if (!sim) return;
-    var seen = {}, picked = [];
+    var seen = {}, candidates = [];
     products.forEach(function (x) {
       var base = x.uid.split("#")[0];
       if (x.category !== product.category || base === product.uid.split("#")[0] || seen[base]) return;
       seen[base] = 1;
-      if (picked.length < 4) picked.push(x);
+      if (!x.photos || !x.photos.length) return;   /* v44: без фото — не показываем */
+      candidates.push(x);
     });
-    if (!picked.length) { sim.innerHTML = ""; return; }
-    sim.innerHTML = "<h4>Похожие сорта</h4>";
+    if (!candidates.length) { sim.innerHTML = ""; return; }
+    /* остаток для сортировки: у вариантного товара — сумма qty вариантов
+       (вариант без разметки qty считается 0), иначе stockCount */
+    var stockOf = function (p) {
+      if (p.variants && p.variants.length) {
+        var sum = 0;
+        p.variants.forEach(function (v) { sum += (v.qty || 0); });
+        return sum;
+      }
+      return p.stockCount || 0;
+    };
+    candidates.sort(function (a, b) { return stockOf(b) - stockOf(a); });
+    var picked = candidates.slice(0, 4);
+    sim.innerHTML = "<h4>Также рекомендуем:</h4>";
     var grid = document.createElement("div");
     grid.className = "similar-grid";
     picked.forEach(function (sp) {
-      if (!sp.photos || !sp.photos.length) return;   /* v44: без фото — не показываем */
       var card = document.createElement("button");
       card.type = "button";
       card.className = "similar-card";
@@ -1368,12 +1366,12 @@
     setProductMeta(product);
     replaceHash(productHash(product));
 
-    modalLatin.textContent = product.latin;
     modalTitle.textContent = product.name;
 
     var renderPrice = function (oldKop, newTxt) {
-      /* скидка: старая цена зачёркнута, новая — акцентным цветом */
-      modalPrice.innerHTML = '<s class="modal__price-old"></s><span class="modal__price-new"></span> <small></small>';
+      /* скидка: старая цена зачёркнута, новая — акцентным цветом.
+         v57.4: тара/возраст под ценой убраны (ОС хозяйки) */
+      modalPrice.innerHTML = '<s class="modal__price-old"></s><span class="modal__price-new"></span>';
       var oldEl = modalPrice.querySelector(".modal__price-old");
       if (oldKop) {
         oldEl.textContent = fmtRub(oldKop);
@@ -1384,8 +1382,6 @@
       var newEl = modalPrice.querySelector(".modal__price-new");
       newEl.textContent = newTxt;
       newEl.classList.toggle("is-sale", !!oldKop);
-      modalPrice.querySelector("small").textContent =
-        volumeLabel(product) + (product.age ? " · " + product.age : "");
     };
 
     var priceText = fmtPrice(product);
@@ -2410,7 +2406,6 @@
      только opacity/transform, сильный ease-out, смена раз в 3,5 сек).
      Бирка на фото меняется вместе с фотографией. */
   var heroSlider = document.getElementById("hero-slider");
-  var heroTagLatin = document.getElementById("hero-tag-latin");
   var heroTagHand = document.getElementById("hero-tag-hand");
   if (heroSlider) {
     var pool = [];
@@ -2429,8 +2424,9 @@
     function heroCaption(entry) {
       var p = entry.product;
       var quoted = (p.name.match(/«([^»]+)»/) || [])[1];
-      var extra = p.age ? p.age : (p.volume ? volumeLabel(p) : "");
-      heroTagLatin.textContent = p.latin;
+      /* v57.4: латинское название и тара на бирке убраны (ОС хозяйки),
+         остаётся сортовое имя и возраст */
+      var extra = p.age || "";
       heroTagHand.textContent = quoted
         ? "«" + quoted + "»" + (extra ? " · " + extra : "")
         : p.name;

@@ -32,7 +32,7 @@
   <meta name="twitter:card" content="summary">
   <!-- Б-33: шрифты self-host (fonts/fonts.css, кириллица включена) -->
   <link rel="stylesheet" href="fonts/fonts.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=20261011">
   <!-- MAX Bridge: внутри мини-приложения MAX отдаёт профиль клиента
        (WebApp.initDataUnsafe.user) — автозаполнение имени и автосвязь
        заказа с чатом. Вне MAX скрипт просто не создаёт контекст. -->
@@ -115,7 +115,6 @@
         <figure class="hero__photo">
           <div class="hero__slider" id="hero-slider"></div>
           <figcaption class="tag tag--hero" aria-hidden="true">
-            <span class="tag__latin" id="hero-tag-latin">Hydrangea paniculata</span>
             <span class="tag__hand" id="hero-tag-hand">«Граффити» · одногодка</span>
           </figcaption>
         </figure>
@@ -252,7 +251,6 @@
         <div class="modal__thumbs" id="modal-thumbs"></div>
       </div>
       <div class="modal__info">
-        <p class="modal__latin" id="modal-latin"></p>
         <h3 class="modal__title" id="modal-title"></h3>
         <p class="modal__price" id="modal-price"></p>
         <p class="modal__desc" id="modal-desc"></p>
@@ -265,7 +263,6 @@
             <span class="modal__share-txt">Поделиться</span>
           </button>
         </div>
-        <p class="modal__hint">Остались вопросы — позвоните, поможем с выбором.</p>
         <div class="modal__similar" id="modal-similar"></div>
       </div>
       </div>
@@ -401,7 +398,7 @@
   <!-- каталог — с уникальным URL при каждом открытии: CDN Fastly (Pages)
        кэширует «через раз» старые версии, Date.now() гарантирует cache miss -->
   <script>document.write('<script src="data/catalog.js?v=' + Date.now() + '"><\/script>');</script>
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=20261011"></script>
 <script>
 (function () {
   var fab = document.getElementById("action-fab");

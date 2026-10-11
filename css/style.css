@@ -71,7 +71,6 @@ img { display: block; max-width: 100%; }
 @media (hover: none) {
   .card:hover { transform: none; box-shadow: 0 4px 16px rgba(19, 33, 26, .1); }
   .card:hover .card__photo-wrap img { transform: none; }
-  .card:hover .card__tag { transform: rotate(-3deg); }
   .hero__photo:hover .tag--hero { transform: rotate(-3deg); }
   .btn--primary:hover { background: var(--graffiti-pink); box-shadow: none; transform: none; }
   .btn--ghost:hover { background: transparent; color: var(--forest); }
@@ -365,13 +364,6 @@ html.theme-dark .theme-btn .icon-sun { display: block; }
   box-shadow: inset 0 0 0 2px rgba(30, 50, 38, .3);
   transform: translateX(-50%);
 }
-.tag__latin {
-  display: block;
-  font-family: var(--font-body);
-  font-style: italic;
-  font-size: 16px;
-  color: var(--moss);
-}
 .tag__hand {
   display: block;
   font-family: var(--font-hand);
@@ -426,7 +418,7 @@ html.theme-dark .theme-btn .icon-sun { display: block; }
 .cat-search:focus { outline: none; box-shadow: 0 0 0 3px rgba(181, 201, 106, .5); }
 html.theme-dark .cat-search { background: #26292d; }
 
-/* ---------- Похожие сорта в карточке товара ---------- */
+/* ---------- «Также рекомендуем» в карточке товара ---------- */
 .modal__similar { padding: 0 24px 24px; }
 .modal__similar h4 {
   font-family: var(--font-display); font-size: 19px; font-weight: 700;
@@ -880,15 +872,6 @@ html.hide-totop .to-top { display: none !important; }
 .modal__stock-pill.card__stock--soon { background: #d9822b; color: #fff; }
 .card__stock--out { background: rgba(19, 33, 26, .8); color: #fff; }
 
-.card__tag {
-  right: 14px; bottom: 14px; left: auto; top: auto;
-  padding: 6px 14px 8px;
-}
-.card__tag::before { top: -5px; width: 8px; height: 8px; }
-.card__tag .tag__latin { font-size: 13px; }
-.card__tag .tag__hand { font-size: 18px; }
-.card:hover .card__tag { transform: rotate(-1deg); }
-
 .card__body {
   padding: 20px 22px 24px;
   display: flex; flex-direction: column; flex: 1;
@@ -916,13 +899,6 @@ html.hide-totop .to-top { display: none !important; }
   color: var(--ink);
   white-space: nowrap;
 }
-.card__price small {
-  display: block;
-  font-family: var(--font-body);
-  font-size: 14.5px;
-  font-weight: 500;
-  color: var(--moss);
-}
 /* v56.10: скидка в карточке — кегль единый со всеми ценами (замечание
    хозяйки: «950 выглядит меньше 675»), выразительность = цвет + старая
    зачёркнутая строкой сверху; корзина жёстко справа, не выдавливается */
@@ -939,7 +915,6 @@ html.hide-totop .to-top { display: none !important; }
   opacity: 0.8;
   white-space: normal;   /* v56.10: узкие карточки — «было …» переносится, не выпирает */
 }
-.card__price.is-sale small { color: var(--graffiti-pink); opacity: 0.8; }
 .card__actions { display: flex; gap: 10px; }
 /* Кнопка корзины в карточке: на всю ширину ряда «цена + кнопка»,
    с иконкой и текстом — вид одинаковый на ПК и мобиле (v38) */
@@ -1142,7 +1117,6 @@ html.theme-dark .skip-link { background: #2c3034; }
 html.theme-dark .header { background: rgba(30, 33, 36, .97); border-bottom-color: rgba(214, 218, 221, .14); }
 html.theme-dark .eyebrow { color: #e08a9d; }
 html.theme-dark .card__promo--soon { color: #1e2124; border-color: #8a939a; }
-html.theme-dark .tag__latin { color: #5a6350; }
 html.theme-dark .tag__hand { color: #1f2916; }
 html.theme-dark .modal__traits,
 html.theme-dark .modal__traits > div,
@@ -1405,13 +1379,6 @@ html.theme-dark .steps__item p { color: #d3dcc9; }
 .modal__thumbs img { width: 100%; height: 100%; object-fit: cover; }
 
 .modal__info { padding: 32px 24px 28px; }
-.modal__latin {
-  font-family: var(--font-body); font-style: italic;
-  font-style: italic;
-  font-size: 17px;
-  color: var(--moss);
-  margin-bottom: 6px;
-}
 .modal__title {
   font-family: var(--font-display); font-weight: 700;
   font-size: 27px;
@@ -1433,10 +1400,6 @@ html.theme-dark .steps__item p { color: #d3dcc9; }
 .modal__price .modal__price-new.is-sale { color: var(--graffiti-pink); }
 /* Варианты: на ПК переносятся рядами; на смартфоне — Ozon-лента (см. v48-блок) */
 #modal-vars { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
-.modal__price small {
-  font-family: var(--font-body);
-  font-size: 15px; font-weight: 500; color: var(--moss);
-}
 .modal__desc { font-size: 16.5px; color: var(--ink); margin-bottom: 20px; }
 .modal__traits {
   border-top: 1.5px solid rgba(30, 50, 38, .2);
@@ -1457,7 +1420,6 @@ html.theme-dark .steps__item p { color: #d3dcc9; }
 /* Минимальную ширину держит только главная кнопка: вторая («Поделиться»)
    компактная, иначе ряд распирает сетку модалки на мобильном */
 .modal__cta-row .btn--primary { min-width: 240px; }
-.modal__hint { margin-top: 12px; font-size: 16px; color: var(--moss); text-align: center; }
 
 /* ---------- Корзина ---------- */
 .cart__scroll {
@@ -1782,7 +1744,6 @@ html.theme-dark .agree-row a { color: #e08a9d; }
   .cards--compact .card__badges { top: 8px; left: 8px; gap: 4px; }
   .cards--compact .card__promo { font-size: 11.5px; padding: 4px 9px; }
   .cards--compact .card__stock { font-size: 12px; padding: 4px 9px; top: 8px; right: 8px; }
-  .cards--compact .card__tag { display: none; }
   .cards--compact .card__dot { width: 5px; height: 5px; }
   .cards--compact .card__dots { bottom: 6px; gap: 4px; }
   .cards--compact .card__body { padding: 10px 12px 12px; }
@@ -1805,7 +1766,6 @@ html.theme-dark .agree-row a { color: #e08a9d; }
     margin-top: auto;
   }
   .cards--compact .card__price { font-size: 17.5px; }
-  .cards--compact .card__price small { display: none; }
   .cards--compact .card__add { border-radius: 12px; }
 }
 
@@ -2110,12 +2070,11 @@ html.theme-dark .phone-max-btn { border-color: var(--forest); color: var(--fores
   .modal__gallery { order: 1; }
   /* padding .modal__info перестал существовать (display:contents) —
      боковые поля переезжают на детей */
-  .modal__latin, .modal__title, .modal__price,
-  .modal__desc, .modal__traits, .modal__similar, .modal__hint {
+  .modal__title, .modal__price,
+  .modal__desc, .modal__traits, .modal__similar {
     order: 1;
     margin-left: 16px; margin-right: 16px;
   }
-  .modal__hint { margin-top: 0; margin-bottom: 14px; }
   /* Варианты — Ozon-лента: один ряд, свайп влево/вправо;
      если вмещаются — прокрутки нет (её просто не возникает).
      flex:none: у скролл-контейнера авто-минимум по высоте 0, иначе
@@ -2194,7 +2153,6 @@ html.theme-dark .modal__cta-row { border-top-color: rgba(214, 218, 221, .16); }
   .cards:not(.cards--compact) .card__price { font-size: 27px; }
   .cards:not(.cards--compact) .card__price.is-sale > span,
   .cards:not(.cards--compact) .card__price { font-size: 27px; }
-  .cards:not(.cards--compact) .card__price small { font-size: 16px; }
   .cards:not(.cards--compact) .card__price-old { font-size: 16px; }
   .cards:not(.cards--compact) .card__add,
   .cards:not(.cards--compact) .card__add.featured-card__add {
@@ -2205,7 +2163,6 @@ html.theme-dark .modal__cta-row { border-top-color: rgba(214, 218, 221, .16); }
 @media (min-width: 701px) {
   /* широкий на ПК/планшете: те же крупные цена/корзина в 1-колоночном виде */
   .cards:not(.cards--compact) .card__price { font-size: 26px; }
-  .cards:not(.cards--compact) .card__price small { font-size: 15.5px; }
   .cards:not(.cards--compact) .card__add,
   .cards:not(.cards--compact) .card__add.featured-card__add {
     width: 54px; min-width: 54px; height: 54px; min-height: 54px;
