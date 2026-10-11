@@ -26,16 +26,19 @@ window.CATALOG = {
     {
       "id": "abrikos-barguzin-20261007232532950",
       "name": "Абрикос 'Баргузин'",
-      "latin": "Prunus armeniaca 'Barguzin'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 150000,
       "priceMax": 150000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 150000,
+          "qty": 15
+        }
+      ],
       "status": "В наличии",
       "stockCount": 15,
       "badges": [],
@@ -124,16 +127,19 @@ window.CATALOG = {
     {
       "id": "astilba-arendsa-bressingem-byuti-20261007234100360",
       "name": "Астильба Арендса 'Брессингем Бьюти'",
-      "latin": "Astilbe × arendsii 'Bressingham Beauty'",
       "category": "Многолетники",
       "priceMin": 42000,
       "priceMax": 42000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 42000,
+          "qty": 12
+        }
+      ],
       "status": "В наличии",
       "stockCount": 12,
       "badges": [],
@@ -229,16 +235,19 @@ window.CATALOG = {
     {
       "id": "astilba-arendsa-erika-20261007233955167",
       "name": "Астильба арендса 'Эрика'",
-      "latin": "Astilbe × arendsii 'Erika'",
       "category": "Многолетники",
       "priceMin": 55000,
       "priceMax": 55000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 55000,
+          "qty": 7
+        }
+      ],
       "status": "В наличии",
       "stockCount": 7,
       "badges": [],
@@ -326,16 +335,19 @@ window.CATALOG = {
     {
       "id": "badan-galina-serova-20261007235536545",
       "name": "Бадан 'Галина Серова'",
-      "latin": "Bergenia hybrida 'Galina Serova'",
       "category": "Многолетники",
       "priceMin": 49000,
       "priceMax": 49000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 49000,
+          "qty": 18
+        }
+      ],
       "status": "В наличии",
       "stockCount": 18,
       "badges": [],
@@ -420,16 +432,19 @@ window.CATALOG = {
     {
       "id": "buzulnik-20261008000225555",
       "name": "Бузульник",
-      "latin": "Ligularia",
       "category": "Многолетники",
       "priceMin": 35000,
       "priceMax": 35000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 35000,
+          "qty": 5
+        }
+      ],
       "status": "В наличии",
       "stockCount": 5,
       "badges": [],
@@ -492,16 +507,19 @@ window.CATALOG = {
     {
       "id": "buzulnik-otello-20261007234204807",
       "name": "Бузульник 'Отелло'",
-      "latin": "Ligularia dentata 'Othello'",
       "category": "Многолетники",
       "priceMin": 55000,
       "priceMax": 55000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 55000,
+          "qty": 3
+        }
+      ],
       "status": "В наличии",
       "stockCount": 3,
       "badges": [],
@@ -609,16 +627,19 @@ window.CATALOG = {
     {
       "id": "veronika-rotfuks-20261007233853922",
       "name": "Вероника 'Ротфукс'",
-      "latin": "Veronica spicata 'Rotfuchs'",
       "category": "Многолетники",
       "priceMin": 55000,
       "priceMax": 55000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 55000,
+          "qty": 5
+        }
+      ],
       "status": "В наличии",
       "stockCount": 5,
       "badges": [],
@@ -729,16 +750,19 @@ window.CATALOG = {
     {
       "id": "veronika-mnogoletnyaya-20261007234617755",
       "name": "Вероника многолетняя",
-      "latin": "Veronica",
       "category": "Многолетники",
       "priceMin": 35000,
       "priceMax": 35000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 35000,
+          "qty": 4
+        }
+      ],
       "status": "В наличии",
       "stockCount": 4,
       "badges": [],
@@ -807,16 +831,20 @@ window.CATALOG = {
     {
       "id": "vishnya-voylochnaya-damanka-2026090914474",
       "name": "Вишня войлочная 'Даманка'",
-      "latin": "Cerasus tomentosa 'Damanka'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 75000,
       "priceMax": 75000,
       "oldPriceMin": 100000,
       "oldPriceMax": 100000,
       "salePercent": 25,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 75000,
+          "qty": 19,
+          "oldPrice": 100000
+        }
+      ],
       "status": "В наличии",
       "stockCount": 19,
       "badges": [
@@ -858,16 +886,19 @@ window.CATALOG = {
     {
       "id": "vishnya-peschanaya-zheltoplodnaya-20261007233256190",
       "name": "Вишня песчаная желтоплодная",
-      "latin": "Prunus besseyi",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 68000,
       "priceMax": 68000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 68000,
+          "qty": 15
+        }
+      ],
       "status": "В наличии",
       "stockCount": 15,
       "badges": [],
@@ -956,16 +987,19 @@ window.CATALOG = {
     {
       "id": "voylochnaya-vishnya-20261007233522152",
       "name": "Войлочная Вишня",
-      "latin": "Prunus tomentosa",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 68000,
       "priceMax": 68000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 68000,
+          "qty": 20
+        }
+      ],
       "status": "В наличии",
       "stockCount": 20,
       "badges": [],
@@ -1054,16 +1088,19 @@ window.CATALOG = {
     {
       "id": "grusha-veselinka-eto-letniy-sort-sibirskoy-selekcii-sozdannyy-na-krasnoyarskoy-20261007233135951",
       "name": "Груша 'Веселинка'",
-      "latin": "Pyrus communis 'Veselinka'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 140000,
       "priceMax": 140000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 140000,
+          "qty": 20
+        }
+      ],
       "status": "В наличии",
       "stockCount": 20,
       "badges": [],
@@ -1168,16 +1205,20 @@ window.CATALOG = {
     {
       "id": "grusha-nevelichka-dyuymovochka-2026090914474",
       "name": "Груша 'Дюймовочка' (Невеличка)",
-      "latin": "Pyrus communis 'Dyumovochka'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 140000,
       "priceMax": 140000,
       "oldPriceMin": 175000,
       "oldPriceMax": 175000,
       "salePercent": 20,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 140000,
+          "qty": 18,
+          "oldPrice": 175000
+        }
+      ],
       "status": "В наличии",
       "stockCount": 18,
       "badges": [
@@ -1283,16 +1324,19 @@ window.CATALOG = {
     {
       "id": "grusha-481-barguzin-20261007232211966",
       "name": "Груша 481 'Баргузин'",
-      "latin": "Pyrus 481 'Barguzin'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 140000,
       "priceMax": 140000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 140000,
+          "qty": 15
+        }
+      ],
       "status": "В наличии",
       "stockCount": 15,
       "badges": [],
@@ -1361,16 +1405,19 @@ window.CATALOG = {
     {
       "id": "kotovnik-fassena-uolkers-lou-20261007231023070",
       "name": "Котовник Фассена 'Уолкерс Лоу'",
-      "latin": "Nepeta faassenii 'Walker's Low'",
       "category": "Многолетники",
       "priceMin": 35000,
       "priceMax": 35000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 35000,
+          "qty": 5
+        }
+      ],
       "status": "В наличии",
       "stockCount": 5,
       "badges": [],
@@ -1437,16 +1484,19 @@ window.CATALOG = {
     {
       "id": "lileynik-gibridnyy-faynal-tach-20261007234428362",
       "name": "Лилейник гибридный 'Файнал Тач'",
-      "latin": "Hemerocallis 'Final Touch'",
       "category": "Многолетники",
       "priceMin": 50000,
       "priceMax": 50000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 50000,
+          "qty": 6
+        }
+      ],
       "status": "В наличии",
       "stockCount": 6,
       "badges": [],
@@ -1542,16 +1592,19 @@ window.CATALOG = {
     {
       "id": "mindal-trehlopastnyyluizianiya-trehlopastnaya-sakura-20261007233717530",
       "name": "Миндаль трёхлопастный (Луизиания трёхлопастная) 'Сакура'",
-      "latin": "Louiseania triloba",
       "category": "Декоративные кустарники",
       "priceMin": 150000,
       "priceMax": 150000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 150000,
+          "qty": 15
+        }
+      ],
       "status": "В наличии",
       "stockCount": 15,
       "badges": [],
@@ -1612,16 +1665,19 @@ window.CATALOG = {
     {
       "id": "puzyreplodnik-ledi-in-red-20261007234829985",
       "name": "Пузыреплодник 'Леди ин Ред'",
-      "latin": "Physocarpus opulifolius 'Lady in Red'",
       "category": "Декоративные кустарники",
       "priceMin": 50000,
       "priceMax": 50000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 50000,
+          "qty": 10
+        }
+      ],
       "status": "В наличии",
       "stockCount": 10,
       "badges": [],
@@ -1712,16 +1768,19 @@ window.CATALOG = {
     {
       "id": "puzyreplodnik-red-baron-20261007235038103",
       "name": "Пузыреплодник 'Ред Барон'",
-      "latin": "Physocarpus opulifolius 'Red Baron'",
       "category": "Декоративные кустарники",
       "priceMin": 50000,
       "priceMax": 50000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 50000,
+          "qty": 8
+        }
+      ],
       "status": "В наличии",
       "stockCount": 8,
       "badges": [],
@@ -1813,16 +1872,19 @@ window.CATALOG = {
     {
       "id": "puzyreplodnik-shuh-20261007234732745",
       "name": "Пузыреплодник 'Шух'",
-      "latin": "Physocarpus opulifolius 'Schuch'",
       "category": "Декоративные кустарники",
       "priceMin": 50000,
       "priceMax": 50000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 50000,
+          "qty": 15
+        }
+      ],
       "status": "В наличии",
       "stockCount": 15,
       "badges": [],
@@ -1907,16 +1969,19 @@ window.CATALOG = {
     {
       "id": "rodzhersiya-pinnata-saarbryukken-20261007234315935",
       "name": "Роджерсия pinnata 'Саарбрюккен'",
-      "latin": "Rodgersia pinnata 'Saarbrücken'",
       "category": "Многолетники",
       "priceMin": 65000,
       "priceMax": 65000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 65000,
+          "qty": 6
+        }
+      ],
       "status": "В наличии",
       "stockCount": 6,
       "badges": [],
@@ -2000,16 +2065,19 @@ window.CATALOG = {
     {
       "id": "siren-izobilie-20261007235904324",
       "name": "Сирень 'Изобилие'",
-      "latin": "Syringa vulgaris 'Izobiliye'",
       "category": "Декоративные кустарники",
       "priceMin": 58000,
       "priceMax": 58000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 58000,
+          "qty": 10
+        }
+      ],
       "status": "В наличии",
       "stockCount": 10,
       "badges": [],
@@ -2070,16 +2138,19 @@ window.CATALOG = {
     {
       "id": "siren-krasnaya-moskva-20261007235728879",
       "name": "Сирень 'Красная Москва'",
-      "latin": "Syringa vulgaris 'Krasnaya Moskva'",
       "category": "Декоративные кустарники",
       "priceMin": 54000,
       "priceMax": 54000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 54000,
+          "qty": 10
+        }
+      ],
       "status": "В наличии",
       "stockCount": 10,
       "badges": [],
@@ -2147,16 +2218,19 @@ window.CATALOG = {
     {
       "id": "siren-obyknovennaya-zhanna-dark-20261008000115511",
       "name": "Сирень обыкновенная 'Жанна д'Арк'",
-      "latin": "Syringa vulgaris 'Jeanne d'Arc'",
       "category": "Декоративные кустарники",
       "priceMin": 58000,
       "priceMax": 58000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 58000,
+          "qty": 10
+        }
+      ],
       "status": "В наличии",
       "stockCount": 10,
       "badges": [],
@@ -2213,16 +2287,19 @@ window.CATALOG = {
     {
       "id": "sliva-amtatay-20261007232954252",
       "name": "Слива 'Амтатай'",
-      "latin": "Prunus salicina 'Amtatay'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 140000,
       "priceMax": 140000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 140000,
+          "qty": 15
+        }
+      ],
       "status": "В наличии",
       "stockCount": 15,
       "badges": [],
@@ -2283,16 +2360,19 @@ window.CATALOG = {
     {
       "id": "sliva-vaulinskaya-20261007232846551",
       "name": "Слива 'Ваулинская'",
-      "latin": "Prunus salicina 'Vaulinskaya'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 140000,
       "priceMax": 140000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 140000,
+          "qty": 20
+        }
+      ],
       "status": "В наличии",
       "stockCount": 20,
       "badges": [],
@@ -2408,16 +2488,20 @@ window.CATALOG = {
     {
       "id": "sliva-pamyati-putova-2026090914474",
       "name": "Слива 'Памяти Путова'",
-      "latin": "Prunus domestica 'Pamyati Putova'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 140000,
       "priceMax": 140000,
       "oldPriceMin": 175000,
       "oldPriceMax": 175000,
       "salePercent": 20,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 140000,
+          "qty": 19,
+          "oldPrice": 175000
+        }
+      ],
       "status": "В наличии",
       "stockCount": 19,
       "badges": [
@@ -2501,16 +2585,19 @@ window.CATALOG = {
     {
       "id": "sliva-poniklaya-20261007232728436",
       "name": "Слива 'Пониклая'",
-      "latin": "Prunus salicina 'Poniklaya'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 140000,
       "priceMax": 140000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 140000,
+          "qty": 15
+        }
+      ],
       "status": "В наличии",
       "stockCount": 15,
       "badges": [],
@@ -2583,16 +2670,19 @@ window.CATALOG = {
     {
       "id": "spireya-golden-princess-20261007235146993",
       "name": "Спирея 'Голден Принцесс'",
-      "latin": "Spiraea japonica 'Golden Princess'",
       "category": "Декоративные кустарники",
       "priceMin": 55000,
       "priceMax": 55000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 55000,
+          "qty": 20
+        }
+      ],
       "status": "В наличии",
       "stockCount": 20,
       "badges": [],
@@ -2672,16 +2762,19 @@ window.CATALOG = {
     {
       "id": "spireya-yaponskaya-fayerlayt-20261007235339289",
       "name": "Спирея японская 'Файерлайт'",
-      "latin": "Spiraea japonica 'Firelight'",
       "category": "Декоративные кустарники",
       "priceMin": 55000,
       "priceMax": 55000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 55000,
+          "qty": 5
+        }
+      ],
       "status": "В наличии",
       "stockCount": 5,
       "badges": [],
@@ -2797,16 +2890,19 @@ window.CATALOG = {
     {
       "id": "chabrectimyan-parpl-20261008000525954",
       "name": "Чабрец/тимьян 'Парпл'",
-      "latin": "Thymus serpyllum 'Purple'",
       "category": "Многолетники",
       "priceMin": 20000,
       "priceMax": 20000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 20000,
+          "qty": 5
+        }
+      ],
       "status": "В наличии",
       "stockCount": 5,
       "badges": [],
@@ -2879,16 +2975,20 @@ window.CATALOG = {
     {
       "id": "yablonya-polukulturnaya-krasa-buryatii-2026090914474",
       "name": "Яблоня 'Краса Бурятии'",
-      "latin": "Яблоня полукультурка Краса Бурятии",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
       "oldPriceMin": 150000,
       "oldPriceMax": 150000,
       "salePercent": 20,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 120000,
+          "qty": 19,
+          "oldPrice": 150000
+        }
+      ],
       "status": "В наличии",
       "stockCount": 19,
       "badges": [
@@ -3022,16 +3122,19 @@ window.CATALOG = {
     {
       "id": "yablonya-sibirskaya-2026090914474",
       "name": "Яблоня 'Минусинское красное'",
-      "latin": "Malus 'Minusinskoe krasnoe'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 120000,
+          "qty": 20
+        }
+      ],
       "status": "В наличии",
       "stockCount": 20,
       "badges": [],
@@ -3152,16 +3255,20 @@ window.CATALOG = {
     {
       "id": "yablonya-polukulturnaya-zavetnoe-2026090914474",
       "name": "Яблоня крупноплодная полукультурка 'Заветное'",
-      "latin": "Malus domestica 'Zavetnoe'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
       "oldPriceMin": 150000,
       "oldPriceMax": 150000,
       "salePercent": 20,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 120000,
+          "qty": 20,
+          "oldPrice": 150000
+        }
+      ],
       "status": "В наличии",
       "stockCount": 20,
       "badges": [
@@ -3295,16 +3402,19 @@ window.CATALOG = {
     {
       "id": "yablonya-polukulturka-alenushka-20261009210438851",
       "name": "Яблоня полукультурка \"Алёнушка'",
-      "latin": "Malus domestica 'Alyonushka'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 120000,
+          "qty": 20
+        }
+      ],
       "status": "В наличии",
       "stockCount": 20,
       "badges": [],
@@ -3405,16 +3515,19 @@ window.CATALOG = {
     {
       "id": "yablonya-polukulturka-ermakovskoe-gornoe-20261006172130315",
       "name": "Яблоня полукультурка 'Ермаковское горное'",
-      "latin": "Malus domestica 'Ermakovskoe gornoe'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 120000,
+          "qty": 7
+        }
+      ],
       "status": "В наличии",
       "stockCount": 7,
       "badges": [],
@@ -3459,16 +3572,20 @@ window.CATALOG = {
     {
       "id": "yablonya-polukulturnaya-komsomolec-buryatii-2026090914474",
       "name": "Яблоня полукультурная 'Комсомолец Бурятии'",
-      "latin": "Malus 'Komsomolets Buryatii'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
       "oldPriceMin": 150000,
       "oldPriceMax": 150000,
       "salePercent": 20,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 120000,
+          "qty": 19,
+          "oldPrice": 150000
+        }
+      ],
       "status": "В наличии",
       "stockCount": 19,
       "badges": [
@@ -3566,16 +3683,20 @@ window.CATALOG = {
     {
       "id": "yablonya-pk-altayskoe-bagryanoe-2026090223225",
       "name": "Яблоня полукультурная 'Алтайское багряное'",
-      "latin": "Malus pumila 'Алтайское багряное'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
       "oldPriceMin": 150000,
       "oldPriceMax": 150000,
       "salePercent": 20,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 120000,
+          "qty": 40,
+          "oldPrice": 150000
+        }
+      ],
       "status": "В наличии",
       "stockCount": 40,
       "badges": [
@@ -3697,16 +3818,20 @@ window.CATALOG = {
     {
       "id": "yablonya-pk-gornoaltayskoe-2026090223225",
       "name": "Яблоня полукультурная 'Горноалтайское'",
-      "latin": "Malus pumila 'Gornoaltayskoye'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
       "oldPriceMin": 150000,
       "oldPriceMax": 150000,
       "salePercent": 20,
-      "variants": [],
-      "volume": 5.0,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 120000,
+          "qty": 18,
+          "oldPrice": 150000
+        }
+      ],
       "status": "В наличии",
       "stockCount": 18,
       "badges": [
@@ -3808,16 +3933,20 @@ window.CATALOG = {
     {
       "id": "yablonya-pk-uralskoe-nalivnoe-2026090223225",
       "name": "Яблоня полукультурная 'Уральское наливное'",
-      "latin": "Malus 'Ural'skoye nalivnoye'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 120000,
       "priceMax": 120000,
       "oldPriceMin": 150000,
       "oldPriceMax": 150000,
       "salePercent": 20,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 120000,
+          "qty": 14,
+          "oldPrice": 150000
+        }
+      ],
       "status": "В наличии",
       "stockCount": 14,
       "badges": [
@@ -3890,16 +4019,19 @@ window.CATALOG = {
     {
       "id": "pion-ito-gibrid-paeonia-itoh-hybrid-julia-rose-oks-2-3-20261008010228835",
       "name": "Пион Ито-гибрид 'Джулия Роуз'",
-      "latin": "Paeonia itoh 'Julia Rose'",
       "category": "Пионы",
       "priceMin": 250000,
       "priceMax": 250000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 250000,
+          "qty": 5
+        }
+      ],
       "status": "В наличии",
       "stockCount": 5,
       "badges": [],
@@ -3967,16 +4099,19 @@ window.CATALOG = {
     {
       "id": "pion-ito-gibrid-paeonia-itoh-hybrid-magical-mystery-ride-oks-2-3-20261008010844930",
       "name": "Пион Ито-гибрид 'Мэджикал Мистери Райд'",
-      "latin": "Paeonia itoh 'Magical Mystery Ride'",
       "category": "Пионы",
       "priceMin": 250000,
       "priceMax": 250000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 250000,
+          "qty": 5
+        }
+      ],
       "status": "В наличии",
       "stockCount": 5,
       "badges": [],
@@ -4061,16 +4196,19 @@ window.CATALOG = {
     {
       "id": "pion-mezhvidovoy-gibrid-paeonia-hybrid-henry-bockstoce-oks-3-5-20261008010229238",
       "name": "Пион межвидовой гибрид 'Генри Бокстос'",
-      "latin": "Paeonia hybrid 'Henry Bockstoce'",
       "category": "Пионы",
       "priceMin": 186800,
       "priceMax": 186800,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 186800,
+          "qty": 15
+        }
+      ],
       "status": "В наличии",
       "stockCount": 15,
       "badges": [],
@@ -4130,7 +4268,6 @@ window.CATALOG = {
     {
       "id": "pion-mezhvidovoy-gibrid-paeonia-hybrid-coral-charm-oks-2-3-20261008010228673",
       "name": "Пион межвидовой гибрид 'Корал Чарм'",
-      "latin": "Paeonia hybrid 'Coral Charm'",
       "category": "Пионы",
       "priceMin": 105000,
       "priceMax": 130000,
@@ -4149,8 +4286,6 @@ window.CATALOG = {
           "qty": 5
         }
       ],
-      "volume": null,
-      "age": "",
       "status": "В наличии",
       "stockCount": 15,
       "badges": [],
@@ -4214,16 +4349,19 @@ window.CATALOG = {
     {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-alexander-fleming-oks-2-3-20261008010227443",
       "name": "Пион молочноцветковый 'Александр Флеминг'",
-      "latin": "Paeonia lactiflora 'Alexandre Fleming'",
       "category": "Пионы",
       "priceMin": 77000,
       "priceMax": 77000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 77000,
+          "qty": 5
+        }
+      ],
       "status": "В наличии",
       "stockCount": 5,
       "badges": [],
@@ -4283,16 +4421,19 @@ window.CATALOG = {
     {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-bowl-of-cream-oks-3-5-20261008010842452",
       "name": "Пион молочноцветковый 'Боул оф Крим'",
-      "latin": "Paeonia lactiflora 'Bowl of Cream'",
       "category": "Пионы",
       "priceMin": 190000,
       "priceMax": 190000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 190000,
+          "qty": 5
+        }
+      ],
       "status": "В наличии",
       "stockCount": 5,
       "badges": [],
@@ -4349,16 +4490,19 @@ window.CATALOG = {
     {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-gardenia-oks-3-5-20261008010842712",
       "name": "Пион молочноцветковый 'Гардения'",
-      "latin": "Paeonia lactiflora 'Gardenia'",
       "category": "Пионы",
       "priceMin": 130000,
       "priceMax": 130000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 130000,
+          "qty": 5
+        }
+      ],
       "status": "В наличии",
       "stockCount": 5,
       "badges": [],
@@ -4439,16 +4583,19 @@ window.CATALOG = {
     {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-do-tell-oks-2-3-20261008010227720",
       "name": "Пион молочноцветковый 'До Телл'",
-      "latin": "Paeonia lactiflora 'Do Tell'",
       "category": "Пионы",
       "priceMin": 166800,
       "priceMax": 166800,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 166800,
+          "qty": 5
+        }
+      ],
       "status": "В наличии",
       "stockCount": 5,
       "badges": [],
@@ -4512,16 +4659,19 @@ window.CATALOG = {
     {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-duchesse-de-nemours-oks-2-3-20261008010229581",
       "name": "Пион молочноцветковый 'Дюшес де Немур'",
-      "latin": "Paeonia lactiflora 'Duchesse de Nemours'",
       "category": "Пионы",
       "priceMin": 75000,
       "priceMax": 75000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 75000,
+          "qty": 5
+        }
+      ],
       "status": "В наличии",
       "stockCount": 5,
       "badges": [],
@@ -4602,16 +4752,19 @@ window.CATALOG = {
     {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-inspecteur-lavergne-oks-2-3-20261008010229037",
       "name": "Пион молочноцветковый 'Инспектор Лаверн'",
-      "latin": "Paeonia lactiflora 'Inspector Laverne'",
       "category": "Пионы",
       "priceMin": 110000,
       "priceMax": 110000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
-      "variants": [],
-      "volume": null,
-      "age": "",
+      "variants": [
+        {
+          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "price": 110000,
+          "qty": 10
+        }
+      ],
       "status": "В наличии",
       "stockCount": 10,
       "badges": [],
