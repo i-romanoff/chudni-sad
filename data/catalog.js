@@ -20,7 +20,8 @@ window.CATALOG = {
     "maxOrderEndpoint": "https://functions.yandexcloud.net/d4e04291pde3n99uqrdo?secret=chudni-2026-secret",
     "maxOrderTemplate": "",
     "maxBotLink": "https://max.ru/se14232685_bot",
-    "erpUrl": ""
+    "erpUrl": "",
+    "placeholderVariant": "ВАРИАНТ - ИЗМЕНИТЬ"
   },
   "products": [
     {
