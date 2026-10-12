@@ -175,10 +175,18 @@ html.theme-dark .btn--call:hover { background: #34383d; }
 .btn--big { padding: 14px 32px; font-size: 18px; min-height: 56px; }
 
 /* ---------- Шапка ---------- */
+/* Liquid glass: полупрозрачный фирменный фисташковый фон (--paper в стекле)
+   + backdrop blur/saturate — контент при скролле мягко тает под шапкой.
+   Тонкий бордер снизу и лёгкая тень — граница стекла. Прозрачному ирису
+   служит белый жетон .brand__logo (бесшовно на зелёном, как в тёмной теме).
+   -webkit-дубль backdrop-filter — iOS Safari/PWA. */
 .header {
   position: sticky; top: 0; z-index: 50;
-  background: #ffffff;   /* Б-логотип: белая шапка — прозрачный ирис сидит бесшовно */
-  border-bottom: 2px solid rgba(30, 50, 38, .18);
+  background: rgba(231, 240, 217, .82);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  backdrop-filter: blur(10px) saturate(1.2);
+  border-bottom: 1px solid rgba(30, 50, 38, .16);
+  box-shadow: 0 4px 20px rgba(19, 33, 26, .10);
 }
 .header__inner {
   display: flex; align-items: center; justify-content: space-between;
@@ -1114,7 +1122,13 @@ html.theme-dark .to-top:hover { background: var(--graffiti-pink); color: #fff; }
 html.theme-dark .skip-link { background: #2c3034; }
 
 /* Хардкоды светлой темы, требующие тёмных значений */
-html.theme-dark .header { background: rgba(30, 33, 36, .97); border-bottom-color: rgba(214, 218, 221, .14); }
+html.theme-dark .header {
+  background: rgba(30, 33, 36, .9);   /* тёмное стекло — та же плотность, что у светлого */
+  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  backdrop-filter: blur(10px) saturate(1.15);
+  border-bottom-color: rgba(214, 218, 221, .14);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .35);
+}
 html.theme-dark .eyebrow { color: #e08a9d; }
 html.theme-dark .card__promo--soon { color: #1e2124; border-color: #8a939a; }
 html.theme-dark .tag__hand { color: #1f2916; }
