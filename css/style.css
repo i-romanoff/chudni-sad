@@ -12,9 +12,15 @@
   --forest-deep: #13211a;   /* почти чёрная хвоя, тёмные секции */
   --moss: #29422f;          /* вторичный текст: тёмный для контраста на фисташковом */
   --lime: #b5c96a;          /* лайм первых соцветий */
+  --stock-green: #1f843c;   /* v57.8 Б-99: сочная зелень бейджа «В наличии» —
+                               насыщеннее старого #2e6b3f, выделяется на фото
+                               с зеленью; контраст с белым текстом 4.8:1 */
   --graffiti-pink: #b23248; /* розовый каймы, затемнён для контраста с белым */
   --paper: #e7f0d9;         /* нежный фисташковый фон страницы */
   --paper-card: #f9faf1;    /* карточки */
+  --glass-card-rgb: 249, 250, 241; /* v57.8 Б-101: плашка карточки в стекле — --paper-card в rgb-каналах */
+  --glass-card-a: .82;             /* v57.8 Б-101: плотность стекла плашки (как у шапки, d230bdb) */
+  --plate-lift: 26px;              /* v57.8 Б-101: заход стеклянной плашки на фото */
   --ink: #141b10;           /* основной текст — максимально тёмный */
   --tag-white: #ffffff;     /* бирка питомника */
 
@@ -699,6 +705,7 @@ html.theme-dark .filter-row__check { border-color: rgba(214, 218, 221, .4); }
   display: flex; flex-direction: column;
   cursor: pointer;
   animation: card-in .4s cubic-bezier(.23, 1, .32, 1) backwards;
+  --plate-lift: 16px;   /* v57.8 Б-101: плашка хитов — компактный заход на фото */
 }
 .featured-card__photo {
   display: block; width: 100%;
@@ -818,7 +825,7 @@ html.hide-totop .to-top { display: none !important; }
   -webkit-user-drag: none;
 }
 .card__dots {
-  position: absolute; bottom: 8px; left: 0; right: 0;
+  position: absolute; bottom: calc(var(--plate-lift, 26px) + 8px); left: 0; right: 0;
   display: flex; justify-content: center; gap: 5px;
   z-index: 1;
 }
@@ -853,13 +860,14 @@ html.hide-totop .to-top { display: none !important; }
 
 /* Бейдж наличия: акцентная зелёная пилюля с точкой-индикатором —
    «живой» товар видно с первого взгляда (розовая --low и тёмная --out
-   остаются контрастными парами) */
+   остаются контрастными парами). Точка «В наличии» мягко пульсирует,
+   у сестринских бейджей пульса нет (Б-99 v57.8) */
 .card__stock {
   position: absolute; top: 12px; right: 12px;
   display: inline-flex; align-items: center; gap: 6px;
   font-size: 13.5px; font-weight: 700; letter-spacing: .02em;
   padding: 6px 12px; border-radius: 999px;
-  background: #2e6b3f; color: #fff;
+  background: var(--stock-green); color: #fff;   /* v57.8 Б-99: токен вместо хардкода #2e6b3f */
   box-shadow: 0 3px 10px rgba(19, 33, 26, .3);
 }
 .card__stock::before {
@@ -868,10 +876,23 @@ html.hide-totop .to-top { display: none !important; }
   background: var(--lime);
   box-shadow: 0 0 0 2px rgba(255, 255, 255, .28);
   flex: none;
+  animation: stock-pulse 2s ease-in-out infinite;   /* v57.8 Б-99: мягкое дыхание ~2с */
+}
+/* Пульс только композитными свойствами (transform+opacity), без JS;
+   при reduced-motion гасится и глобальным правилом в шапке файла,
+   и явным правилом ниже — на случай его правки */
+@keyframes stock-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.4); opacity: .7; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card__stock::before { animation: none; }
 }
 .card__stock--low::before, .card__stock--out::before { display: none; }
 .card__stock--low { background: var(--graffiti-pink); color: #fff; }
 .card__stock--soon { background: #d9822b; color: #fff; }   /* v49.1: «Скоро в наличии» */
+/* v57.8 Б-99: пульс — только у «В наличии»; сёстры его не наследуют */
+.card__stock--low::before, .card__stock--out::before, .card__stock--soon::before { animation: none; }
 .modal__stock-pill {
   display: inline-block; padding: 6px 14px; border-radius: 999px;
   font-size: 15px; font-weight: 700; margin-bottom: 8px;
@@ -880,6 +901,26 @@ html.hide-totop .to-top { display: none !important; }
 .modal__stock-pill.card__stock--soon { background: #d9822b; color: #fff; }
 .card__stock--out { background: rgba(19, 33, 26, .8); color: #fff; }
 
+/* v57.8 Б-101: нижняя плашка карточки — лёгкое liquid glass (рецепт стеклянной
+   шапки d230bdb): полупрозрачный --paper-card (rgba-токен темы) + backdrop
+   blur/saturate с -webkit- дублём; плашка заходит на фото снизу (--plate-lift),
+   поэтому стеклу есть что блюрить, а фото остаётся героем (блюр только под
+   плашкой). 1px световой кант + градиентный highlight сверху. Статика:
+   без анимаций и transition. Материал общий для каталога и хитов сезона. */
+.card__body,
+.featured-card__body {
+  position: relative;
+  margin-top: calc(-1 * var(--plate-lift, 26px));
+  border-radius: var(--radius) var(--radius) 0 0;
+  border: 1px solid rgba(255, 255, 255, .35);
+  border-bottom: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .4), rgba(255, 255, 255, 0) 38%),
+    rgba(var(--glass-card-rgb), var(--glass-card-a));
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  backdrop-filter: blur(10px) saturate(1.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45);
+}
 .card__body {
   padding: 20px 22px 24px;
   display: flex; flex-direction: column; flex: 1;
@@ -1099,10 +1140,15 @@ html { scrollbar-width: thin; scrollbar-color: rgba(30, 50, 38, .45) transparent
 html.theme-dark {
   --paper: #1e2124;
   --paper-card: #26292d;
+  --glass-card-rgb: 38, 41, 45; /* v57.8 Б-101: --paper-card тёмной темы в rgb-каналах */
+  --glass-card-a: .9;           /* v57.8 Б-101: плотность тёмного стекла — как у шапки */
   --ink: #d6dadd;
   --moss: #a2abb1;
   --forest: #cfe0b0;        /* заголовки и контурные акценты — светлая хвоя */
   --forest-deep: #17191c;
+  --stock-green: #1c7a36;   /* v57.8 Б-99: бейдж «В наличии» в тёмной теме —
+                               глубже и спокойнее (неон не в духе темы),
+                               контраст с белым текстом 5.4:1 */
   --tag-white: #f4f5f0;
   --shadow-soft: 0 10px 30px rgba(0, 0, 0, .5);
   color-scheme: dark;
@@ -1143,6 +1189,55 @@ html.theme-dark .social-btn { border-color: rgba(214, 218, 221, .22); }
 html.theme-dark .social-btn:hover { border-color: var(--moss); }
 html.theme-dark .card__photo-wrap img {
   background: linear-gradient(110deg, #26292d 30%, #2c3034 50%, #26292d 70%);
+}
+/* v57.8 Б-101: стеклянная плашка карточки в тёмной теме — плотность шапки (.9),
+   saturate мягче (как в d230bdb), кант и highlight — светлая волосяная линия */
+html.theme-dark .card__body,
+html.theme-dark .featured-card__body {
+  border-color: rgba(214, 218, 221, .16);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, 0) 38%),
+    rgba(var(--glass-card-rgb), var(--glass-card-a));
+  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  backdrop-filter: blur(10px) saturate(1.15);
+  box-shadow: inset 0 1px 0 rgba(214, 218, 221, .2);
+}
+/* v57.8 Б-101 ИТЕРАЦИЯ-2: оба фолбэка стекла стоят НИЖЕ тёмного glass-правила.
+   Оно (специфичность 0,2,1) побеждало их в тёмной теме: @supports-селектор
+   .card__body (0,1,0) проигрывал по специфичности при любом порядке, тёмная
+   строка reduced-transparency (та же 0,2,1) — по порядку следования. Итог
+   был: тёмная тема + браузер без backdrop-filter = rgba-стекло без блюра,
+   тёмная тема + reduce = стекло вопреки настройке. В @supports добавлены
+   тёмные селекторы (0,2,1) — при равной специфичности решает порядок. */
+/* Фолбэк: браузер без backdrop-filter — плотная --paper-card вместо стекла
+   (токен, обе темы), геометрия плашки не меняется; кант — волосяная линия темы */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .card__body, .featured-card__body {
+    background: var(--paper-card);
+    border-color: rgba(19, 33, 26, .08);
+    box-shadow: none;
+  }
+  html.theme-dark .card__body,
+  html.theme-dark .featured-card__body {
+    background: var(--paper-card);
+    border-color: rgba(214, 218, 221, .16);
+    box-shadow: none;
+  }
+}
+/* Фолбэк: пользователь просил меньше прозрачности — стекло становится плотным;
+   кант и inset-highlight перекрашиваются как в @supports (P3 ревьюера) */
+@media (prefers-reduced-transparency: reduce) {
+  .card__body, .featured-card__body {
+    background: var(--paper-card);
+    border-color: rgba(19, 33, 26, .08);
+    box-shadow: none;
+  }
+  html.theme-dark .card__body,
+  html.theme-dark .featured-card__body {
+    background: var(--paper-card);
+    border-color: rgba(214, 218, 221, .16);
+    box-shadow: none;
+  }
 }
 html.theme-dark { scrollbar-color: rgba(214, 218, 221, .35) transparent; }
 html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221, .35); }
@@ -1752,14 +1847,14 @@ html.theme-dark .agree-row a { color: #e08a9d; }
   .catalog__bar .tabs { display: none; }
   .catalog__bar { justify-content: flex-end; gap: 10px; }
   .filter-btn { display: flex; }
-  .cards--compact { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .cards--compact { grid-template-columns: repeat(2, 1fr); gap: 10px; --plate-lift: 18px; }
   .cards--compact .card { border-radius: 12px; }
   .cards--compact .card__photo-wrap { aspect-ratio: 3 / 4; }
   .cards--compact .card__badges { top: 8px; left: 8px; gap: 4px; }
   .cards--compact .card__promo { font-size: 11.5px; padding: 4px 9px; }
   .cards--compact .card__stock { font-size: 12px; padding: 4px 9px; top: 8px; right: 8px; }
   .cards--compact .card__dot { width: 5px; height: 5px; }
-  .cards--compact .card__dots { bottom: 6px; gap: 4px; }
+  .cards--compact .card__dots { bottom: calc(var(--plate-lift, 26px) + 6px); gap: 4px; }
   .cards--compact .card__body { padding: 10px 12px 12px; }
   .cards--compact .card__name {
     font-size: 15.5px;
@@ -2183,3 +2278,52 @@ html.theme-dark .modal__cta-row { border-top-color: rgba(214, 218, 221, .16); }
   }
   .cards:not(.cards--compact) .card__add svg { width: 26px; height: 26px; }
 }
+
+/* ============================================================
+   Б-97/Б-98 — сортировка каталога («По названию / Дешевле /
+   Дороже») и «Показать ещё» в конце сетки. Стиль чипов —
+   семейство вкладок (.tab), тёмная тема — те же оверрайды.
+   ============================================================ */
+.sort-row {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.sort-chip {
+  flex: none;
+  min-height: 44px;              /* тач-цель ≥44px */
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 2px solid var(--forest);
+  background: transparent;
+  color: var(--forest);
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.sort-chip:hover { background: rgba(30, 50, 38, .08); }
+.sort-chip:active { transform: scale(.97); }   /* отклик сразу на нажатии */
+.sort-chip.is-active { background: var(--forest); color: #fff; }
+html.theme-dark .sort-chip:hover { background: rgba(214, 218, 221, .08); }
+html.theme-dark .sort-chip.is-active { background: var(--lime); border-color: var(--lime); color: #1c2a18; }
+
+.cards-more {
+  grid-column: 1 / -1;
+  justify-self: center;
+  min-height: 46px;
+  margin-top: 4px;
+  padding: 10px 28px;
+  border-radius: 999px;
+  border: 2px solid var(--forest);
+  background: transparent;
+  color: var(--forest);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.cards-more:hover { background: rgba(30, 50, 38, .08); }
+.cards-more:active { transform: scale(.97); }
+html.theme-dark .cards-more:hover { background: rgba(214, 218, 221, .08); }

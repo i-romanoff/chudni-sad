@@ -316,6 +316,7 @@
   favOnlyBtn.addEventListener("click", function () {
     favOnly = !favOnly;
     favOnlyBtn.classList.toggle("is-on", favOnly);
+    shownPages = 1;   /* Б-98: смена фильтра — с первой порции */
     renderCards();
   });
 
@@ -324,6 +325,7 @@
   var tabsRoot = document.getElementById("tabs");
 
   function applyCategoryFilter() {
+    shownPages = 1;     /* Б-98: смена категории — с первой порции */
     renderTabs();
     renderCards();
     renderFilterPanel();
@@ -402,6 +404,7 @@
     catSearch.addEventListener("input", function () {
       clearTimeout(catTimer);
       catTimer = setTimeout(function () {
+        shownPages = 1;        /* Б-98: новый поиск — с первой порции */
         renderCards();
         if (!document.querySelectorAll("#cards .card").length && activeCats.length) {
           activeCats = [];           /* в выбранной категории не нашлось — показать все */
@@ -409,6 +412,44 @@
         }
       }, 180);
     });
+  }
+
+  /* ================= Б-97/Б-98: сортировка и порции каталога =================
+     Чипы рядом с поиском: по названию (дефолт) / дешевле / дороже.
+     Цена сравнения — минимум по вариантам: цены в catalog.js и catalog-live
+     УЖЕ с учётом скидки (sale_percent печётся при экспорте), поэтому eff =
+     v.price; у товара без вариантов — priceMin; нет цены вовсе — в конец.
+     «Показать ещё»: рендер порциями по 12; любая смена поиска/фильтров/
+     сортировки сбрасывает показ на первую порцию. */
+  var PAGE_SIZE = 12;
+  var shownPages = 1;
+  var sortMode = "name";     /* name | asc | desc */
+  var sortRow = document.getElementById("sort-row");
+  if (sortRow) {
+    sortRow.addEventListener("click", function (e) {
+      var chip = e.target.closest("button[data-sort]");
+      if (!chip || chip.getAttribute("data-sort") === sortMode) return;
+      sortMode = chip.getAttribute("data-sort");
+      sortRow.querySelectorAll("button[data-sort]").forEach(function (b) {
+        var on = b.getAttribute("data-sort") === sortMode;
+        b.classList.toggle("is-active", on);
+        b.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      shownPages = 1;
+      renderCards();
+    });
+  }
+
+  function effMinPrice(p) {
+    var best = null;
+    if (p.variants && p.variants.length) {
+      p.variants.forEach(function (v) {
+        if (v && typeof v.price === "number" && isFinite(v.price) &&
+            (best === null || v.price < best)) best = v.price;
+      });
+    }
+    if (best === null && typeof p.priceMin === "number" && isFinite(p.priceMin)) best = p.priceMin;
+    return best;
   }
 
   /* ================= Фильтр по категориям: стеклянная шторка (телефон) ================= */
@@ -442,6 +483,7 @@
           var i = activeCats.indexOf(r.name);
           if (i === -1) activeCats.push(r.name); else activeCats.splice(i, 1);
         }
+        shownPages = 1;   /* Б-98: смена фильтра — с первой порции */
         renderCards();
         renderTabs();
         renderFilterPanel();
@@ -512,6 +554,7 @@
         var on = activeFacets.height && activeFacets.height[0] === r.min && activeFacets.height[1] === r.max;
         activeFacets.height = on ? null : [r.min, r.max];
         renderFacets();
+        shownPages = 1;   /* Б-98: смена фасета — с первой порции */
         renderCards();
       };
     });
@@ -525,6 +568,7 @@
         var at = activeFacets.bloom.indexOf(m);
         if (at === -1) activeFacets.bloom.push(m); else activeFacets.bloom.splice(at, 1);
         renderFacets();
+        shownPages = 1;   /* Б-98: смена фасета — с первой порции */
         renderCards();
       };
     });
@@ -537,6 +581,7 @@
         var l = chip.getAttribute("data-l");
         activeFacets.light = activeFacets.light === l ? "" : l;
         renderFacets();
+        shownPages = 1;   /* Б-98: смена фасета — с первой порции */
         renderCards();
       };
     });
@@ -551,6 +596,7 @@
           var z = +chip.getAttribute("data-z");
           activeFacets.zone = activeFacets.zone === z ? null : z;
           renderFacets();
+          shownPages = 1;   /* Б-98: смена фасета — с первой порции */
           renderCards();
         };
       });
@@ -580,6 +626,7 @@
     resetBtn.addEventListener("click", function () {
       activeCats = [];
       activeFacets = { height: null, bloom: [], light: "", zone: null };
+      shownPages = 1;   /* Б-98: сброс фильтров — с первой порции */
       renderCards();
       renderTabs();
       renderFilterPanel();
@@ -641,7 +688,24 @@
       return;
     }
 
-    visible.forEach(function (product, index) {
+    /* Б-97: сортировка отфильтрованного списка; «По названию» — дефолт */
+    if (sortMode === "name") {
+      visible.sort(function (a, b) {
+        return (a.name || "").localeCompare(b.name || "", "ru");
+      });
+    } else {
+      visible.sort(function (a, b) {
+        var pa = effMinPrice(a), pb = effMinPrice(b);
+        if (pa === null && pb === null) return 0;
+        if (pa === null) return 1;          /* без цены — в конце при обеих ценовых сортировках */
+        if (pb === null) return -1;
+        return sortMode === "asc" ? pa - pb : pb - pa;
+      });
+    }
+
+    /* Б-98: рисуем первые shownPages порций, хвост — по кнопке «Показать ещё» */
+    var shown = PAGE_SIZE * shownPages;
+    visible.slice(0, shown).forEach(function (product, index) {
       var stock = stockInfo(product);
       var main = (product.photos && product.photos[0]) || null;   // v54.1: товар без фото не роняет каталог
 
@@ -901,6 +965,23 @@
 
       cardsRoot.appendChild(card);
     });
+
+    /* Б-98: кнопка только когда отфильтрованных больше показанной порции */
+    if (visible.length > shown) {
+      var more = document.createElement("button");
+      more.type = "button";
+      more.className = "cards-more";
+      more.textContent = "Показать ещё";
+      more.addEventListener("click", function () {
+        shownPages += 1;
+        renderCards();
+        /* фокус возвращаем на кнопку: после полного re-render она новая,
+           иначе клавиатурный/скринридер-фокус молча улетает в body */
+        var nb = document.querySelector(".cards-more");
+        if (nb) nb.focus();
+      });
+      cardsRoot.appendChild(more);
+    }
     staggerDone.cards = true;
   }
 
@@ -2879,22 +2960,32 @@
     function openFromDeepLink(sp) {
       if (!sp || sp.indexOf("ЧС-") === 0) return;
       setTimeout(function () {
-        var btn = document.querySelector('#cards .card__add[data-uid="' + sp + '#0"]');
-        if (!btn) {
-          var norm = function (s) {
-            return (s || "").toLowerCase().replace(/ё/g, "е").replace(/й/g, "и");
-          };
-          /* хвостовой штамп uid (-ГГГГММДДЧЧММСС…) уникален и не зависит от
-             транслитерации имени — надёжнее всего переживает переименования */
-          var ts = (sp.match(/-(\d{9,})$/) || [])[1] || "";
-          var target = norm(sp);
-          var all = document.querySelectorAll('#cards .card__add[data-uid]');
-          for (var i = 0; i < all.length && !btn; i++) {
-            var au = norm(all[i].getAttribute("data-uid"));
-            if (au.indexOf(target) !== -1 || (ts && au.indexOf("-" + ts) !== -1)) btn = all[i];
-          }
+        /* итерация-2 Б-98: поиск по МАССИВУ products, а не по DOM — с порциями
+           «Показать ещё» карточка может быть не отрисована (раньше диплинк на
+           товар вне первых 12 молча умирал). Поведение — как в openFromHash:
+           openModal без прокрутки каталога; и для простого товара открывается
+           карточка, а не «положить в корзину» (клик по card__add так работал). */
+        var norm = function (s) {
+          return (s || "").toLowerCase().replace(/ё/g, "е").replace(/й/g, "и");
+        };
+        /* хвостовой штамп uid (-ГГГГММДДЧЧММСС…) уникален и не зависит от
+           транслитерации имени — надёжнее всего переживает переименования */
+        var ts = (sp.match(/-(\d{9,})$/) || [])[1] || "";
+        var target = norm(sp);
+        var found = null;
+        products.forEach(function (x) {
+          var id = norm(x.id), uid = norm(x.uid || "");
+          if (id === target || uid === target) found = x;   /* точное совпадение — приоритет */
+        });
+        if (!found) {
+          products.forEach(function (x) {
+            if (found) return;
+            var id = norm(x.id), uid = norm(x.uid || "");
+            if (id.indexOf(target) !== -1 || uid.indexOf(target) !== -1 ||
+                (ts && (id.indexOf("-" + ts) !== -1 || uid.indexOf("-" + ts) !== -1))) found = x;
+          });
         }
-        if (btn) btn.click();
+        if (found) openModal(found);
       }, 800);
     }
     try {

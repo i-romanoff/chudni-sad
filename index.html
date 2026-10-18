@@ -32,7 +32,7 @@
   <meta name="twitter:card" content="summary">
   <!-- Б-33: шрифты self-host (fonts/fonts.css, кириллица включена) -->
   <link rel="stylesheet" href="fonts/fonts.css">
-  <link rel="stylesheet" href="css/style.css?v=20261012">
+  <link rel="stylesheet" href="css/style.css?v=20261017">
   <!-- MAX Bridge: внутри мини-приложения MAX отдаёт профиль клиента
        (WebApp.initDataUnsafe.user) — автозаполнение имени и автосвязь
        заказа с чатом. Вне MAX скрипт просто не создаёт контекст. -->
@@ -140,6 +140,12 @@
         </div>
         <div class="cat-search-wrap">
           <input id="cat-search" class="cat-search" type="search" placeholder="Поиск по каталогу: сорт, вид…" autocomplete="off" aria-label="Поиск по каталогу">
+        </div>
+        <!-- Б-97: сортировка каталога (дефолт — по названию) -->
+        <div class="sort-row" id="sort-row" role="group" aria-label="Сортировка каталога">
+          <button type="button" class="sort-chip is-active" data-sort="name" aria-pressed="true">По названию</button>
+          <button type="button" class="sort-chip" data-sort="asc" aria-pressed="false">Дешевле</button>
+          <button type="button" class="sort-chip" data-sort="desc" aria-pressed="false">Дороже</button>
         </div>
         <div class="catalog__bar">
           <div class="tabs" id="tabs" role="tablist" aria-label="Категории растений"><!-- вкладки собираются в app.js --></div>
@@ -398,7 +404,7 @@
   <!-- каталог — с уникальным URL при каждом открытии: CDN Fastly (Pages)
        кэширует «через раз» старые версии, Date.now() гарантирует cache miss -->
   <script>document.write('<script src="data/catalog.js?v=' + Date.now() + '"><\/script>');</script>
-  <script src="js/app.js?v=20261012"></script>
+  <script src="js/app.js?v=20261017"></script>
 <script>
 (function () {
   var fab = document.getElementById("action-fab");

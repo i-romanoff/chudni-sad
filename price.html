@@ -2,13 +2,15 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <script src="js/texts-loader.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Прайс-лист — Питомник «Чудный сад»</title>
-  <meta name="description" content="Прайс-лист питомника «Чудный сад»: саженцы яблонь, груш, вишни, сливы, облепихи, гидроргезий и хвойных. Актуальные цены с варианта.">
+  <meta name="description" content="Прайс-лист питомника «Чудный сад»: саженцы яблонь, груш, вишни, сливы, облепихи, гортензий и хвойных растений. Актуальные цены по вариантам и размерам.">
+  <link rel="canonical" href="https://chudni-sad.ru/price.html">
+  <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Prata&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <!-- Б-33: шрифты self-host (fonts/fonts.css, кириллица включена) -->
+  <link rel="stylesheet" href="fonts/fonts.css">
   <link rel="stylesheet" href="css/style.css">
   <script>
     /* Тема до первой отрисовки — как на главной */
@@ -26,6 +28,14 @@
     h1 { font-family: var(--font-display); font-size: clamp(26px, 4vw, 38px);
       color: var(--forest); margin-bottom: 6px; }
     .sub { color: var(--moss); font-size: 15px; margin-bottom: 18px; }
+    /* Б-100 (ре-гейт ui-judge): пара кнопок одной типографикой —
+       button и a в одном классе, иначе разногабарит (UA-дефолт vs body) */
+    .price-btn {
+      display: inline-block; padding: 9px 18px; border-radius: 10px;
+      border: 2px solid var(--forest); background: transparent;
+      color: var(--forest); font: inherit; font-weight: 700;
+      line-height: 1.2; cursor: pointer; text-decoration: none;
+    }
     table { border-collapse: collapse; width: 100%; }
     th, td { border: 1px solid rgba(122, 143, 90, .4); padding: 7px 11px;
       font-size: 14.5px; text-align: left; }
@@ -41,9 +51,9 @@
   </style>
   <meta property="og:type" content="website">
   <meta property="og:title" content="Прайс-лист — Питомник «Чудный сад»">
-  <meta property="og:description" content="Прайс-лист питомника «Чудный сад»: саженцы яблонь, груш, вишни, сливы, облепихи, гидроргезий и хвойных. Актуальные цены с варианта.">
+  <meta property="og:description" content="Прайс-лист питомника «Чудный сад»: саженцы яблонь, груш, вишни, сливы, облепихи, гортензий и хвойных растений. Актуальные цены по вариантам и размерам.">
   <meta property="og:url" content="https://chudni-sad.ru/price.html">
-  <meta property="og:image" content="https://chudni-sad.ru/assets/img/logo.png">
+  <meta property="og:image" content="https://chudni-sad.ru/assets/img/og-banner.png">
   <meta property="og:site_name" content="Чудный сад">
   <meta property="og:locale" content="ru_RU">
 </head>
@@ -66,7 +76,9 @@
     </table>
 
     <div class="noprint" style="margin-top:18px">
-      <button onclick="window.print()" style="padding:9px 18px;border-radius:10px;border:2px solid var(--forest);background:transparent;color:var(--forest);font-weight:700;cursor:pointer">🖨 Печать / PDF</button>
+      <button class="price-btn" onclick="window.print()">🖨 Печать / PDF</button>
+      <!-- Б-100: CSV-выгрузка прайса; до первой публикации файла кнопка скрыта (HEAD-гвард ниже) -->
+      <a id="csv-link" class="price-btn" href="data/price.csv" download="chudni-sad-price.csv" hidden>⬇ Скачать CSV</a>
     </div>
   </div>
 
@@ -121,6 +133,12 @@
       }
     });
     document.getElementById("rows").innerHTML = html;
+
+    /* Б-100: кнопка «Скачать CSV» — только если price.csv уже опубликован
+       (HEAD 404 → кнопка скрыта, покупателя не ведём в пустоту) */
+    fetch("data/price.csv", { method: "HEAD" })
+      .then(function (r) { if (r.ok) document.getElementById("csv-link").hidden = false; })
+      .catch(function () { /* файла нет — кнопка остаётся скрытой */ });
   </script>
 </body>
 </html>
