@@ -20,7 +20,6 @@
   --paper-card: #f9faf1;    /* карточки */
   --glass-card-rgb: 249, 250, 241; /* v57.8 Б-101: плашка карточки в стекле — --paper-card в rgb-каналах */
   --glass-card-a: .82;             /* v57.8 Б-101: плотность стекла плашки (как у шапки, d230bdb) */
-  --plate-lift: 26px;              /* v57.8 Б-101: заход стеклянной плашки на фото */
   --ink: #141b10;           /* основной текст — максимально тёмный */
   --tag-white: #ffffff;     /* бирка питомника */
 
@@ -699,13 +698,12 @@ html.theme-dark .filter-row__check { border-color: rgba(214, 218, 221, .4); }
   width: 208px;
   scroll-snap-align: start;
   background: var(--paper-card);
-  border-radius: var(--radius);
+  border-radius: 10px;   /* v57.8 Б-101б: единый радиус карточки = радиусам фото/плашки */
   box-shadow: 0 4px 16px rgba(19, 33, 26, .1);
   overflow: hidden;
   display: flex; flex-direction: column;
   cursor: pointer;
   animation: card-in .4s cubic-bezier(.23, 1, .32, 1) backwards;
-  --plate-lift: 16px;   /* v57.8 Б-101: плашка хитов — компактный заход на фото */
 }
 .featured-card__photo {
   display: block; width: 100%;
@@ -717,6 +715,7 @@ html.theme-dark .filter-row__check { border-color: rgba(214, 218, 221, .4); }
   aspect-ratio: 1 / 1;
   object-fit: cover;
   display: block;
+  border-radius: 10px 10px 0 0;   /* v57.8 Б-101б: радиус только сверху, стык с плашкой чистый */
 }
 .featured-card__body { padding: 10px 12px 12px; display: flex; flex-direction: column; flex: 1; }
 .featured-card__name {
@@ -783,7 +782,7 @@ html.hide-totop .to-top { display: none !important; }
 .card {
   position: relative;
   background: var(--paper-card);
-  border-radius: var(--radius);
+  border-radius: 10px;   /* v57.8 Б-101б: единый радиус карточки = радиусам фото/плашки */
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(19, 33, 26, .1);
   transition: transform .22s ease, box-shadow .22s ease;
@@ -806,6 +805,7 @@ html.hide-totop .to-top { display: none !important; }
   position: relative;
   overflow: hidden;
   aspect-ratio: 4 / 3.4;
+  border-radius: 10px 10px 0 0;   /* v57.8 Б-101б: радиус только сверху, стык с плашкой чистый */
 }
 .card__slider {
   position: absolute; inset: 0;
@@ -825,7 +825,8 @@ html.hide-totop .to-top { display: none !important; }
   -webkit-user-drag: none;
 }
 .card__dots {
-  position: absolute; bottom: calc(var(--plate-lift, 26px) + 8px); left: 0; right: 0;
+  /* v57.8 Б-101б: точки живут на фото (стекло больше не заходит наверх) */
+  position: absolute; bottom: 8px; left: 0; right: 0;
   display: flex; justify-content: center; gap: 5px;
   z-index: 1;
 }
@@ -901,25 +902,21 @@ html.hide-totop .to-top { display: none !important; }
 .modal__stock-pill.card__stock--soon { background: #d9822b; color: #fff; }
 .card__stock--out { background: rgba(19, 33, 26, .8); color: #fff; }
 
-/* v57.8 Б-101: нижняя плашка карточки — лёгкое liquid glass (рецепт стеклянной
-   шапки d230bdb): полупрозрачный --paper-card (rgba-токен темы) + backdrop
-   blur/saturate с -webkit- дублём; плашка заходит на фото снизу (--plate-lift),
-   поэтому стеклу есть что блюрить, а фото остаётся героем (блюр только под
-   плашкой). 1px световой кант + градиентный highlight сверху. Статика:
-   без анимаций и transition. Материал общий для каталога и хитов сезона. */
+/* v57.8 Б-101б (возврат хозяйки 18.10): плашка и фото = ОДИН элемент.
+   Геометрия: плашка в потоке под фото (заход --plate-lift убран, стык
+   плотный), карточка — один скруглённый контейнер: фото несёт радиус
+   только сверху (10 10 0 0), плашка только снизу (0 0 10 10); на стыке
+   ни линий, ни радиусов, ни подсветок. Световой кант/inset-highlight/
+   градиентный wash верхней кромки убраны — именно они рисовали «верх»
+   отдельного наехавшего элемента (🩸-урок возвратки). Материал стекла
+   сохранён: rgba-токен темы + backdrop blur/saturate с -webkit- дублём
+   (рецепт стеклянной шапки d230bdb). Статика: без анимаций и transition. */
 .card__body,
 .featured-card__body {
-  position: relative;
-  margin-top: calc(-1 * var(--plate-lift, 26px));
-  border-radius: var(--radius) var(--radius) 0 0;
-  border: 1px solid rgba(255, 255, 255, .35);
-  border-bottom: 0;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, .4), rgba(255, 255, 255, 0) 38%),
-    rgba(var(--glass-card-rgb), var(--glass-card-a));
+  border-radius: 0 0 10px 10px;
+  background: rgba(var(--glass-card-rgb), var(--glass-card-a));
   -webkit-backdrop-filter: blur(10px) saturate(1.2);
   backdrop-filter: blur(10px) saturate(1.2);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45);
 }
 .card__body {
   padding: 20px 22px 24px;
@@ -1190,17 +1187,13 @@ html.theme-dark .social-btn:hover { border-color: var(--moss); }
 html.theme-dark .card__photo-wrap img {
   background: linear-gradient(110deg, #26292d 30%, #2c3034 50%, #26292d 70%);
 }
-/* v57.8 Б-101: стеклянная плашка карточки в тёмной теме — плотность шапки (.9),
-   saturate мягче (как в d230bdb), кант и highlight — светлая волосяная линия */
+/* v57.8 Б-101б: стеклянная плашка в тёмной теме — плотность шапки (.9),
+   saturate мягче (как в d230bdb); верхней кромки/канта нет — стык чистый */
 html.theme-dark .card__body,
 html.theme-dark .featured-card__body {
-  border-color: rgba(214, 218, 221, .16);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, 0) 38%),
-    rgba(var(--glass-card-rgb), var(--glass-card-a));
+  background: rgba(var(--glass-card-rgb), var(--glass-card-a));
   -webkit-backdrop-filter: blur(10px) saturate(1.15);
   backdrop-filter: blur(10px) saturate(1.15);
-  box-shadow: inset 0 1px 0 rgba(214, 218, 221, .2);
 }
 /* v57.8 Б-101 ИТЕРАЦИЯ-2: оба фолбэка стекла стоят НИЖЕ тёмного glass-правила.
    Оно (специфичность 0,2,1) побеждало их в тёмной теме: @supports-селектор
@@ -1208,36 +1201,21 @@ html.theme-dark .featured-card__body {
    строка reduced-transparency (та же 0,2,1) — по порядку следования. Итог
    был: тёмная тема + браузер без backdrop-filter = rgba-стекло без блюра,
    тёмная тема + reduce = стекло вопреки настройке. В @supports добавлены
-   тёмные селекторы (0,2,1) — при равной специфичности решает порядок. */
+   тёмные селекторы (0,2,1) — при равной специфичности решает порядок.
+   Б-101б: канта/теней у плашки больше нет нигде — фолбэкам остаётся
+   только перекрасить фон в плотный --paper-card. */
 /* Фолбэк: браузер без backdrop-filter — плотная --paper-card вместо стекла
-   (токен, обе темы), геометрия плашки не меняется; кант — волосяная линия темы */
+   (токен, обе темы); геометрия плашки и чистый стык не меняются */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .card__body, .featured-card__body {
-    background: var(--paper-card);
-    border-color: rgba(19, 33, 26, .08);
-    box-shadow: none;
-  }
+  .card__body, .featured-card__body { background: var(--paper-card); }
   html.theme-dark .card__body,
-  html.theme-dark .featured-card__body {
-    background: var(--paper-card);
-    border-color: rgba(214, 218, 221, .16);
-    box-shadow: none;
-  }
+  html.theme-dark .featured-card__body { background: var(--paper-card); }
 }
-/* Фолбэк: пользователь просил меньше прозрачности — стекло становится плотным;
-   кант и inset-highlight перекрашиваются как в @supports (P3 ревьюера) */
+/* Фолбэк: пользователь просил меньше прозрачности — стекло становится плотным */
 @media (prefers-reduced-transparency: reduce) {
-  .card__body, .featured-card__body {
-    background: var(--paper-card);
-    border-color: rgba(19, 33, 26, .08);
-    box-shadow: none;
-  }
+  .card__body, .featured-card__body { background: var(--paper-card); }
   html.theme-dark .card__body,
-  html.theme-dark .featured-card__body {
-    background: var(--paper-card);
-    border-color: rgba(214, 218, 221, .16);
-    box-shadow: none;
-  }
+  html.theme-dark .featured-card__body { background: var(--paper-card); }
 }
 html.theme-dark { scrollbar-color: rgba(214, 218, 221, .35) transparent; }
 html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221, .35); }
@@ -1847,14 +1825,14 @@ html.theme-dark .agree-row a { color: #e08a9d; }
   .catalog__bar .tabs { display: none; }
   .catalog__bar { justify-content: flex-end; gap: 10px; }
   .filter-btn { display: flex; }
-  .cards--compact { grid-template-columns: repeat(2, 1fr); gap: 10px; --plate-lift: 18px; }
-  .cards--compact .card { border-radius: 12px; }
+  .cards--compact { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .cards--compact .card { border-radius: 10px; }   /* v57.8 Б-101б: единый радиус */
   .cards--compact .card__photo-wrap { aspect-ratio: 3 / 4; }
   .cards--compact .card__badges { top: 8px; left: 8px; gap: 4px; }
   .cards--compact .card__promo { font-size: 11.5px; padding: 4px 9px; }
   .cards--compact .card__stock { font-size: 12px; padding: 4px 9px; top: 8px; right: 8px; }
   .cards--compact .card__dot { width: 5px; height: 5px; }
-  .cards--compact .card__dots { bottom: calc(var(--plate-lift, 26px) + 6px); gap: 4px; }
+  .cards--compact .card__dots { bottom: 6px; gap: 4px; }   /* v57.8 Б-101б: точки на фото */
   .cards--compact .card__body { padding: 10px 12px 12px; }
   .cards--compact .card__name {
     font-size: 15.5px;
