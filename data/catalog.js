@@ -136,7 +136,7 @@ window.CATALOG = {
       "salePercent": 0,
       "variants": [
         {
-          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "label": "1 л",
           "price": 42000,
           "qty": 12
         }
@@ -244,7 +244,7 @@ window.CATALOG = {
       "salePercent": 0,
       "variants": [
         {
-          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "label": "1 л",
           "price": 55000,
           "qty": 7
         }
@@ -337,15 +337,15 @@ window.CATALOG = {
       "id": "badan-galina-serova-20261007235536545",
       "name": "Бадан 'Галина Серова'",
       "category": "Многолетники",
-      "priceMin": 49000,
-      "priceMax": 49000,
+      "priceMin": 50000,
+      "priceMax": 50000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
-          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
-          "price": 49000,
+          "label": "2 л",
+          "price": 50000,
           "qty": 18
         }
       ],
@@ -434,20 +434,25 @@ window.CATALOG = {
       "id": "buzulnik-20261008000225555",
       "name": "Бузульник",
       "category": "Многолетники",
-      "priceMin": 35000,
-      "priceMax": 35000,
+      "priceMin": 30000,
+      "priceMax": 40000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
-          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
-          "price": 35000,
+          "label": "0.5 л",
+          "price": 30000,
           "qty": 5
+        },
+        {
+          "label": "2 л",
+          "price": 40000,
+          "qty": 1
         }
       ],
       "status": "В наличии",
-      "stockCount": 5,
+      "stockCount": 6,
       "badges": [],
       "short": "Многолетнее растение до 200 см высотой, цветет в августе 35-40 дней.",
       "description": "Бузульник\n Многолетнее растение до 200 см высотой. Прикорневые листья сердцевидные до 40 см длиной, острозубчатые. Многочисленные цветочные корзинки желтые, собраны в колосовидное соцветие. Цветет в августе 35-40 дней.\nТеневыносливое и влаголюбивое растение, в саду лучше развивается в полутени, хотя при обильных и регулярных поливах неплохо чувствуют себя на солнце.\nЗимостоек, укрытия не требует.",
@@ -516,7 +521,7 @@ window.CATALOG = {
       "salePercent": 0,
       "variants": [
         {
-          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "label": "2 л",
           "price": 55000,
           "qty": 3
         }
@@ -627,7 +632,7 @@ window.CATALOG = {
     },
     {
       "id": "veronika-rotfuks-20261007233853922",
-      "name": "Вероника 'Ротфукс'",
+      "name": "Вероника 'Ред Фокс'",
       "category": "Многолетники",
       "priceMin": 55000,
       "priceMax": 55000,
@@ -636,7 +641,7 @@ window.CATALOG = {
       "salePercent": 0,
       "variants": [
         {
-          "label": "ВАРИАНТ - ИЗМЕНИТЬ",
+          "label": "2 л",
           "price": 55000,
           "qty": 5
         }
@@ -750,7 +755,7 @@ window.CATALOG = {
     },
     {
       "id": "veronika-mnogoletnyaya-20261007234617755",
-      "name": "Вероника колосистая",
+      "name": "Вероника колосистая сиреневая",
       "category": "Многолетники",
       "priceMin": 40000,
       "priceMax": 45000,
