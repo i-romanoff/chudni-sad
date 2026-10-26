@@ -20,6 +20,7 @@ var CORE = [
   "./about.html",
   "./guarantees.html",
   "./articles.html",
+  "./news.html",   /* Б-4: страница новостей — прекэш + network-first (wantsFresh) */
   "./offer.html",
   "./privacy.html"
 ];
@@ -56,7 +57,8 @@ self.addEventListener("fetch", function (e) {
   var wantsFresh = CORE.some(function (p) {
     return url.pathname.endsWith(p.replace("./", "/"));
   }) || url.pathname === "/chudni-sad/" || url.pathname === "/chudni-sad/index.html" ||
-     url.pathname === "/chudni-sad/data/catalog.js";
+     url.pathname === "/chudni-sad/data/catalog.js" ||
+     url.pathname.endsWith("/data/news.json");   /* Б-4: новости — всегда из сети */
 
   if (wantsFresh) {
     /* network-first: страница и каталог почти всегда из сети, кэш — как страховка.
