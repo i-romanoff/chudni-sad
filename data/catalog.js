@@ -1218,7 +1218,7 @@ window.CATALOG = {
         {
           "label": "4-8 л",
           "price": 140000,
-          "qty": 19,
+          "qty": 11,
           "oldPrice": 175000
         }
       ],
