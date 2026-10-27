@@ -246,7 +246,7 @@ window.CATALOG = {
         {
           "label": "1 л",
           "price": 55000,
-          "qty": 7
+          "qty": 3
         }
       ],
       "status": "В наличии",
@@ -346,7 +346,7 @@ window.CATALOG = {
         {
           "label": "2 л",
           "price": 50000,
-          "qty": 18
+          "qty": 14
         }
       ],
       "status": "В наличии",
@@ -443,7 +443,7 @@ window.CATALOG = {
         {
           "label": "0.5 л",
           "price": 30000,
-          "qty": 5
+          "qty": 2
         },
         {
           "label": "2 л",
@@ -523,7 +523,7 @@ window.CATALOG = {
         {
           "label": "2 л",
           "price": 55000,
-          "qty": 3
+          "qty": 1
         }
       ],
       "status": "В наличии",
@@ -643,7 +643,7 @@ window.CATALOG = {
         {
           "label": "2 л",
           "price": 55000,
-          "qty": 5
+          "qty": 2
         }
       ],
       "status": "В наличии",
@@ -848,7 +848,7 @@ window.CATALOG = {
         {
           "label": "2-3 л",
           "price": 80000,
-          "qty": 19,
+          "qty": 12,
           "oldPrice": 100000
         }
       ],
@@ -903,7 +903,7 @@ window.CATALOG = {
         {
           "label": "1 л",
           "price": 68000,
-          "qty": 20
+          "qty": 9
         }
       ],
       "status": "В наличии",
@@ -1000,7 +1000,7 @@ window.CATALOG = {
         {
           "label": "1 л",
           "price": 68000,
-          "qty": 15
+          "qty": 5
         }
       ],
       "status": "В наличии",
@@ -1101,7 +1101,7 @@ window.CATALOG = {
         {
           "label": "4-8 л",
           "price": 140000,
-          "qty": 20
+          "qty": 16
         }
       ],
       "status": "В наличии",
@@ -1494,7 +1494,7 @@ window.CATALOG = {
         {
           "label": "2 л",
           "price": 30000,
-          "qty": 1
+          "qty": 0
         }
       ],
       "status": "В наличии",
@@ -1598,7 +1598,7 @@ window.CATALOG = {
         {
           "label": "8 л",
           "price": 150000,
-          "qty": 15
+          "qty": 8
         }
       ],
       "status": "В наличии",
@@ -1679,7 +1679,7 @@ window.CATALOG = {
         {
           "label": "2-4 л",
           "price": 50000,
-          "qty": 10
+          "qty": 2
         }
       ],
       "status": "В наличии",
@@ -1778,7 +1778,7 @@ window.CATALOG = {
         {
           "label": "2-4 л",
           "price": 50000,
-          "qty": 8
+          "qty": 3
         }
       ],
       "status": "В наличии",
@@ -1882,7 +1882,7 @@ window.CATALOG = {
         {
           "label": "2-4 л",
           "price": 50000,
-          "qty": 15
+          "qty": 1
         }
       ],
       "status": "В наличии",
@@ -1979,7 +1979,7 @@ window.CATALOG = {
         {
           "label": "2 л",
           "price": 65000,
-          "qty": 6
+          "qty": 4
         }
       ],
       "status": "В наличии",
@@ -2067,7 +2067,7 @@ window.CATALOG = {
         {
           "label": "2 л",
           "price": 58000,
-          "qty": 10
+          "qty": 8
         }
       ],
       "status": "В наличии",
@@ -2140,7 +2140,7 @@ window.CATALOG = {
         {
           "label": "2 л",
           "price": 54000,
-          "qty": 10
+          "qty": 9
         }
       ],
       "status": "В наличии",
@@ -2220,7 +2220,7 @@ window.CATALOG = {
         {
           "label": "2 л",
           "price": 58000,
-          "qty": 10
+          "qty": 9
         }
       ],
       "status": "В наличии",
@@ -2289,7 +2289,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 140000,
-          "qty": 15
+          "qty": 14
         }
       ],
       "status": "В наличии",
@@ -2494,7 +2494,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 140000,
-          "qty": 19,
+          "qty": 8,
           "oldPrice": 175000
         }
       ],
@@ -2591,7 +2591,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 140000,
-          "qty": 15
+          "qty": 13
         }
       ],
       "status": "В наличии",
@@ -2676,7 +2676,7 @@ window.CATALOG = {
         {
           "label": "3 л",
           "price": 55000,
-          "qty": 20
+          "qty": 16
         }
       ],
       "status": "В наличии",
@@ -2764,7 +2764,7 @@ window.CATALOG = {
         {
           "label": "3 л",
           "price": 55000,
-          "qty": 5
+          "qty": 1
         }
       ],
       "status": "В наличии",
@@ -2970,7 +2970,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 120000,
-          "qty": 45,
+          "qty": 37,
           "oldPrice": 150000
         }
       ],
@@ -3117,7 +3117,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 120000,
-          "qty": 20
+          "qty": 19
         }
       ],
       "status": "В наличии",
@@ -3250,7 +3250,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 120000,
-          "qty": 20,
+          "qty": 14,
           "oldPrice": 150000
         }
       ],
@@ -3397,7 +3397,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 120000,
-          "qty": 20
+          "qty": 12
         }
       ],
       "status": "В наличии",
@@ -3514,7 +3514,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 120000,
-          "qty": 7
+          "qty": 6
         }
       ],
       "status": "В наличии",
@@ -3571,7 +3571,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 120000,
-          "qty": 20,
+          "qty": 14,
           "oldPrice": 150000
         }
       ],
@@ -3686,7 +3686,7 @@ window.CATALOG = {
         {
           "label": "3-4 л",
           "price": 150000,
-          "qty": 50
+          "qty": 21
         }
       ],
       "status": "В наличии",
@@ -3824,7 +3824,7 @@ window.CATALOG = {
         {
           "label": "3 л",
           "price": 60000,
-          "qty": 25
+          "qty": 24
         }
       ],
       "status": "В наличии",
@@ -3877,7 +3877,7 @@ window.CATALOG = {
         {
           "label": "3 л",
           "price": 60000,
-          "qty": 25
+          "qty": 24
         }
       ],
       "status": "В наличии",
@@ -4255,7 +4255,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 150000,
-          "qty": 7
+          "qty": 4
         }
       ],
       "status": "В наличии",
@@ -4348,7 +4348,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 120000,
-          "qty": 39,
+          "qty": 37,
           "oldPrice": 150000
         }
       ],
@@ -4483,7 +4483,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 120000,
-          "qty": 20,
+          "qty": 15,
           "oldPrice": 150000
         }
       ],
@@ -4590,7 +4590,7 @@ window.CATALOG = {
         {
           "label": "4-5 л",
           "price": 120000,
-          "qty": 45,
+          "qty": 28,
           "oldPrice": 150000
         }
       ],
