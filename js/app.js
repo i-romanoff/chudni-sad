@@ -976,9 +976,11 @@
         shownPages += 1;
         renderCards();
         /* фокус возвращаем на кнопку: после полного re-render она новая,
-           иначе клавиатурный/скринридер-фокус молча улетает в body */
+           иначе клавиатурный/скринридер-фокус молча улетает в body.
+           preventScroll — страница не прыгает к кнопке в конце списка,
+           позиция прокрутки сохраняется (жалоба хозяйки 27.10) */
         var nb = document.querySelector(".cards-more");
-        if (nb) nb.focus();
+        if (nb) nb.focus({ preventScroll: true });
       });
       cardsRoot.appendChild(more);
     }
