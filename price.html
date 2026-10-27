@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
+<!DOCTYPE html><html lang="ru"><head>
   <meta charset="UTF-8">
-  <script src="js/texts-loader.js" defer></script>
+  <script src="js/texts-loader.js" defer=""></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Прайс-лист — Питомник «Чудный сад»</title>
   <meta name="description" content="Прайс-лист питомника «Чудный сад»: саженцы яблонь, груш, вишни, сливы, облепихи, гортензий и хвойных растений. Актуальные цены по вариантам и размерам.">
@@ -78,7 +76,7 @@
     <div class="noprint" style="margin-top:18px">
       <button class="price-btn" onclick="window.print()">🖨 Печать / PDF</button>
       <!-- Б-100: CSV-выгрузка прайса; до первой публикации файла кнопка скрыта (HEAD-гвард ниже) -->
-      <a id="csv-link" class="price-btn" href="data/price.csv" download="chudni-sad-price.csv" hidden>⬇ Скачать CSV</a>
+      <a id="csv-link" class="price-btn" href="data/price.csv" download="chudni-sad-price.csv" hidden="">⬇ Скачать CSV</a>
     </div>
   </div>
 
@@ -140,5 +138,6 @@
       .then(function (r) { if (r.ok) document.getElementById("csv-link").hidden = false; })
       .catch(function () { /* файла нет — кнопка остаётся скрытой */ });
   </script>
-</body>
-</html>
+
+
+</body></html>

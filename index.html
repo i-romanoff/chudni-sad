@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
+<!DOCTYPE html><html lang="ru"><head>
   <meta charset="UTF-8">
-  <script src="js/texts-loader.js" defer></script>
+  <script src="js/texts-loader.js" defer=""></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#e7f0d9">
   <title>Чудный сад — саженцы гортензий и спирей | chudni-sad.ru</title>
@@ -84,12 +82,12 @@
 
       <div class="header__tools">
         <button class="theme-btn" id="theme-toggle" type="button" aria-label="Включить тёмную тему">
-          <svg class="icon-moon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
-          <svg class="icon-sun" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.3 4.3l1.6 1.6M18.1 18.1l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.3 19.7l1.6-1.6M18.1 5.9l1.6-1.6"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.5v2.2M12 19.3v2.2M4.3 4.3l1.6 1.6M18.1 18.1l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.3 19.7l1.6-1.6M18.1 5.9l1.6-1.6"></path></svg>
         </button>
         <button class="cart-btn" id="cart-open" type="button" aria-label="Открыть корзину">
-          <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.6"/><circle cx="18" cy="21" r="1.6"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L21.5 7H6"/></svg>
-          <span class="cart-btn__count" id="cart-count" aria-live="polite" aria-label="Товаров в корзине" hidden>0</span>
+          <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.6"></circle><circle cx="18" cy="21" r="1.6"></circle><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L21.5 7H6"></path></svg>
+          <span class="cart-btn__count" id="cart-count" aria-live="polite" aria-label="Товаров в корзине" hidden="">0</span>
         </button>
       </div>
     </div>
@@ -107,8 +105,9 @@
       <div class="container hero__inner">
         <div class="hero__text">
           <p class="eyebrow">Питомник саженцев · с закрытой корневой системой</p>
-          <h1 class="hero__title">Растения с сибирским характером</h1>
-          <p class="hero__sub">Метельчатые гортензии и японские спиреи из нашего питомника. На фотографиях — наши собственные кусты и саженцы: вы видите именно то растение, которое приедет к вам.</p>
+          <h1 class="hero__title">Растения 
+с сибирским характером</h1>
+          <p class="hero__sub">Саженцы из сибирских питомников. Все привитые плодовые  — исключительно на зимостойких районированных подвоях. Залог долголетия вашего сада</p>
           <div class="hero__actions">
             <a class="btn btn--primary" href="#catalog">Каталог</a>
             <a class="btn btn--ghost" href="#contacts">Контакты</a>
@@ -153,15 +152,15 @@
         <div class="catalog__bar">
           <div class="tabs" id="tabs" role="tablist" aria-label="Категории растений"><!-- вкладки собираются в app.js --></div>
           <button class="filter-btn" id="filter-btn" type="button" aria-haspopup="dialog" aria-label="Фильтр по категориям">
-            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16"/><circle cx="9" cy="7" r="2.4" fill="var(--paper-card)"/><path d="M4 17h16"/><circle cx="15" cy="17" r="2.4" fill="var(--paper-card)"/></svg>
-            <span class="filter-btn__count" id="filter-count" hidden>0</span>
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16"></path><circle cx="9" cy="7" r="2.4" fill="var(--paper-card)"></circle><path d="M4 17h16"></path><circle cx="15" cy="17" r="2.4" fill="var(--paper-card)"></circle></svg>
+            <span class="filter-btn__count" id="filter-count" hidden="">0</span>
           </button>
           <div class="view-switch" id="view-switch" role="group" aria-label="Вид каталога">
             <button type="button" data-view="comfort" aria-label="Крупные карточки" aria-pressed="false" title="Крупные карточки">
-              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="2"/></svg>
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="2"></rect></svg>
             </button>
             <button type="button" data-view="compact" aria-label="Две колонки" aria-pressed="false" title="Две колонки, как в маркетплейсах">
-              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.5"></rect><rect x="13" y="4" width="7" height="7" rx="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.5"></rect><rect x="13" y="13" width="7" height="7" rx="1.5"></rect></svg>
             </button>
           </div>
         </div>
@@ -176,7 +175,7 @@
         <ol class="steps">
           <li class="steps__item">
             <h3>Выбираете растения</h3>
-            <p>Смотрите каталог. На всех фото — наши саженцы и маточные кусты, а не картинки из интернета. Добавляете понравившееся в корзину.</p>
+            <p>Смотрите каталог. Добавляете понравившееся в корзину</p>
           </li>
           <li class="steps__item">
             <h3>Формируете заказ</h3>
@@ -184,7 +183,7 @@
           </li>
           <li class="steps__item">
             <h3>Забираете саженцы</h3>
-            <p>Самовывоз из питомника. Саженцы с закрытой корневой системой — приживаются спокойно.</p>
+            <p>Самовывоз из питомника. Приезжайте в удобное время — саженцы уже ждут вас и готовы к переезду в ваш сад</p>
           </li>
         </ol>
       </div>
@@ -206,7 +205,7 @@
               <span class="social-btn__icon" aria-hidden="true"><svg class="max-logo" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3405 23.9342C9.97568 23.9342 8.87728 23.5899 6.97252 22.2125C5.76041 23.762 1.94518 24.9672 1.77774 22.9012C1.77774 21.3535 1.42788 20.0492 1.04269 18.6132C0.570922 16.8544 0.0461426 14.898 0.0461426 12.0546C0.0461426 5.27426 5.6424 0.175079 12.2777 0.175079C18.913 0.175079 24.1153 5.52322 24.1153 12.1205C24.1153 18.7178 18.7474 23.9342 12.3405 23.9342ZM12.4368 6.03673C9.20791 5.86848 6.68817 8.0948 6.13253 11.5794C5.6724 14.465 6.48821 17.9812 7.18602 18.1582C7.51488 18.2416 8.35763 17.564 8.87711 17.0475C9.73154 17.5981 10.712 18.0245 11.8019 18.0813C15.1168 18.254 18.0544 15.6761 18.228 12.382C18.4016 9.08792 15.7517 6.20946 12.4368 6.03673Z" fill="currentColor"></path></svg></span>
             </a>
             <a class="social-btn social-btn--tg" href="https://t.me/chydni_sad" target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram">
-              <span class="social-btn__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 3.4 2.5 10.9c-.9.35-.88 1.63.03 1.95l4.9 1.7 1.9 5.8c.27.83 1.34 1.02 1.88.33l2.7-3.5 4.9 3.6c.78.57 1.9.15 2.1-.8l3-14.9c.24-1.1-.85-2-1.98-1.62zM8.7 13.3l9.2-5.8c.4-.25.8.3.45.62l-7.5 6.8c-.26.24-.43.57-.48.93l-.25 1.83c-.03.25-.38.28-.45.04l-1.05-3.45c-.12-.4.05-.83.4-1.06z"/></svg></span>
+              <span class="social-btn__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 3.4 2.5 10.9c-.9.35-.88 1.63.03 1.95l4.9 1.7 1.9 5.8c.27.83 1.34 1.02 1.88.33l2.7-3.5 4.9 3.6c.78.57 1.9.15 2.1-.8l3-14.9c.24-1.1-.85-2-1.98-1.62zM8.7 13.3l9.2-5.8c.4-.25.8.3.45.62l-7.5 6.8c-.26.24-.43.57-.48.93l-.25 1.83c-.03.25-.38.28-.45.04l-1.05-3.45c-.12-.4.05-.83.4-1.06z"></path></svg></span>
             </a>
           </div>
         </div>
@@ -233,27 +232,27 @@
     </div>
     <div class="container footer__inner">
       <span class="footer__copy">© <span id="year">2022 - 2026</span> Питомник «Чудный сад»</span>
-      <span class="footer__dev">AI и цифровые инструменты для малого бизнеса и самозанятых — <a href="tel:+79246390085">8 (924) 639-00-85</a></span>
+      <span class="footer__dev">AI и цифровые инструменты для малого бизнеса и самозанятых — <a href="tel:+79246390085" rel="noopener" target="_blank">8 (924) 639-00-85</a></span>
     </div>
   </footer>
 
     <button class="action-fab" id="action-fab" type="button" aria-label="Меню" aria-expanded="false">
     <span class="fab-bars" aria-hidden="true"><i></i><i></i><i></i></span>
   </button>
-  <nav class="action-fab__menu" id="action-fab-menu" hidden>
-    <a href="#catalog"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Каталог</span></a>
+  <nav class="action-fab__menu" id="action-fab-menu" hidden="">
+    <a href="#catalog"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg><span>Каталог</span></a>
     <a id="bar-max" href="#" target="_blank" rel="noopener noreferrer"><svg class="max-logo" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3405 23.9342C9.97568 23.9342 8.87728 23.5899 6.97252 22.2125C5.76041 23.762 1.94518 24.9672 1.77774 22.9012C1.77774 21.3535 1.42788 20.0492 1.04269 18.6132C0.570922 16.8544 0.0461426 14.898 0.0461426 12.0546C0.0461426 5.27426 5.6424 0.175079 12.2777 0.175079C18.913 0.175079 24.1153 5.52322 24.1153 12.1205C24.1153 18.7178 18.7474 23.9342 12.3405 23.9342ZM12.4368 6.03673C9.20791 5.86848 6.68817 8.0948 6.13253 11.5794C5.6724 14.465 6.48821 17.9812 7.18602 18.1582C7.51488 18.2416 8.35763 17.564 8.87711 17.0475C9.73154 17.5981 10.712 18.0245 11.8019 18.0813C15.1168 18.254 18.0544 15.6761 18.228 12.382C18.4016 9.08792 15.7517 6.20946 12.4368 6.03673Z" fill="currentColor"></path></svg><span>Написать в MAX</span></a>
-    <a id="bar-phone" href="#"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.13.96.36 1.9.7 2.8a2 2 0 0 1-.45 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.45c.9.34 1.84.57 2.8.7A2 2 0 0 1 22 16.9z"/></svg><span>Позвонить</span></a>
+    <a id="bar-phone" href="#"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.13.96.36 1.9.7 2.8a2 2 0 0 1-.45 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.45c.9.34 1.84.57 2.8.7A2 2 0 0 1 22 16.9z"></path></svg><span>Позвонить</span></a>
   </nav>
   <!-- «Наверх»: фиксированная кнопка, показывается после прокрутки -->
   <button class="to-top" id="to-top" type="button" aria-label="Наверх">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"></path><path d="M5 12l7-7 7 7"></path></svg>
   </button>
 
-    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
-    <div class="modal__backdrop" data-close></div>
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden="">
+    <div class="modal__backdrop" data-close=""></div>
     <div class="modal__window">
-      <button class="modal__close" type="button" data-close aria-label="Закрыть">×</button>
+      <button class="modal__close" type="button" data-close="" aria-label="Закрыть">×</button>
       <div class="modal__scroll">
       <div class="modal__gallery">
         <div class="modal__slider" id="modal-slider">
@@ -271,7 +270,7 @@
           <button class="btn btn--primary btn--big" id="modal-add" type="button">В корзину</button>
           <button class="btn btn--big" id="modal-buynow" type="button" title="Добавить в корзину и сразу оформить">Купить сейчас</button>
           <button class="btn btn--ghost btn--big modal__share" id="modal-share" type="button">
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3.5"/><path d="M7.5 8 12 3.5 16.5 8"/><path d="M5 12v6.5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V12"/></svg>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3.5"></path><path d="M7.5 8 12 3.5 16.5 8"></path><path d="M5 12v6.5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V12"></path></svg>
             <span class="modal__share-txt">Поделиться</span>
           </button>
         </div>
@@ -282,10 +281,10 @@
   </div>
 
   <!-- Корзина: список → форма заказа → готово -->
-  <div class="modal" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
-    <div class="modal__backdrop" data-close></div>
+  <div class="modal" id="cart" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden="">
+    <div class="modal__backdrop" data-close=""></div>
     <div class="cart__window">
-      <button class="modal__close" type="button" data-close aria-label="Закрыть корзину">×</button>
+      <button class="modal__close" type="button" data-close="" aria-label="Закрыть корзину">×</button>
       <div class="modal__scroll cart__scroll">
 
       <div id="cart-step-list">
@@ -296,7 +295,7 @@
         <p class="cart__hint">Корзина хранится на этом устройстве — можно собрать заказ и вернуться позже.</p>
       </div>
 
-      <div id="cart-step-form" hidden>
+      <div id="cart-step-form" hidden="">
         <h3 class="cart__title">Ваш заказ</h3>
         <p class="cart__hint">Оставьте имя и телефон — мы свяжемся с вами и подтвердим наличие.</p>
         <label class="field">
@@ -307,7 +306,7 @@
           <span class="field__label">Телефон</span>
           <input class="field__input" id="order-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__">
         </label>
-        <button class="phone-max-btn" id="order-phone-max" type="button" hidden>📞 Взять телефон из профиля MAX</button>
+        <button class="phone-max-btn" id="order-phone-max" type="button" hidden="">📞 Взять телефон из профиля MAX</button>
         <p class="field__error" id="order-error" role="alert"></p>
         <label class="agree-row">
           <input type="checkbox" id="agree-offer">
@@ -329,13 +328,13 @@
         <div class="cart__send-row">
           <button class="btn btn--primary btn--big" id="order-copy" type="button">Скопировать текст заказа</button>
           <a class="btn btn--big cart__max is-disabled" id="order-max" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true">Отправить в MAX</a>        </div>
-        <p class="cart__hint cart__hint--ok" id="copy-ok" hidden>Текст скопирован — вставьте его в чат в MAX.</p>
+        <p class="cart__hint cart__hint--ok" id="copy-ok" hidden="">Текст скопирован — вставьте его в чат в MAX.</p>
       </div>
 
       <!-- Подтверждение заказа — ВНЕ cart-step-done: раньше лежало внутри,
            и скрытие шага отправки прятло его вместе с собой — покупатель
            видел пустое окно (баг «пустого уведомления»). -->
-      <div id="order-accepted" hidden>
+      <div id="order-accepted" hidden="">
         <h3 class="cart__title">Заказ принят! 🌿</h3>
         <p class="cart__hint cart__hint--main">Ваш заказ отправлен в обработку.</p>
         <div class="order-num-box">
@@ -344,18 +343,18 @@
           <span class="order-num-label">Код выдачи: <b id="order-pin">—</b> — назовите его при получении</span>
         </div>
         <p class="cart__hint">Ваш телефон: <b id="order-phone-echo"></b> — мы напишем вам в MAX или позвоним, как вам удобнее.</p>
-        <div id="order-pay" hidden>
+        <div id="order-pay" hidden="">
           <div id="pay-choice">
             <button class="btn btn--primary btn--big" id="pay-online" type="button">💳 Оплатить онлайн (карта / СБП)</button>
             <button class="btn btn--ghost btn--big" id="pay-later" type="button">Оплатлю при получении</button>
             <p class="cart__hint" id="pay-error"></p>
           </div>
         </div>
-        <a class="btn btn--call btn--big" id="order-bot-link" href="#" target="_blank" rel="noopener noreferrer" hidden>
+        <a class="btn btn--call btn--big" id="order-bot-link" href="#" target="_blank" rel="noopener noreferrer" hidden="">
           <svg class="max-logo" width="20" height="19" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3405 23.9342C9.97568 23.9342 8.87728 23.5899 6.97252 22.2125C5.76041 23.762 1.94518 24.9672 1.77774 22.9012C1.77774 21.3535 1.42788 20.0492 1.04269 18.6132C0.570922 16.8544 0.0461426 14.898 0.0461426 12.0546C0.0461426 5.27426 5.6424 0.175079 12.2777 0.175079C18.913 0.175079 24.1153 5.52322 24.1153 12.1205C24.1153 18.7178 18.7474 23.9342 12.3405 23.9342ZM12.4368 6.03673C9.20791 5.86848 6.68817 8.0948 6.13253 11.5794C5.6724 14.465 6.48821 17.9812 7.18602 18.1582C7.51488 18.2416 8.35763 17.564 8.87711 17.0475C9.73154 17.5981 10.712 18.0245 11.8019 18.0813C15.1168 18.254 18.0544 15.6761 18.228 12.382C18.4016 9.08792 15.7517 6.20946 12.4368 6.03673Z" fill="currentColor"></path></svg>
           <span>Бот в мессенджере MAX</span>
         </a>
-        <p class="cart__hint" id="order-bot-hint" hidden>Напишите боту любое сообщение — он будет присылать статусы вашего заказа. Спросить статус можно в любой момент, назвав номер заказа.</p>
+        <p class="cart__hint" id="order-bot-hint" hidden="">Напишите боту любое сообщение — он будет присылать статусы вашего заказа. Спросить статус можно в любой момент, назвав номер заказа.</p>
         <p class="cart__hint cart__hint--sign">🌸 Ваш Чудный сад</p>
         <button class="btn btn--primary btn--big" id="order-finish" type="button">Хорошо, спасибо!</button>
       </div>
@@ -365,9 +364,9 @@
   </div>
 
   <!-- Полноэкранный просмотр фото (как в маркетплейсах): пинч-зум + листание -->
-  <div class="lightbox" id="lightbox" hidden>
-    <div class="lightbox__backdrop" data-lb-close></div>
-    <button class="lightbox__close" type="button" data-lb-close aria-label="Закрыть просмотр">×</button>
+  <div class="lightbox" id="lightbox" hidden="">
+    <div class="lightbox__backdrop" data-lb-close=""></div>
+    <button class="lightbox__close" type="button" data-lb-close="" aria-label="Закрыть просмотр">×</button>
     <div class="lightbox__stage" id="lb-stage">
       <div class="lightbox__track" id="lb-track"></div>
     </div>
@@ -375,8 +374,8 @@
   </div>
 
   <!-- Фильтр по категориям (телефон): стеклянная шторка в стиле iOS -->
-  <div class="filter-sheet" id="filter-sheet" hidden>
-    <div class="filter-sheet__backdrop" data-filter-close></div>
+  <div class="filter-sheet" id="filter-sheet" hidden="">
+    <div class="filter-sheet__backdrop" data-filter-close=""></div>
     <div class="filter-sheet__panel" role="dialog" aria-modal="true" aria-label="Категории растений">
       <div class="filter-sheet__grab" aria-hidden="true"></div>
       <h3 class="filter-sheet__title">Категории и фильтры</h3>
@@ -402,7 +401,7 @@
   </div>
 
   <!-- Б-10: тост «Добавлено в корзину» — подтверждение + быстрый переход -->
-  <div class="toast" id="toast" role="status" aria-live="polite" hidden>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden="">
     <span class="toast__msg">Добавлено в корзину</span>
     <button class="toast__go" id="toast-go" type="button">Корзина</button>
   </div>
@@ -437,5 +436,6 @@
   });
 })();
 </script>
-</body>
-</html>
+
+
+</body></html>
