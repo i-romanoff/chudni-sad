@@ -1234,6 +1234,12 @@ html.theme-dark ::-webkit-scrollbar-thumb { background-color: rgba(214, 218, 221
 @media (max-width: 700px) {
   ::view-transition-new(root) { animation-duration: .78s; }
 }
+/* К4: на время смены темы (класс ставит setTheme в app.js, снимает по
+   vt.finished) цветовые transition выключены — иначе круг раскрывает
+   снимок, захваченный посреди .15s-переходов кнопок/чипов/секций */
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after { transition: none !important; }
 
 /* ---------- Как купить ---------- */
 /* v54: тёмная секция стала светлой (как у смягчённой ленты) — кегль и

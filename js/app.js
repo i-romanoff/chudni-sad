@@ -38,17 +38,25 @@
   function setTheme(dark, x, y) {
     var root = document.documentElement;
     var apply = function () {
+      /* К4: цветовые .15s-переходы страницы на время смены темы глушатся
+         (html.theme-switching в style.css). Без этого новый снимок View
+         Transition захватывался посреди CSS-переходов — круг раскрывал
+         «полу-перекрашенный» кадр (полукруг частичного закрашивания),
+         а после раскрытия страница доезжала вторым сдвигом цвета (рывок). */
+      root.classList.add("theme-switching");
       root.classList.toggle("theme-dark", dark);
       try { localStorage.setItem(THEME_KEY, dark ? "dark" : "light"); } catch (e) {}
       applyThemeMeta();
     };
+    var done = function () { root.classList.remove("theme-switching"); };
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!document.startViewTransition || reduce) { apply(); return; }
+    if (!document.startViewTransition || reduce) { apply(); setTimeout(done, 100); return; }
     var r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y)) + 40;
     root.style.setProperty("--tx", x + "px");
     root.style.setProperty("--ty", y + "px");
     root.style.setProperty("--tr", r + "px");
-    document.startViewTransition(apply);
+    var vt = document.startViewTransition(apply);
+    vt.finished.then(done, done);
   }
 
   if (themeBtn) {
@@ -95,6 +103,33 @@
     if (type === "soon") return "card__promo card__promo--soon";
     return "card__promo card__promo--promo";
   };
+
+  /* Реальные варианты товара: единственный служебный placeholder
+     («ВАРИАНТ - ИЗМЕНИТЬ», ОС 11.10) покупателем не считается — товар
+     ведёт себя как безвариантный. Одна точка истины для карточки,
+     модалки и кнопок: раньше фильтр был только в openModal, и карточка
+     после миграции каталога 07.10 (у всех товаров появился вариант
+     «N л») рисовала «Выбрать» вместо «В корзину» (регресс К1). */
+  function effectiveVariants(product) {
+    var variants = product.variants || [];
+    if (variants.length === 1 &&
+        variants[0].label === ((window.CATALOG.shop || {}).placeholderVariant || "ВАРИАНТ - ИЗМЕНИТЬ")) {
+      return [];
+    }
+    return variants;
+  }
+
+  /* Псевдотовар конкретного варианта — один вид и для карточки, и для
+     модалки: корзина хранит price/variantLabel/maxQty снимком варианта */
+  function variantPseudo(product, v) {
+    return Object.assign({}, product, {
+      uid: product.uid,
+      variantLabel: v.label,
+      priceMin: v.price, priceMax: v.price,
+      maxQty: v.qty,
+      name: product.name + " (" + v.label + ")"
+    });
+  }
 
   /* Б-13: живая доступность позиции по ТЕКУЩЕМУ каталогу (0 — закончился).
      Корзина хранит снимок остатка с момента добавления — сверяемся при каждом
@@ -928,24 +963,52 @@
         add.style.cursor = "default";
         add.title = "Нет в наличии";
         add.classList.add("is-sold-out");
-      } else if (product.variants && product.variants.length) {
-        /* У товара варианты цены (объём/высота) — кнопка открывает карточку выбора */
-        add.querySelector(".card__add-txt").textContent = "Выбрать";
-        add.setAttribute("aria-label", "Выбрать вариант: " + product.name);
-        add.addEventListener("click", function () {
-          openModal(product);
-        });
       } else {
-        add.querySelector(".card__add-txt").textContent = "В корзину";
-        add.setAttribute("aria-label", "В корзину: " + product.name);
-        add.addEventListener("click", function (event) {
-          addToCart(product);
-          flyToCart(event, product);
-          showToast();             /* Б-10: подтверждение без открытия корзины */
-          refreshAddButton(add, product);
-          add.classList.add("is-added");
-          setTimeout(function () { add.classList.remove("is-added"); }, 900);
-        });
+        var effVars = effectiveVariants(product);
+        if (effVars.length > 1) {
+          /* Настоящих вариантов несколько — выбор только в карточке:
+             кнопка открывает её (v35.8, Ozon-стиль) */
+          add.querySelector(".card__add-txt").textContent = "Выбрать";
+          add.setAttribute("aria-label", "Выбрать вариант: " + product.name);
+          add.addEventListener("click", function () {
+            openModal(product);
+          });
+        } else if (effVars.length === 1) {
+          /* Единственный реальный вариант (после миграции 07.10 он есть
+             почти у всех товаров) — карточка выбора не нужна: иконка
+             корзины ДОБАВЛЯЕТ этот вариант прямым кликом (К1). Распроданный
+             единственный вариант ведёт в модалку — там честный «Нет в наличии». */
+          var pseudo0 = variantPseudo(product, effVars[0]);
+          if (effVars[0].qty > 0) {
+            add.querySelector(".card__add-txt").textContent = "В корзину";
+            add.setAttribute("aria-label", "В корзину: " + pseudo0.name);
+            add.addEventListener("click", function (event) {
+              addToCart(pseudo0);
+              flyToCart(event, product);
+              showToast();             /* Б-10: подтверждение без открытия корзины */
+              refreshAddButton(add, pseudo0);
+              add.classList.add("is-added");
+              setTimeout(function () { add.classList.remove("is-added"); }, 900);
+            });
+          } else {
+            add.querySelector(".card__add-txt").textContent = "Выбрать";
+            add.setAttribute("aria-label", "Выбрать вариант: " + product.name);
+            add.addEventListener("click", function () {
+              openModal(product);
+            });
+          }
+        } else {
+          add.querySelector(".card__add-txt").textContent = "В корзину";
+          add.setAttribute("aria-label", "В корзину: " + product.name);
+          add.addEventListener("click", function (event) {
+            addToCart(product);
+            flyToCart(event, product);
+            showToast();             /* Б-10: подтверждение без открытия корзины */
+            refreshAddButton(add, product);
+            add.classList.add("is-added");
+            setTimeout(function () { add.classList.remove("is-added"); }, 900);
+          });
+        }
       }
 
       actions.appendChild(add);
@@ -1506,14 +1569,17 @@
       var sold = v.qty === 0;
       modalPrice.style.display = sold ? "none" : "";
       modalAdd.disabled = sold;
-      modalAdd.textContent = sold ? "Нет в наличии" : "В корзину";
-      var pseudo = Object.assign({}, product, {
-        uid: product.uid,
-        variantLabel: v.label,
-        priceMin: v.price, priceMax: v.price,
-        maxQty: v.qty,
-        name: product.name + " (" + v.label + ")"
-      });
+      var pseudo = variantPseudo(product, v);
+      if (sold) {
+        modalAdd.textContent = "Нет в наличии";
+        modalAdd.classList.remove("btn--in-cart");
+      } else {
+        /* К2: состояние кнопки считается по КОРЗИНЕ для ЭТОГО варианта —
+           в корзине → зелёная «В корзине N», нет → красная «В корзину»;
+           раньше текст перезаписывался в «В корзину» и состояние
+           наследовалось от предыдущего чипа */
+        refreshAddButton(modalAdd, pseudo);
+      }
       modalAdd.onclick = function (event) {
         if (v.qty === 0) return;
         addToCart(pseudo);
@@ -1573,15 +1639,10 @@
       modalBuyNow.style.display = stock.disabled ? "none" : "";
     }
 
-    /* Варианты (Ozon-стиль): выбор подписи меняет цену и лимит количества */
-    var variants = product.variants || [];
-    /* Служебный вариант-заглушка миграции (ОС 11.10) покупателю не показывается:
-       единственный «ВАРИАНТ - ИЗМЕНИТЬ» = обычная цена без пикера. Метка
-       приходит из экспорта (shop.placeholderVariant) — одна точка истины. */
-    if (variants.length === 1 &&
-        variants[0].label === ((window.CATALOG.shop || {}).placeholderVariant || "ВАРИАНТ - ИЗМЕНИТЬ")) {
-      variants = [];
-    }
+    /* Варианты (Ozon-стиль): выбор подписи меняет цену и лимит количества.
+       Служебный вариант-заглушка миграции (ОС 11.10) покупателю не
+       показывается — фильтр общий с карточкой (effectiveVariants). */
+    var variants = effectiveVariants(product);
     var selIdx = -1;
     var oldVars = document.getElementById("modal-vars");
     if (oldVars) oldVars.remove();
@@ -1990,12 +2051,9 @@
         badgeOut.className = "cart-item__avail cart-item__avail--out";
         badgeOut.textContent = "Закончился — уберите из заказа";
         info.appendChild(badgeOut);
-      } else if (avail <= 3) {
-        var badgeLow = document.createElement("p");
-        badgeLow.className = "cart-item__avail";
-        badgeLow.textContent = "Осталось " + avail + " шт";
-        info.appendChild(badgeLow);
       }
+      /* «Осталось N шт» убрано (решение хозяйки 28.10: «этого не надо») —
+         остаток виден по лимиту «+» и пилюле на карточке товара */
       if (product) {
         info.classList.add("cart-item__info--link");
         info.addEventListener("click", function () {
@@ -2740,11 +2798,16 @@
   }
 
   function refreshAddButton(button, product) {
-    /* товар может лежать несколькими вариантами — бейдж показывает сумму */
+    /* товар может лежать несколькими вариантами — бейдж карточки показывает
+       сумму; для псевдотовара КОНКРЕТНОГО варианта (variantLabel задан)
+       считаем только его — кнопка модалки/карточки честна по чипу (К2) */
+    var vl = product.variantLabel || "";
     var n = cartEntries().reduce(function (sum, it) {
-      return it.uid === product.uid ? sum + it.qty : sum;
+      if (it.uid !== product.uid) return sum;
+      if (vl && (it.variantLabel || "") !== vl) return sum;
+      return sum + it.qty;
     }, 0);
-    var hasVars = product.variants && product.variants.length;
+    var hasVars = effectiveVariants(product).length > 1;
     /* У карточек текст живёт в .card__add-txt, у кнопки модалки — прямо
        в кнопке; бейдж с числом виден только в компактной карточке. */
     var txt = button.querySelector(".card__add-txt");
