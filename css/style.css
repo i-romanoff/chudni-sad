@@ -1671,12 +1671,19 @@ html.theme-dark .footer__doc { color: #a2abb1; }
   align-items: baseline; justify-content: space-between; }
 .footer__copy { font-size: 13px; color: var(--moss, #7a8f5a); }
 .footer__dev { font-size: 13px; color: var(--moss, #7a8f5a); }
-.footer__dev a { color: var(--forest); text-decoration: none;
-  border-bottom: 1px dashed rgba(122, 143, 90, .55); padding-bottom: 1px; }
-.footer__dev a:hover { color: var(--graffiti-pink); border-bottom-color: var(--graffiti-pink); }
-.footer__dev svg.mdi { fill: currentColor; vertical-align: -2px; margin-right: 3px; }
+.footer__dev a { color: var(--forest); text-decoration: none; border-radius: 4px;
+  /* иконка-ссылка Telegram: дэш-подчёркивание убрано (под одиночной иконкой
+     «плавает»), аффорданс — цвет/hover/фокус; тап-цель ~32px: вертикальный
+     padding расширяет зону клика (у inline вёрстку не сдвигает),
+     отрицательные боковые поля возвращают иконку на место */
+  padding: 9px 4px; margin: 0 -4px; }
+.footer__dev a:hover { color: var(--graffiti-pink); }
+/* Иконка Telegram: инлайн-SVG, размер ~1em, цвет наследуется от ссылки (hover — акцент) */
+.footer__dev svg.footer__tg { width: 1em; height: 1em; fill: currentColor;
+  vertical-align: -0.15em; margin-right: 4px; transition: fill .15s ease; }
 html.theme-dark .footer__copy, html.theme-dark .footer__dev { color: #8fa08f; }
 html.theme-dark .footer__dev a { color: #c8d3bd; }
+html.theme-dark .footer__dev a:hover { color: var(--graffiti-pink); } /* тёмный hover: иначе перебивается правилом выше (0-2-2) */
 
 .footer-menu {
   display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
