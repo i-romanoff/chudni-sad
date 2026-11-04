@@ -70,7 +70,14 @@
   }
 
   function boot() {
-    fetch("texts.json", {cache: "no-cache"}).then(function (r) {
+    /* texts.json всегда свежий: cache-bust ?v=<timestamp> — URL меняется при
+     * каждом заходе, значит ни браузер, ни CDN (GitHub Pages/Fastly) не могут
+     * отдать старую копию по своему max-age (гонка «HTML новый, правила
+     * старые»: старое правило переписывало новый футер телефоном, бой 04.11).
+     * Приём тот же, что у catalog.js в index.html (?v=Date.now()).
+     * cache:"no-cache" оставляем вторым поясом — просит промежуточные кэши
+     * ревалидироваться (для серверов, где request-директивы уважаются). */
+    fetch("texts.json?v=" + Date.now(), {cache: "no-cache"}).then(function (r) {
       return r.ok ? r.json() : null;
     }).then(function (data) {
       if (!data || !data.texts) return;
