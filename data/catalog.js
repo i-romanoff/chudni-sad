@@ -2507,16 +2507,16 @@ window.CATALOG = {
       "salePercent": 20,
       "variants": [
         {
-          "label": "С 2-3 л 110-140 см",
-          "price": 112000,
-          "qty": 8,
-          "oldPrice": 140000
-        },
-        {
           "label": "С 3-4 л 110-160 см",
           "price": 120000,
           "qty": 30,
           "oldPrice": 150000
+        },
+        {
+          "label": "С 2-3 л 110-150 см",
+          "price": 112000,
+          "qty": 8,
+          "oldPrice": 140000
         }
       ],
       "status": "В наличии",
