@@ -6249,94 +6249,18 @@ window.CATALOG = {
       "featured": false
     },
     {
-      "id": "pion-molochnocvetkovyy-paeonia-lactiflora-madame-claude-tain-oks-3-5-20261008010227090",
-      "name": "Пион молочноцветковый 'Мадам Клод Тэн'",
-      "category": "Пионы",
-      "priceMin": 183000,
-      "priceMax": 183000,
-      "oldPriceMin": null,
-      "oldPriceMax": null,
-      "salePercent": 0,
-      "variants": [
-        {
-          "label": "ОКС 3-5",
-          "price": 183000,
-          "qty": 5
-        }
-      ],
-      "status": "В наличии",
-      "stockCount": 5,
-      "badges": [],
-      "short": "Крупные махровые цветы нежно-белого цвета с легким кремовым свечением изнутри. Позднего срока цветения",
-      "description": "Пион молочноцветковый 'Мадам Клод Тэн' образует пышные густомахровые цветки кремово-белого тона с лёгким розоватым сливочным свечением в центре, до 15–20 см. Растение высотой около 80–90 см и шириной около 60–70 см держит плотную тёмно-зелёную рассечённую листву; цветёт в июне — июле.  Отличный выбор для миксбордера и солитерной посадки у дорожки: цветы хороши в саду и прекрасно подходят для срезки в букет, долго сохраняют свежий вид в воде.",
-      "traits": [
-        {
-          "label": "Высота",
-          "value": "около 80–90 см"
-        },
-        {
-          "label": "Ширина",
-          "value": "около 60–70 см"
-        },
-        {
-          "label": "Цветение",
-          "value": "июнь — июль"
-        },
-        {
-          "label": "Соцветие",
-          "value": "густомахровый, кремово-белый с лёгким розоватым подсветом в центре; диаметр цветка до 15–20 см"
-        },
-        {
-          "label": "Листва",
-          "value": "тёмно-зелёная, рассечённая, плотная"
-        },
-        {
-          "label": "Свет",
-          "value": "солнце или лёгкая полутень"
-        },
-        {
-          "label": "Почва",
-          "value": "рыхлая, плодородная, нейтральная или слабощелочная, без застоя воды"
-        },
-        {
-          "label": "Полив",
-          "value": "умеренный и регулярный в засуху"
-        }
-      ],
-      "facets": {
-        "heightM": 0.9,
-        "bloom": [
-          "июн",
-          "июл"
-        ],
-        "light": "солнце/полутень",
-        "zone": null
-      },
-      "photos": [
-        {
-          "file": "p1364-1220465426.jpg",
-          "alt": "Пион молочноцветковый 'Мадам Клод Тэн'"
-        },
-        {
-          "file": "p1364-1221068639.jpg",
-          "alt": "Пион молочноцветковый 'Мадам Клод Тэн'"
-        }
-      ],
-      "featured": false
-    },
-    {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-myrtle-gentry-oks-2-3-20261008010228114",
       "name": "Пион молочноцветковый 'Миртл Джентри'",
       "category": "Пионы",
-      "priceMin": 133000,
-      "priceMax": 133000,
+      "priceMin": 132000,
+      "priceMax": 132000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "2-3 почки",
-          "price": 133000,
+          "price": 132000,
           "qty": 5
         }
       ],
@@ -6377,15 +6301,15 @@ window.CATALOG = {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-monsieur-jules-elie-oks-3-5-20261008010227887",
       "name": "Пион молочноцветковый 'Мсье Жюль Эли'",
       "category": "Пионы",
-      "priceMin": 133000,
-      "priceMax": 133000,
+      "priceMin": 134500,
+      "priceMax": 134500,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "3-5 почек",
-          "price": 133000,
+          "price": 134500,
           "qty": 5
         }
       ],
@@ -6478,15 +6402,15 @@ window.CATALOG = {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-pietertje-vriend-oks-3-5-20261008010842825",
       "name": "Пион молочноцветковый 'Питерте Вриенд'",
       "category": "Пионы",
-      "priceMin": 138000,
-      "priceMax": 138000,
+      "priceMin": 139500,
+      "priceMax": 139500,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "3-5 почек",
-          "price": 138000,
+          "price": 139500,
           "qty": 5
         }
       ],
@@ -6550,15 +6474,15 @@ window.CATALOG = {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-raspberry-sundae-oks-3-5-20261008010844776",
       "name": "Пион молочноцветковый 'Распберри Сандей'",
       "category": "Пионы",
-      "priceMin": 165500,
-      "priceMax": 165500,
+      "priceMin": 177000,
+      "priceMax": 177000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "3-5 почек",
-          "price": 165500,
+          "price": 177000,
           "qty": 5
         }
       ],
@@ -6648,7 +6572,7 @@ window.CATALOG = {
       "name": "Пион молочноцветковый 'Сара Бернар'",
       "category": "Пионы",
       "priceMin": 89000,
-      "priceMax": 122000,
+      "priceMax": 125000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
@@ -6660,7 +6584,7 @@ window.CATALOG = {
         },
         {
           "label": "3-5 почек",
-          "price": 122000,
+          "price": 125000,
           "qty": 10
         }
       ],
@@ -6749,15 +6673,15 @@ window.CATALOG = {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-jan-van-leeuwen-oks-3-5-20261008010843713",
       "name": "Пион молочноцветковый 'Ян ван Левен'",
       "category": "Пионы",
-      "priceMin": 161000,
-      "priceMax": 161000,
+      "priceMin": 173000,
+      "priceMax": 173000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "3-5 почек",
-          "price": 161000,
+          "price": 173000,
           "qty": 5
         }
       ],
