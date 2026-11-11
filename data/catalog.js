@@ -4822,7 +4822,7 @@ window.CATALOG = {
       "name": "Пион Ито-гибрид 'Бартзелла'",
       "category": "Пионы",
       "priceMin": 179000,
-      "priceMax": 199900,
+      "priceMax": 209000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
@@ -4834,7 +4834,7 @@ window.CATALOG = {
         },
         {
           "label": "3-5 почек",
-          "price": 199900,
+          "price": 209000,
           "qty": 5
         }
       ],
@@ -4902,15 +4902,15 @@ window.CATALOG = {
       "id": "pion-ito-gibrid-paeonia-itoh-hybrid-julia-rose-oks-2-3-20261008010228835",
       "name": "Пион Ито-гибрид 'Джулия Роуз'",
       "category": "Пионы",
-      "priceMin": 218000,
-      "priceMax": 218000,
+      "priceMin": 226000,
+      "priceMax": 226000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "2-3 почек",
-          "price": 218000,
+          "price": 226000,
           "qty": 5
         }
       ],
@@ -4982,15 +4982,15 @@ window.CATALOG = {
       "id": "pion-ito-gibrid-paeonia-itoh-hybrid-magical-mystery-ride-oks-2-3-20261008010844930",
       "name": "Пион Ито-гибрид 'Мэджикал Мистери Райд'",
       "category": "Пионы",
-      "priceMin": 211000,
-      "priceMax": 211000,
+      "priceMin": 219500,
+      "priceMax": 219500,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "2-3 почки",
-          "price": 211000,
+          "price": 219500,
           "qty": 5
         }
       ],
@@ -5083,15 +5083,15 @@ window.CATALOG = {
       "id": "pion-mezhvidovoy-gibrid-paeonia-hybrid-henry-bockstoce-oks-3-5-20261008010229238",
       "name": "Пион межвидовой гибрид 'Генри Бокстос'",
       "category": "Пионы",
-      "priceMin": 165000,
-      "priceMax": 165000,
+      "priceMin": 176000,
+      "priceMax": 176000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "3-5 почек",
-          "price": 165000,
+          "price": 176000,
           "qty": 15
         }
       ],
@@ -5155,20 +5155,20 @@ window.CATALOG = {
       "id": "pion-mezhvidovoy-gibrid-paeonia-hybrid-coral-charm-oks-2-3-20261008010228673",
       "name": "Пион межвидовой гибрид 'Корал Шарм'",
       "category": "Пионы",
-      "priceMin": 114000,
-      "priceMax": 153000,
+      "priceMin": 122000,
+      "priceMax": 165000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "2-3 почки",
-          "price": 114000,
+          "price": 122000,
           "qty": 10
         },
         {
           "label": "3-5 почек",
-          "price": 153000,
+          "price": 165000,
           "qty": 5
         }
       ],
@@ -5232,15 +5232,15 @@ window.CATALOG = {
       "id": "pion-mezhvidovoy-gibrid-paeonia-hybrid-carol-oks-2-3-20261008010845212",
       "name": "Пион межвидовой гибрид 'Кэрол'",
       "category": "Пионы",
-      "priceMin": 221500,
-      "priceMax": 221500,
+      "priceMin": 230000,
+      "priceMax": 230000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "2-3 почки",
-          "price": 221500,
+          "price": 230000,
           "qty": 5
         }
       ],
