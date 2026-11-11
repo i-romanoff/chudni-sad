@@ -6647,20 +6647,20 @@ window.CATALOG = {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-sarah-bernhardt-oks-2-3-20261008010228294",
       "name": "Пион молочноцветковый 'Сара Бернар'",
       "category": "Пионы",
-      "priceMin": 88000,
-      "priceMax": 113500,
+      "priceMin": 89000,
+      "priceMax": 122000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "2-3 почки",
-          "price": 88000,
+          "price": 89000,
           "qty": 15
         },
         {
           "label": "3-5 почек",
-          "price": 113500,
+          "price": 122000,
           "qty": 10
         }
       ],
@@ -7010,5 +7010,5 @@ window.CATALOG = {
       "featured": false
     }
   ],
-  "generatedAt": "2026-11-04"
+  "generatedAt": "2026-11-11"
 };
