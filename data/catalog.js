@@ -5329,15 +5329,15 @@ window.CATALOG = {
       "id": "pion-mezhvidovoy-gibrid-paeonia-hybrid-lorelei-oks-2-3-20261008010230158",
       "name": "Пион межвидовой гибрид 'Лорелей'",
       "category": "Пионы",
-      "priceMin": 202000,
-      "priceMax": 202000,
+      "priceMin": 210000,
+      "priceMax": 210000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "2-3 почки",
-          "price": 202000,
+          "price": 210000,
           "qty": 5
         }
       ],
@@ -5519,15 +5519,15 @@ window.CATALOG = {
       "id": "pion-mezhvidovoy-gibrid-paeonia-hybrid-red-charm-oks-3-5-20261008010229408",
       "name": "Пион межвидовой гибрид 'Ред Чарм'",
       "category": "Пионы",
-      "priceMin": 145000,
-      "priceMax": 145000,
+      "priceMin": 160000,
+      "priceMax": 160000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "3-5 почек",
-          "price": 145000,
+          "price": 160000,
           "qty": 5
         }
       ],
@@ -5591,15 +5591,15 @@ window.CATALOG = {
       "id": "pion-mezhvidovoy-gibrid-paeonia-hybrid-highlight-oks-3-5-20261008010843626",
       "name": "Пион межвидовой гибрид 'Хайлайт'",
       "category": "Пионы",
-      "priceMin": 182500,
-      "priceMax": 182500,
+      "priceMin": 194000,
+      "priceMax": 194000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "3-5 почек",
-          "price": 182500,
+          "price": 194000,
           "qty": 5
         }
       ],
@@ -5684,15 +5684,15 @@ window.CATALOG = {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-alexander-fleming-oks-2-3-20261008010227443",
       "name": "Пион молочноцветковый 'Александр Флеминг'",
       "category": "Пионы",
-      "priceMin": 97000,
-      "priceMax": 97000,
+      "priceMin": 98000,
+      "priceMax": 98000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "2-3 почки",
-          "price": 97000,
+          "price": 98000,
           "qty": 5
         }
       ],
@@ -5756,15 +5756,15 @@ window.CATALOG = {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-bowl-of-cream-oks-3-5-20261008010842452",
       "name": "Пион молочноцветковый 'Боул оф Крим'",
       "category": "Пионы",
-      "priceMin": 192000,
-      "priceMax": 192000,
+      "priceMin": 203000,
+      "priceMax": 203000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "3-5 почек",
-          "price": 192000,
+          "price": 203000,
           "qty": 5
         }
       ],
@@ -5825,15 +5825,15 @@ window.CATALOG = {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-gardenia-oks-3-5-20261008010842712",
       "name": "Пион молочноцветковый 'Гардения'",
       "category": "Пионы",
-      "priceMin": 136000,
-      "priceMax": 136000,
+      "priceMin": 137000,
+      "priceMax": 137000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "3-5 почек",
-          "price": 136000,
+          "price": 137000,
           "qty": 5
         }
       ],
@@ -6087,15 +6087,15 @@ window.CATALOG = {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-inspecteur-lavergne-oks-2-3-20261008010229037",
       "name": "Пион молочноцветковый 'Инспектор Лаверн'",
       "category": "Пионы",
-      "priceMin": 114000,
-      "priceMax": 114000,
+      "priceMin": 123000,
+      "priceMax": 123000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "2-3 почки",
-          "price": 114000,
+          "price": 123000,
           "qty": 10
         }
       ],
@@ -6180,15 +6180,15 @@ window.CATALOG = {
       "id": "pion-molochnocvetkovyy-paeonia-lactiflora-kansas-oks-2-3-20261008010229957",
       "name": "Пион молочноцветковый 'Канзас'",
       "category": "Пионы",
-      "priceMin": 93000,
-      "priceMax": 93000,
+      "priceMin": 95000,
+      "priceMax": 95000,
       "oldPriceMin": null,
       "oldPriceMax": null,
       "salePercent": 0,
       "variants": [
         {
           "label": "2-3 почки",
-          "price": 93000,
+          "price": 95000,
           "qty": 10
         }
       ],
