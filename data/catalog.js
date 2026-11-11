@@ -2485,21 +2485,27 @@ window.CATALOG = {
       "id": "sliva-pamyati-putova-2026090914474",
       "name": "Слива 'Памяти Путова'",
       "category": "Плодовые деревья и кустарники",
-      "priceMin": 140000,
-      "priceMax": 140000,
-      "oldPriceMin": 175000,
+      "priceMin": 112000,
+      "priceMax": 148750,
+      "oldPriceMin": 140000,
       "oldPriceMax": 175000,
       "salePercent": 20,
       "variants": [
         {
-          "label": "4-5 л",
-          "price": 140000,
+          "label": "С 2-3 л",
+          "price": 112000,
           "qty": 8,
+          "oldPrice": 140000
+        },
+        {
+          "label": "С 3-4 л",
+          "price": 148750,
+          "qty": 30,
           "oldPrice": 175000
         }
       ],
       "status": "В наличии",
-      "stockCount": 8,
+      "stockCount": 38,
       "badges": [
         {
           "type": "sale",
