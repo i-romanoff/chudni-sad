@@ -2501,9 +2501,9 @@ window.CATALOG = {
       "name": "Слива 'Памяти Путова'",
       "category": "Плодовые деревья и кустарники",
       "priceMin": 112000,
-      "priceMax": 148750,
+      "priceMax": 120000,
       "oldPriceMin": 140000,
-      "oldPriceMax": 175000,
+      "oldPriceMax": 150000,
       "salePercent": 20,
       "variants": [
         {
@@ -2514,9 +2514,9 @@ window.CATALOG = {
         },
         {
           "label": "С 3-4 л 110-160 см",
-          "price": 148750,
+          "price": 120000,
           "qty": 30,
-          "oldPrice": 175000
+          "oldPrice": 150000
         }
       ],
       "status": "В наличии",
