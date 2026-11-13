@@ -8032,5 +8032,5 @@ window.CATALOG = {
       "featured": false
     }
   ],
-  "generatedAt": "2026-11-13"
+  "generatedAt": "2026-11-14"
 };
