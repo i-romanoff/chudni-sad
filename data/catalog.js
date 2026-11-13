@@ -5525,7 +5525,7 @@ window.CATALOG = {
         }
       ],
       "status": "В наличии",
-      "stockCount": 37,
+      "stockCount": 36,
       "badges": [
         {
           "type": "sale",
